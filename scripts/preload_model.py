@@ -5,6 +5,11 @@
 构建时预下载可避免运行时卡顿。若使用云端 embedding（EMBEDDING_BACKEND=openai）可跳过。
 """
 import os
+import sys
+from pathlib import Path
+
+# 确保可从任意位置导入 app 包（Docker 内 PYTHONPATH=/app 时自动跳过）
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 os.environ["EMBEDDING_BACKEND"] = "local"
 
