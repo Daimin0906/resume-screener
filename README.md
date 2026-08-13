@@ -25,6 +25,7 @@
 - [使用 Web 界面](#-使用-web-界面)
 - [API 参考](#-api-参考)
 - [数据模型](#-数据模型)
+- [三分类判定与规则自迭代](#-三分类判定与规则自迭代)
 - [评分与排序机制](#-评分与排序机制)
 - [硬性条件过滤](#-硬性条件过滤)
 - [切换向量数据库](#-切换向量数据库)
@@ -53,12 +54,21 @@
 |------|------|
 | 🗣️ **自然语言需求** | 一句话岗位描述，LLM 自动解析为结构化查询条件 |
 | 📄 **多格式简历解析** | 支持 `.txt` / `.md` / `.pdf`，LLM 抽取结构化元数据 |
-| 🔍 **语义检索 + 硬性过滤** | 向量召回 + 技能/经验/地点/学历过滤，对 LLM 抽取不完美做模糊匹配与全文兜底 |
+| 🏷️ **三分类筛选** | 每位候选人输出「值得面试 / HR审核 / 直接淘汰」+ 判定理由 + 6 维评估 |
+| 🎯 **判断标准升级** | 内建「不看关键词，只看**独立负责 + 真实用户 + 可量化结果**」的评估维度 |
+| 🔁 **人工纠正自迭代** | HR 纠正分类 → AI 总结规律 → 版本化规则自动注入下次筛选 |
+| 📊 **规则对比验证** | 一键对比新旧规则版本的分类分布差异（vN-1 vs vN） |
+| ⚡ **入库即预分类** | 简历上传后自动按当前规则做通用评估（持久化，重启不丢） |
+| 📥 **邮箱自动抓取** | IMAP 连接招聘邮箱，自动拉取未读简历附件入库 |
+| ⏰ **定时自动化** | APScheduler：定时抓邮箱 + 定时预分类补跑，全流程无人值守 |
+| 🚀 **异步高性能** | 异步上传（秒级返回）+ 8 路并发解析 + 筛选结果缓存（秒回） |
+| 🔍 **语义检索 + 硬性过滤** | 向量召回 + 技能/经验/地点/学历过滤，必需技能按命中比例判定（≥70%） |
 | 📊 **多维加权评分** | 技能、行业、薪资、学历、地点、标签 6 维度加权综合打分 |
 | 📝 **候选人分析报告** | LLM 为每位候选人生成匹配度分析 |
 | 🖥️ **开箱即用 Web UI** | FastAPI 自带静态前端，无需单独部署前端工程 |
 | 🔌 **可插拔向量库** | 默认 ChromaDB（本地零依赖），可选 Milvus / Zilliz Cloud |
 | 🧩 **接口兼容设计** | 两种向量库实现同一接口，切换后端业务代码零改动 |
+| 🆓 **零成本方案** | 对话模型可用免费 glm-4-flash + 本地开源向量模型（fastembed） |
 
 ---
 
@@ -100,6 +110,27 @@ uvicorn app.main:app --reload --port 8000
 打开浏览器访问 **http://localhost:8000/** 即可使用界面；接口文档在 **http://localhost:8000/docs**。
 
 > 💡 默认使用本地 ChromaDB，无需任何额外数据库服务即可运行。
+
+### 🆓 免费运行方案（零 API 成本）
+
+系统支持完全免费的运行配置：
+
+| 组件 | 免费方案 | 配置 |
+|------|---------|------|
+| 对话模型 | 智谱 `glm-4-flash`（免费资源包覆盖） | `LLM_MODEL=glm-4-flash` |
+| 向量模型 | 本地开源 BGE-small-zh（fastembed，免费无限） | `EMBEDDING_BACKEND=local` |
+
+```env
+LLM_API_KEY=你的智谱key
+LLM_BASE_URL=https://open.bigmodel.cn/api/paas/v4/
+LLM_MODEL=glm-4-flash
+
+EMBEDDING_BACKEND=local
+LOCAL_EMBEDDING_MODEL=BAAI/bge-small-zh-v1.5   # 首次运行自动下载 ~100MB
+```
+
+> ⚠️ 切换 embedding 后端后向量维度可能变化（BGE-small-zh 为 512 维），
+> **必须删除 `chroma_db/` 目录重建向量库**，否则检索报维度不匹配。
 
 ---
 
@@ -239,6 +270,19 @@ cp .env.example .env
 | `SERVER_ALLOWED_ORIGINS` | 允许的前端来源（逗号分隔，留空=允许全部） | `*` |
 | `CACHE_DIR` | 缓存目录 | `./cache` |
 | `LOG_LEVEL` | 日志级别 | `INFO` |
+| `EMBEDDING_BACKEND` | 向量后端：`local`（本地免费）/ `openai`（云端） | `openai` |
+| `LOCAL_EMBEDDING_MODEL` | 本地向量模型（fastembed BGE 系列） | `BAAI/bge-small-zh-v1.5` |
+| `REQUIRED_SKILL_HIT_RATIO` | 必需技能通过命中比例（0~1） | `0.7` |
+| `IMAP_ENABLED` / `IMAP_HOST` / `IMAP_USER` / `IMAP_PASSWORD` | 邮箱抓取配置（Gmail 需应用专用密码） | `false` |
+| `SCHEDULER_ENABLED` | 定时任务开关 | `true` |
+| `SCHEDULER_EMAIL_FETCH_INTERVAL_MINUTES` | 邮箱抓取间隔（分钟） | `30` |
+| `SCHEDULER_PRECLASSIFY_INTERVAL_MINUTES` | 预分类补跑间隔（分钟） | `60` |
+| `UPLOAD_ASYNC` | 上传异步处理（true=秒回后台解析） | `true` |
+| `UPLOAD_MAX_WORKERS` / `ANALYZER_MAX_WORKERS` | 解析/分析并发路数 | `8` |
+| `RESULTS_CACHE_ENABLED` | 筛选结果缓存（键含规则版本） | `true` |
+| `RESULTS_CACHE_TTL_SECONDS` | 结果缓存 TTL | `1800` |
+| `PRECLASSIFY_ON_INGEST` | 入库即预分类 | `true` |
+| `RULES_COMPARE_MAX_RESUMES` | 规则对比最大人数 | `50` |
 
 **最小可用配置示例（`.env`）：**
 
@@ -304,11 +348,20 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 | 方法 | 路径 | 说明 |
 |------|------|------|
 | `GET`  | `/health` | 健康检查 |
-| `GET`  | `/resumes` | 列出已上传简历（摘要） |
-| `POST` | `/resumes` | 上传简历（`multipart/form-data`，字段名 `file`） |
+| `GET`  | `/resumes` | 列出已上传简历（摘要 + 状态 + 通用评估） |
+| `POST` | `/resumes` | 上传简历（异步，立即返回 `status=parsing`） |
 | `GET`  | `/resumes/{resume_id}` | 获取单份简历详情 |
+| `GET`  | `/resumes/{resume_id}/status` | 解析状态轮询（parsing/ready/error） |
+| `DELETE` | `/resumes/{resume_id}` | 删除简历（内存 + 向量库） |
 | `POST` | `/queries` | 提交岗位需求查询 |
-| `GET`  | `/results/{query_id}` | 执行筛选并返回排序结果 |
+| `GET`  | `/results/{query_id}` | 执行筛选并返回排序结果（带缓存） |
+| `POST` | `/feedback` | 提交人工纠正反馈（驱动规则迭代） |
+| `GET`  | `/feedback` | 查询反馈日志 |
+| `GET`  | `/rules` | 当前生效规则 + 待总结反馈数 |
+| `POST` | `/rules/summarize` | AI 总结纠正规律，生成新版规则 |
+| `POST` | `/rules/compare` | 规则版本对比（vN-1 vs vN 分类分布） |
+| `POST` | `/emails/fetch` | 手动触发邮箱抓取 |
+| `POST` | `/preclassify` | 手动触发预分类补跑 |
 
 ### 1) 上传简历
 
@@ -420,6 +473,46 @@ curl http://localhost:8000/api/v1/results/7b602c7b-...
 
 ---
 
+## 🏷️ 三分类判定与规则自迭代
+
+### 三分类输出
+
+系统对每位候选人输出三分类之一（替代纯分数排名）：
+
+| 分类 | 含义 |
+|------|------|
+| 🟢 `interview`（值得面试） | 证据充分：独立负责 + 真实用户 + 可量化结果 |
+| 🟠 `review`（HR审核） | 部分满足或证据不足，需人工核实 |
+| 🔴 `reject`（直接淘汰） | 明显不符，或仅关键词堆砌无实际项目证据 |
+
+每次判定附带：**判定理由** + **6 维评估**（技能/经验/教育/独立负责/真实用户/可量化结果）。
+
+**两种分类场景**：
+- **通用评估（入库预分类）**：简历上传后自动按当前规则做无岗位通用评估（列表徽章显示"通用评估"）
+- **岗位筛选分类**：提交岗位需求后，对照 JD 的匹配度分类（结果卡片显示）
+
+### 人工纠正驱动的规则自迭代
+
+```
+① AI 分类 → ② HR 纠正（改分类 + 写原因）→ ③ 积累反馈（feedback_log.json）
+→ ④ 总结规则（AI 分析纠正规律，版本化存入 screening_rules.json）
+→ ⑤ 规则自动注入下次筛选 → ⑥ AI 分类更准
+```
+
+- 反馈提交：结果卡片「纠正分类」表单（`POST /api/v1/feedback`）
+- 规则总结：规则面板「总结筛选规则」按钮（`POST /api/v1/rules/summarize`）
+- 规则对比：`POST /api/v1/rules/compare` 对比 vN-1 vs vN 的分类分布差异，验证规则效果
+- 规则版本记录在 `rules/screening_rules.json`（含 history），每次筛选结果返回 `rules_version_used`
+
+> 💡 经典示例：筛选 AI 智能体岗位时，AI 通过纠正反馈最终总结出
+> 「不看关键词，只看候选人是否独立负责过真实项目并有真实用户/客户」的规则。
+
+### 入库即预分类
+
+- 上传解析完成后自动做一次通用评估（`PRECLASSIFY_ON_INGEST=true`）
+- 结果持久化到向量库元数据，**服务重启后自动恢复**
+- 定时任务每小时补跑缺失的预分类，也可手动 `POST /api/v1/preclassify`
+
 ## 📊 评分与排序机制
 
 候选人通过硬性过滤后，`scorer.py` 计算 6 个维度得分（均归一化到 `0~1`），再加权求综合分：
@@ -495,7 +588,7 @@ cd resume_screening
 
 # 1) 单元测试：假嵌入、固定 chroma 后端、不联网（最快，CI 友好）
 python -m pytest tests/ -q
-#   预期：82 passed
+#   预期：162 passed（覆盖三分类/规则迭代/异步上传/缓存/邮箱/定时任务等）
 
 # 2) 全链路集成测试：使用 .env 真实 key，覆盖 上传→查询→结果 + 内置 UI
 python integration_test.py
