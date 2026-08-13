@@ -1,0 +1,21 @@
+李华
+求职意向：全栈工程师 / 高级开发工程师
+联系电话：137-0000-3344 | 邮箱：lihua@example.com | 现居：深圳
+
+教育背景
+某职业技术学院 计算机应用技术 大专 2019-09 - 2022-06
+
+专业技能
+- 熟练掌握 Python、Java、Go、C++、JavaScript、TypeScript、Rust、Kotlin 等多种编程语言
+- 熟悉 FastAPI、Django、Spring Boot、Flask、Express、Gin、Vue、React、Angular 等主流框架
+- 掌握微服务架构、分布式系统、高并发、高可用、消息队列、容器化、云原生等核心技术
+- 了解人工智能、机器学习、深度学习、大模型、RAG、Agent、区块链、Web3 等前沿技术
+- 熟悉 MySQL、PostgreSQL、MongoDB、Redis、Elasticsearch、ClickHouse、TiDB 等数据库
+- 了解 Docker、Kubernetes、Jenkins、GitLab CI/CD、Terraform、Ansible 等运维工具
+
+项目经历
+- 参与过多个项目的部分模块开发
+- 学习过一些开源框架的源码
+
+个人简介
+技术栈全面，热爱学习，能快速上手各种新技术，对 AI 和 Web3 充满热情。
