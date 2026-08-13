@@ -104,6 +104,9 @@ def _process_resume_sync(resume_id: str, filename: str, content: bytes) -> None:
         else:
             resume_text = content.decode('utf-8')
 
+        # 统一过滤控制字符（PDF 提取的 \x00 等已在 document_parser 处理，txt 也可能混入）
+        resume_text = _clean_control_chars(resume_text)
+
         metadata = metadata_extractor.extract_metadata(resume_text)
 
         resume_storage[resume_id] = {
@@ -222,6 +225,12 @@ def preclassify_pending() -> Dict[str, int]:
             processed += 1
     logger.info(f"Preclassified {processed} resumes")
     return {"processed": processed}
+
+
+def _clean_control_chars(text: str) -> str:
+    """过滤控制字符（\x00-\x08、\x0b-\x1f），防止破坏 LLM 调用与 JSON 解析。"""
+    import re
+    return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", text or "")
 
 
 def _safe_json_loads(value: Any, default: Any = None) -> Any:

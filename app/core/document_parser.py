@@ -1,11 +1,31 @@
 import io
 import os
+import re
 import hashlib
 from typing import List, Dict, Any
 
 import pypdf
 from app.core.cache_manager import CacheManager
 from loguru import logger
+
+
+def _clean_control_chars(text: str) -> str:
+    """过滤控制字符（\x00-\x08、\x0b-\x1f 等），保留换行/制表等常用空白。
+
+    PDF 文本提取常混入空字节（\x00），会破坏 LLM 调用与 JSON 解析。
+    """
+    return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", text)
+
+
+def _is_garbled(text: str) -> bool:
+    """检测文本是否几乎不可用（扫描件/图片型 PDF 提取出的乱码）。
+
+    可打印字符占比低于 50% 视为乱码（正常简历文本占比应接近 100%）。
+    """
+    if not text:
+        return True
+    printable = sum(1 for ch in text if ch.isprintable())
+    return printable / len(text) < 0.5
 
 
 class DocumentParser:
@@ -70,6 +90,16 @@ class DocumentParser:
                 except Exception as e:
                     logger.warning(f"Failed to extract text from page {page_num + 1}: {e}")
                     continue
+
+            # 过滤控制字符（PDF 提取常混入 \x00 等空字节，会破坏 LLM 调用与 JSON 解析）
+            text = _clean_control_chars(text)
+
+            # 扫描件/图片型 PDF 检测：提取的文本几乎不可用（可打印字符占比过低）
+            # 此时明确报错，而不是把乱码喂给 LLM 导致下游解析失败
+            if _is_garbled(text):
+                raise ValueError(
+                    "PDF 无法提取有效文本，可能是扫描件/图片型 PDF，请使用文本型 PDF 或先 OCR"
+                )
 
             if self.cache_manager:
                 self.cache_manager.set(cache_key, text, expire=3600)

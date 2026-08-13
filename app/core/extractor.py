@@ -5,6 +5,7 @@ from app.models.metadata import ResumeMetadata
 from loguru import logger
 import json
 import hashlib
+import re
 
 
 class MetadataExtractor:
@@ -154,34 +155,40 @@ class MetadataExtractor:
 
     def _parse_response(self, response: str) -> Dict[str, Any]:
         """
-        解析LLM响应
-        
+        解析LLM响应（多级兜底）
+
         Args:
             response (str): LLM生成的响应
-            
+
         Returns:
             Dict[str, Any]: 解析后的元数据字典
-            
+
         Raises:
             ValueError: 如果响应不是有效的JSON格式
         """
-        try:
-            # 尝试直接解析JSON
-            metadata_dict = json.loads(response)
-            return metadata_dict
-        except json.JSONDecodeError:
-            # 如果直接解析失败，尝试从响应中提取JSON部分
-            # 这种情况可能发生在LLM返回了额外的解释文本时
-            start = response.find('{')
-            end = response.rfind('}') + 1
-            
-            if start != -1 and end != -1 and start < end:
-                json_str = response[start:end]
-                try:
-                    metadata_dict = json.loads(json_str)
+        candidates = [
+            response,
+            # 剥 ```json 代码围栏（glm-4-flash 等模型常包裹代码块）
+            re.sub(r"```(?:json)?\s*|\s*```", "", response),
+        ]
+        start, end = response.find("{"), response.rfind("}")
+        if start != -1 and end != -1 and start < end:
+            candidates.append(response[start:end + 1])
+
+        for text in candidates:
+            try:
+                metadata_dict = json.loads(text)
+                if isinstance(metadata_dict, dict):
                     return metadata_dict
+            except json.JSONDecodeError:
+                # 清理 JSON 中不允许的非法控制字符（\x00-\x1f）后再试一次
+                cleaned = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", text)
+                try:
+                    metadata_dict = json.loads(cleaned)
+                    if isinstance(metadata_dict, dict):
+                        return metadata_dict
                 except json.JSONDecodeError:
-                    pass
-            
-            # 如果所有尝试都失败，抛出异常
-            raise ValueError(f"Failed to parse response as JSON: {response}")
+                    continue
+
+        # 如果所有尝试都失败，抛出异常
+        raise ValueError(f"Failed to parse response as JSON: {response[:300]}")
