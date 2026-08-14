@@ -753,11 +753,35 @@ async function loadManualScreenPanel() {
 }
 
 // ---------------- 邮箱配置（界面切换账号） ----------------
+// 常见邮箱 IMAP 预设（选择类型自动填服务器/端口，用户只需填账号+授权码）
+const EMAIL_PROVIDERS = {
+  qq:      { host: "imap.qq.com",         port: 993 },
+  "163":   { host: "imap.163.com",        port: 993 },
+  "126":   { host: "imap.126.com",        port: 993 },
+  gmail:   { host: "imap.gmail.com",      port: 993 },
+  outlook: { host: "outlook.office365.com", port: 993 },
+  custom:  { host: "", port: 993 },
+};
+
+function applyEmailProvider() {
+  const type = $("email-type").value;
+  const provider = EMAIL_PROVIDERS[type] || EMAIL_PROVIDERS.custom;
+  $("email-host").value = provider.host;
+  $("email-port").value = provider.port;
+  // 自定义类型时显示服务器/端口输入框
+  $("email-custom-fields").hidden = type !== "custom";
+}
+
 async function loadEmailConfig() {
   try {
     const res = await fetch(`${API}/email-config`);
     const cfg = await res.json();
     if (!res.ok) throw new Error(cfg.detail || "加载失败");
+    // 根据已存 host 回显邮箱类型
+    const type = Object.keys(EMAIL_PROVIDERS).find(
+      (k) => EMAIL_PROVIDERS[k].host === cfg.host) || "custom";
+    $("email-type").value = type;
+    applyEmailProvider();
     $("email-host").value = cfg.host || "";
     $("email-user").value = cfg.user || "";
     $("email-port").value = cfg.port || 993;
@@ -902,6 +926,7 @@ $("export-interview-btn").addEventListener("click", exportInterviewList);
 $("workbench-refresh-btn").addEventListener("click", loadWorkbench);
 $("email-save-btn").addEventListener("click", saveEmailConfig);
 $("email-test-btn").addEventListener("click", testEmailConfig);
+$("email-type").addEventListener("change", applyEmailProvider);
 $("run-manual-screen-btn").addEventListener("click", runManualScreen);
 
 // 工作台候选人操作按钮（事件委托）

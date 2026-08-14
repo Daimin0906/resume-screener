@@ -45,11 +45,24 @@
       </div>
       <details class="email-config-box">
         <summary>📮 邮箱配置（切换招聘邮箱）</summary>
-        <input id="email-host" type="text" placeholder="IMAP 服务器，如 imap.qq.com" />
+        <div class="email-config-row">
+          <label>邮箱类型：</label>
+          <select id="email-type">
+            <option value="qq">QQ邮箱</option>
+            <option value="163">163邮箱</option>
+            <option value="126">126邮箱</option>
+            <option value="gmail">Gmail</option>
+            <option value="outlook">Outlook</option>
+            <option value="custom">其他（自定义服务器）</option>
+          </select>
+        </div>
         <input id="email-user" type="text" placeholder="邮箱账号，如 xxx@qq.com" />
         <input id="email-password" type="password" placeholder="授权码（QQ邮箱为授权码，非登录密码）" />
+        <div id="email-custom-fields" hidden>
+          <input id="email-host" type="text" placeholder="IMAP 服务器，如 imap.qq.com" />
+          <input id="email-port" type="number" placeholder="端口(993)" style="width: 120px" />
+        </div>
         <div class="email-config-row">
-          <input id="email-port" type="number" placeholder="端口(993)" style="width: 90px" />
           <button id="email-test-btn" class="btn">测试连接</button>
           <button id="email-save-btn" class="btn primary">保存邮箱配置</button>
         </div>
