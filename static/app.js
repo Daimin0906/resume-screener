@@ -790,19 +790,26 @@ async function loadEmailConfig() {
   } catch (e) { /* 忽略 */ }
 }
 
+// 取当前邮箱配置（host 兜底：类型为预设时用预设值，避免异步回填未完成时提交空 host）
+function currentEmailConfig() {
+  const type = $("email-type").value;
+  const preset = EMAIL_PROVIDERS[type] || EMAIL_PROVIDERS.custom;
+  return {
+    enabled: true,
+    host: $("email-host").value.trim() || preset.host || "",
+    user: $("email-user").value.trim(),
+    password: $("email-password").value.trim(),
+    port: parseInt($("email-port").value) || preset.port || 993,
+  };
+}
+
 async function saveEmailConfig() {
   const log = $("email-config-log");
   try {
     const res = await fetch(`${API}/email-config`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        enabled: true,
-        host: $("email-host").value.trim(),
-        user: $("email-user").value.trim(),
-        password: $("email-password").value.trim(),
-        port: parseInt($("email-port").value) || 993,
-      }),
+      body: JSON.stringify(currentEmailConfig()),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || "保存失败");
@@ -821,13 +828,7 @@ async function testEmailConfig() {
     const saveRes = await fetch(`${API}/email-config`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        enabled: true,
-        host: $("email-host").value.trim(),
-        user: $("email-user").value.trim(),
-        password: $("email-password").value.trim(),
-        port: parseInt($("email-port").value) || 993,
-      }),
+      body: JSON.stringify(currentEmailConfig()),
     });
     const saveData = await saveRes.json();
     if (!saveRes.ok) throw new Error(saveData.detail || "保存失败");
