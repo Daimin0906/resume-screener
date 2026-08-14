@@ -48,9 +48,44 @@ body {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
   gap: 20px;
-  padding: 24px;
-  max-width: 1200px;
+  padding: 24px 24px 0;
+  max-width: 1400px;
   margin: 0 auto;
+}
+
+/* ---- 共用资源区（两个工作流共享，视觉独立） ---- */
+.shared-panel {
+  max-width: 1400px;
+  margin: 20px auto 24px;
+  border: 2px dashed var(--primary);
+  background: linear-gradient(180deg, #f6f8ff 0%, #ffffff 60%);
+  position: relative;
+}
+.shared-title {
+  color: var(--primary);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+.shared-blocks {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.shared-block {
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.shared-block h3 {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+@media (max-width: 1100px) {
+  .shared-blocks { grid-template-columns: 1fr; }
 }
 
 .panel {
