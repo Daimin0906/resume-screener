@@ -455,8 +455,9 @@ async def get_screening_results(query_id: str):
             candidate_analyzer.analyze_candidates, ranked_resumes, query_metadata, rules_text)
         formatted_results = await run_in_threadpool(result_formatter.format_results, analyzed_candidates, query_metadata)
 
-        # 人工纠正反馈：该 query 下被纠正过的候选人，以人工分类覆盖 AI 分类显示
-        feedback_map = rules_manager.get_feedback_map(query_id)
+        # 人工纠正反馈：被纠正过的候选人以人工分类覆盖 AI 分类显示
+        # （按简历匹配，跨查询生效——纠正针对候选人而非某次查询）
+        feedback_map = rules_manager.get_feedback_map_for_resumes()
 
         candidates = []
         for candidate_data in formatted_results["candidates"]:

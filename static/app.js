@@ -517,12 +517,26 @@ async function submitFeedback(candidateEl, fbClass, reason) {
     const newBadge = `<span class="badge class-badge-${fbClass}">${CLASS_LABELS[fbClass] || fbClass}</span>`;
     const correctedMark = '<span class="badge badge-unknown">已人工纠正</span>';
     head.innerHTML = newBadge + " " + correctedMark + " " + (scoreEl ? scoreEl.outerHTML : "");
-    log.innerHTML = `<span class="ok">纠正已记录：${escapeHtml(CLASS_LABELS[fbClass] || fbClass)}</span>`;
-    saveLogs();
+
+    // 提示显示在卡片内（纠正表单上方），而非顶部日志区
+    const fbBox = candidateEl.querySelector(".feedback-box");
+    const candidateName = nameEl ? nameEl.textContent.trim() : "该候选人";
+    const fbResult = document.createElement("div");
+    fbResult.className = "fb-result";
+    fbResult.innerHTML = `✓ 已纠正：${escapeHtml(candidateName)} → ${escapeHtml(CLASS_LABELS[fbClass] || fbClass)}${reason ? `（原因：${escapeHtml(reason)}）` : ""}`;
+    if (fbBox) fbBox.before(fbResult);
+    // 收起到期自动消失（保留 6 秒后淡出）
+    setTimeout(() => { fbResult.style.opacity = "0"; }, 6000);
+
     loadRules(); // 刷新规则面板（待总结数量变化）
   } catch (e) {
-    log.innerHTML = `<span class="err">提交纠正失败：${escapeHtml(e.message)}</span>`;
-    saveLogs();
+    // 失败提示显示在卡片内
+    const fbBox = candidateEl.querySelector(".feedback-box");
+    const fbResult = document.createElement("div");
+    fbResult.className = "fb-result fb-result-err";
+    fbResult.textContent = `提交纠正失败：${e.message}`;
+    if (fbBox) fbBox.before(fbResult);
+    setTimeout(() => { fbResult.style.opacity = "0"; }, 6000);
   }
 }
 

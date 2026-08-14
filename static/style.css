@@ -271,6 +271,23 @@ textarea { resize: vertical; }
 }
 .feedback-box .btn { margin-top: 8px; padding: 5px 12px; font-size: 13px; }
 
+/* 纠正反馈结果提示（显示在卡片内，6 秒后淡出） */
+.fb-result {
+  margin: 8px 0 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--ok);
+  background: #e7f6ec;
+  border: 1px solid var(--ok);
+  transition: opacity 0.8s;
+}
+.fb-result-err {
+  color: var(--err);
+  background: #fdecea;
+  border-color: var(--err);
+}
+
 /* ---- 筛选规则面板 ---- */
 .rules-box {
   font-size: 13px;

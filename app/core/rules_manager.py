@@ -112,13 +112,22 @@ class RulesManager:
         return entries[:limit]
 
     def get_feedback_map(self, query_id: str) -> Dict[str, Dict[str, Any]]:
-        """返回 {resume_id: feedback_entry}，用于结果展示时以人工分类覆盖 AI 分类。"""
+        """返回 {resume_id: feedback_entry}，用于结果展示时以人工分类覆盖 AI 分类。
+
+        注意：纠正针对的是候选人（resume_id），而非某次查询——因此
+        匹配时不以 query_id 过滤，跨查询生效（用户改判后，任何筛选都显示纠正结果）。
+        """
+        return self.get_feedback_map_for_resumes()
+
+    def get_feedback_map_for_resumes(self) -> Dict[str, Dict[str, Any]]:
+        """{resume_id: 该候选人最新一条反馈}，跨查询生效。"""
         data = self._load_json(self.feedback_path, self._empty_feedback())
-        return {
-            e["resume_id"]: e
-            for e in data.get("entries", [])
-            if e.get("query_id") == query_id and e.get("resume_id")
-        }
+        result: Dict[str, Dict[str, Any]] = {}
+        for e in data.get("entries", []):
+            rid = e.get("resume_id")
+            if rid:
+                result[rid] = e  # 后写入的覆盖前面的 → 保留最新
+        return result
 
     def feedback_total(self) -> int:
         """累计反馈条数（含被裁剪的历史）。"""

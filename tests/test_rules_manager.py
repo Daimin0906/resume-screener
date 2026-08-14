@@ -65,12 +65,22 @@ class TestAddFeedback:
         assert [e["resume_id"] for e in entries] == ["r2", "r1"]
 
     def test_get_feedback_map_by_query(self, tmp_path):
+        """纠正按简历生效，跨查询匹配（纠正针对候选人而非某次查询）"""
         manager = make_manager(tmp_path)
         manager.add_feedback({**TEST_FEEDBACK, "resume_id": "r1", "query_id": "q1"})
         manager.add_feedback({**TEST_FEEDBACK, "resume_id": "r2", "query_id": "q2"})
+        # 即使传入 q1，r2（q2 的反馈）也返回——跨查询生效
         map_q1 = manager.get_feedback_map("q1")
-        assert set(map_q1.keys()) == {"r1"}
+        assert set(map_q1.keys()) == {"r1", "r2"}
         assert map_q1["r1"]["human_classification"] == "reject"
+
+    def test_get_feedback_map_latest_wins(self, tmp_path):
+        """同一候选人多次纠正时，最新一条生效"""
+        manager = make_manager(tmp_path)
+        manager.add_feedback({**TEST_FEEDBACK, "resume_id": "r1", "human_classification": "reject"})
+        manager.add_feedback({**TEST_FEEDBACK, "resume_id": "r1", "human_classification": "interview"})
+        feedback_map = manager.get_feedback_map_for_resumes()
+        assert feedback_map["r1"]["human_classification"] == "interview"
 
     def test_concurrent_add_feedback(self, tmp_path):
         """多线程并发写，文件保持合法 JSON（验证锁与原子写）。"""
