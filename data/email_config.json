@@ -1,0 +1,9 @@
+{
+  "enabled": true,
+  "host": "imap.qq.com",
+  "port": 993,
+  "user": "3229619752@qq.com",
+  "password": "jxtlbtoljayrdaab",
+  "ssl": true,
+  "mailbox": "INBOX"
+}

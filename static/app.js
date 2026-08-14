@@ -700,6 +700,7 @@ async function runAutoScreen() {
     log.innerHTML = `<span class="ok">✓ ${escapeHtml(data.message || "工作流完成")}（筛选 ${data.screened_count} 份）</span>`;
     loadAutoScreenPanel();
     loadWorkbench();
+    loadResumeList(); // 刷新简历列表（抓取的新简历会出现在邮箱分组）
   } catch (e) {
     log.innerHTML = `<span class="err">${escapeHtml(e.message)}</span>`;
   }
@@ -1008,4 +1009,4 @@ loadManualScreenPanel();
 loadWorkbench();
 loadEmailConfig();
 setInterval(checkHealth, 30000);
-setInterval(() => { loadAutoScreenPanel(); loadWorkbench(); }, 60000); // 每分钟刷新自动筛选 + 工作台
+setInterval(() => { loadAutoScreenPanel(); loadWorkbench(); loadResumeList(); }, 60000); // 每分钟刷新自动筛选 + 工作台 + 简历列表
