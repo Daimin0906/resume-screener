@@ -293,6 +293,7 @@ async function loadResumeList() {
       return `
       <li data-resume-id="${escapeHtml(r.resume_id)}">
         <div class="fn">
+          <label class="sel-cb" title="选择删除"><input type="checkbox" data-sel="${escapeHtml(r.resume_id)}" /></label>
           ${escapeHtml(r.name || r.filename || "(未命名)")}
           <span>${statusBadge} ${preBadge} ${warnBadge}</span>
           <button class="btn-mini del-btn" title="删除简历" data-name="${escapeHtml(r.name || r.filename || "")}">🗑 删除</button>
@@ -302,6 +303,7 @@ async function loadResumeList() {
         <div class="resume-detail" hidden></div>
       </li>`;
     }).join("");
+    resetSelectionUI();
   } catch (e) {
     list.innerHTML = `<li class="empty">加载失败：${escapeHtml(e.message)}</li>`;
   }
@@ -352,6 +354,37 @@ async function deleteResume(resumeId, name) {
     loadResumeList();
   } catch (e) {
     alert("删除失败：" + e.message);
+  }
+}
+
+// ---------------- 批量删除 ----------------
+function resetSelectionUI() {
+  const cbs = document.querySelectorAll('#resume-list input[data-sel]');
+  const checked = document.querySelectorAll('#resume-list input[data-sel]:checked').length;
+  $("sel-count").textContent = checked > 0 ? `已选 ${checked} 份` : "";
+  $("batch-del-btn").disabled = checked === 0;
+  $("sel-all-cb").checked = cbs.length > 0 && checked === cbs.length;
+}
+
+async function batchDeleteResumes() {
+  const ids = Array.from(document.querySelectorAll('#resume-list input[data-sel]:checked'))
+    .map((cb) => cb.dataset.sel);
+  if (ids.length === 0) return;
+  if (!confirm(`确定删除选中的 ${ids.length} 份简历吗？将从服务器和向量库中删除，无法恢复。`)) return;
+  try {
+    const res = await fetch(`${API}/resumes/batch-delete`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "删除失败");
+    const delLog = $("upload-log");
+    delLog.innerHTML += `\n<span class="ok">✓ 已删除 ${data.deleted} 份简历${data.not_found && data.not_found.length ? `（${data.not_found.length} 份不存在）` : ""}</span>`;
+    saveLogs();
+    loadResumeList();
+  } catch (e) {
+    alert("批量删除失败：" + e.message);
   }
 }
 
@@ -713,8 +746,14 @@ $("compare-rules-btn").addEventListener("click", compareRules);
 $("email-fetch-btn").addEventListener("click", fetchEmails);
 $("query-text").addEventListener("input", saveQueryText);
 
-// 简历列表：点击展开详情 / 删除按钮（事件委托）
+// 简历列表：点击展开详情 / 删除按钮 / 选择框（事件委托）
 $("resume-list").addEventListener("click", (e) => {
+  const selCb = e.target.closest('input[data-sel]');
+  if (selCb) {
+    e.stopPropagation();
+    resetSelectionUI();
+    return;
+  }
   const delBtn = e.target.closest(".del-btn");
   if (delBtn) {
     e.stopPropagation();
@@ -725,6 +764,15 @@ $("resume-list").addEventListener("click", (e) => {
   const li = e.target.closest("li[data-resume-id]");
   if (li) toggleResumeDetail(li, li.dataset.resumeId);
 });
+
+// 全选 / 批量删除
+$("sel-all-cb").addEventListener("change", (e) => {
+  document.querySelectorAll('#resume-list input[data-sel]').forEach((cb) => {
+    cb.checked = e.target.checked;
+  });
+  resetSelectionUI();
+});
+$("batch-del-btn").addEventListener("click", batchDeleteResumes);
 
 // 结果卡片内的"提交纠正"按钮（事件委托）
 $("results").addEventListener("click", (e) => {

@@ -18,7 +18,7 @@ from app.api.models import (
     FeedbackRequest, FeedbackResponse, RulesResponse,
     RulesSummarizeRequest, RulesSummaryResponse, ResumeStatusResponse,
     EmailFetchRequest, EmailFetchResponse, EmailFetchItem, EmailIngestedResume,
-    RulesCompareRequest, RulesCompareResponse,
+    RulesCompareRequest, RulesCompareResponse, BatchDeleteRequest,
 )
 from app.core.cache_manager import CacheManager
 from app.core.document_parser import DocumentParser
@@ -575,6 +575,33 @@ async def delete_resume(resume_id: str):
     except Exception:
         logger.exception("删除简历失败")
         raise HTTPException(status_code=500, detail="删除简历失败，请稍后重试")
+
+
+@router.post("/resumes/batch-delete")
+async def batch_delete_resumes(request: BatchDeleteRequest):
+    """
+    批量删除简历：从内存索引与向量库同时删除
+    """
+    if not request.ids:
+        raise HTTPException(status_code=400, detail="未提供要删除的简历 id")
+
+    deleted = 0
+    not_found = []
+    for rid in request.ids:
+        if rid not in resume_storage:
+            not_found.append(rid)
+            continue
+        del resume_storage[rid]
+        deleted += 1
+
+    if deleted:
+        await run_in_threadpool(vector_store_manager.delete_documents, "resumes", request.ids)
+        # 一并清理这些简历的任务状态与缓存
+        for rid in request.ids:
+            resume_tasks.pop(rid, None)
+
+    logger.info(f"Batch deleted {deleted} resumes (not found: {len(not_found)})")
+    return {"deleted": deleted, "not_found": not_found}
 
 
 # ------------------------------------------------------------------

@@ -155,6 +155,23 @@ textarea { resize: vertical; }
   font-size: 11px;
 }
 .btn-mini:hover { background: #fdecea; }
+
+/* 列表工具条（全选/批量删除） */
+.list-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 6px;
+  font-size: 13px;
+}
+.sel-all { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.sel-cb { margin-right: 4px; display: inline-flex; align-items: center; }
+.btn-danger {
+  border-color: var(--err);
+  color: var(--err);
+}
+.btn-danger:not(:disabled):hover { background: #fdecea; }
+.btn-danger:disabled { opacity: 0.5; }
 .resume-detail {
   margin-top: 8px;
   padding: 8px 10px;

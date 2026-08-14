@@ -250,6 +250,36 @@ class TestAPI:
         finally:
             routes.resume_storage.pop(rid, None)
 
+    @patch('app.api.routes.vector_store_manager')
+    def test_batch_delete_resumes(self, mock_vsm):
+        """批量删除：内存 + 向量库 + 任务状态同步清理"""
+        import uuid
+        from app.api import routes
+        rid1, rid2 = str(uuid.uuid4()), str(uuid.uuid4())
+        for rid in (rid1, rid2):
+            routes.resume_storage[rid] = {
+                "id": rid, "filename": "t.txt", "text": "x",
+                "metadata": {}, "created_at": None,
+            }
+            routes.resume_tasks[rid] = {"status": "ready", "error": None}
+        try:
+            resp = client.post("/api/v1/resumes/batch-delete", json={"ids": [rid1, rid2, "ghost"]})
+            assert resp.status_code == 200
+            data = resp.json()
+            assert data["deleted"] == 2
+            assert data["not_found"] == ["ghost"]
+            assert rid1 not in routes.resume_storage
+            assert rid1 not in routes.resume_tasks
+            mock_vsm.delete_documents.assert_called_once()
+        finally:
+            routes.resume_storage.pop(rid1, None)
+            routes.resume_storage.pop(rid2, None)
+
+    def test_batch_delete_empty_ids(self):
+        """空 id 列表 → 400"""
+        resp = client.post("/api/v1/resumes/batch-delete", json={"ids": []})
+        assert resp.status_code == 400
+
     def test_get_screening_results_not_found(self):
         """测试获取不存在的筛选结果"""
         with patch('app.api.routes.query_storage') as mock_query_storage:

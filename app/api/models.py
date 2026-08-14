@@ -3,6 +3,11 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 
+class BatchDeleteRequest(BaseModel):
+    """批量删除简历请求模型"""
+    ids: List[str] = []
+
+
 class UploadResumeResponse(BaseModel):
     """上传简历响应模型"""
     resume_id: str

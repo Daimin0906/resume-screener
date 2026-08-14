@@ -25,7 +25,12 @@
       <div id="upload-log" class="log"></div>
 
       <h2>已上传简历 <span id="resume-count" class="muted"></span></h2>
-      <button id="refresh-btn" class="btn">刷新列表</button>
+      <div class="list-toolbar">
+        <label class="sel-all"><input type="checkbox" id="sel-all-cb" /> 全选</label>
+        <span id="sel-count" class="muted"></span>
+        <button id="batch-del-btn" class="btn btn-danger" disabled>删除选中</button>
+        <button id="refresh-btn" class="btn">刷新列表</button>
+      </div>
       <ul id="resume-list" class="resume-list"></ul>
     </section>
 
