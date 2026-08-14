@@ -423,6 +423,13 @@ async def get_screening_results(query_id: str):
                 return cached
 
         ranked_resumes = await run_in_threadpool(_run_screening_stages, query_metadata)
+
+        # 合并入库时的通用评估到候选人数据（注入分析 prompt 作参考，不覆盖岗位筛选判定）
+        for resume in ranked_resumes:
+            rid = resume.get("id")
+            if rid and rid in resume_storage and resume_storage[rid].get("preclassification"):
+                resume["preclassification"] = resume_storage[rid]["preclassification"]
+
         analyzed_candidates = await run_in_threadpool(
             candidate_analyzer.analyze_candidates, ranked_resumes, query_metadata, rules_text)
         formatted_results = await run_in_threadpool(result_formatter.format_results, analyzed_candidates, query_metadata)

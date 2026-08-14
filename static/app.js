@@ -50,7 +50,15 @@ function restoreState() {
 
   // 上传/查询日志
   const ul = localStorage.getItem(LS.uploadLog);
-  if (ul) $("upload-log").innerHTML = ul;
+  if (ul) {
+    $("upload-log").innerHTML = ul;
+    // 日志里若还停留在"正在解析"，说明是刷新前的中间快照：
+    // 实际解析状态以左侧列表徽章为准（服务端会持续更新）
+    if (ul.includes("正在 AI 解析")) {
+      $("upload-log").innerHTML +=
+        '\n<span class="err">（以上为刷新前的解析过程记录，实际状态请看左侧列表徽章）</span>';
+    }
+  }
   const ql = localStorage.getItem(LS.queryLog);
   if (ql) $("query-log").innerHTML = ql;
 
@@ -267,6 +275,12 @@ async function loadResumeList() {
       const preBadge = pre
         ? `<span class="badge class-badge-${pre.classification || "review"}" title="通用评估（不针对特定岗位）：${escapeHtml(pre.reason || "")}">通用评估:${CLASS_LABELS[pre.classification] || pre.classification}</span>`
         : "";
+      // 上传时间（ISO 字符串 → 本地时间显示）
+      let timeStr = "";
+      if (r.created_at) {
+        const t = new Date(r.created_at);
+        if (!isNaN(t)) timeStr = t.toLocaleString("zh-CN", { hour12: false }).replace(/\//g, "-");
+      }
       return `
       <li data-resume-id="${escapeHtml(r.resume_id)}">
         <div class="fn">
@@ -274,7 +288,7 @@ async function loadResumeList() {
           <span>${statusBadge} ${preBadge}</span>
           <button class="btn-mini del-btn" title="删除简历" data-name="${escapeHtml(r.name || r.filename || "")}">🗑 删除</button>
         </div>
-        <div class="rid">${escapeHtml(r.filename || "")} · ${escapeHtml(r.resume_id)}（点击查看详情）</div>
+        <div class="rid">${escapeHtml(r.filename || "")}${timeStr ? ` · 🕐 ${escapeHtml(timeStr)}` : ""} · ${escapeHtml(r.resume_id.slice(0, 8))}（点击查看详情）</div>
         ${skillTags ? `<div class="skills">${skillTags}${more}</div>` : ""}
         <div class="resume-detail" hidden></div>
       </li>`;

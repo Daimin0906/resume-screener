@@ -247,6 +247,20 @@ class CandidateAnalyzer:
                 f"4. 学历要求: {required_education if required_education else '无要求'}"
             )
 
+        # 通用评估参考段：简历入库时做过一次无岗位素质评估，
+        # 注入作为参考（AI 应以岗位匹配为准，但通用评估可佐证候选人素质）
+        preclassify_section = ""
+        pre = resume.get("preclassification")
+        if pre and isinstance(pre, dict) and pre.get("classification"):
+            pre_label = {
+                "interview": "值得面试", "review": "HR审核", "reject": "直接淘汰",
+            }.get(pre.get("classification"), pre.get("classification"))
+            preclassify_section = f"""
+## 通用评估参考（简历入库时的素质评估，仅供参考，请以岗位匹配度为准）
+- 通用评估分类: {pre_label}
+- 判定理由: {pre.get('reason', '')}
+"""
+
         # 筛选规则注入段（来自 HR 历史纠正反馈，判定时必须优先遵守）
         rules_section = ""
         if rules_text:
@@ -289,6 +303,7 @@ class CandidateAnalyzer:
 注意: 不要因为关键词命中率高就给高分，也不要因为没有命中关键词就判淘汰——
 必须以工作经历/项目描述中的实际责任与结果为准。
 {rules_section}
+{preclassify_section}
 分类标准:
 - interview（值得面试）: 证据表明其能力与岗位高度匹配，且具备独立负责 + 真实用户 + 可量化结果
 - review（HR审核）: 部分满足但证据不足或存在疑问，需要人工核实

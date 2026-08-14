@@ -99,6 +99,30 @@ class TestAnalyzerGenericMode:
         assert len(results) == 2
         assert mock_llm.generate_text.call_count == 2
 
+    def test_preclassification_injected_into_prompt(self):
+        """简历带通用评估时，prompt 注入通用评估参考段"""
+        analyzer, mock_llm = self._analyzer()
+        resume = {
+            **SAMPLE_RESUME,
+            "preclassification": {
+                "classification": "interview",
+                "reason": "独立负责过千万级订单系统",
+                "rule_version": 1,
+            },
+        }
+        analyzer.analyze_candidate(resume, QueryMetadata())
+        prompt = mock_llm.generate_text.call_args[0][0]
+        assert "通用评估参考" in prompt
+        assert "值得面试" in prompt
+        assert "独立负责过千万级订单系统" in prompt
+
+    def test_no_preclassification_no_section(self):
+        """简历无通用评估时不注入参考段"""
+        analyzer, mock_llm = self._analyzer()
+        analyzer.analyze_candidate(SAMPLE_RESUME, QueryMetadata())
+        prompt = mock_llm.generate_text.call_args[0][0]
+        assert "通用评估参考" not in prompt
+
 
 if __name__ == "__main__":
     pytest.main([__file__])
