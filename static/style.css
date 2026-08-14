@@ -345,6 +345,14 @@ textarea { resize: vertical; }
 .wb-archived { color: var(--err); border-color: var(--err); }
 .wb-archived:hover { background: #fdecea; }
 
+/* 自动筛选工作流行（抓取+开始按钮并排） */
+.workflow-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.workflow-row .btn { margin: 0; }
+
 /* ---- 自动筛选面板 ---- */
 .auto-summary {
   font-size: 13px;

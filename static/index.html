@@ -15,13 +15,12 @@
   </header>
 
   <main class="layout">
-    <!-- 左列：上传 + 简历列表 -->
+    <!-- 左列：手动上传（补充入口） -->
     <section class="panel">
-      <h2>1. 上传简历</h2>
-      <p class="hint">支持 .txt / .pdf / .md，可一次选择多个文件（后台并行解析）。</p>
+      <h2>📥 手动上传简历</h2>
+      <p class="hint">邮箱自动抓取之外的其他来源简历（如线下收集），上传后会自动加入默认岗位的自动筛选。</p>
       <input type="file" id="resume-files" multiple accept=".txt,.pdf,.md" />
       <button id="upload-btn" class="btn primary">上传</button>
-      <button id="email-fetch-btn" class="btn">抓取邮箱简历</button>
       <div id="upload-log" class="log"></div>
 
       <h2>已上传简历 <span id="resume-count" class="muted"></span></h2>
@@ -34,12 +33,15 @@
       <ul id="resume-list" class="resume-list"></ul>
     </section>
 
-    <!-- 右列：自动筛选 + 规则 -->
+    <!-- 右列：全自动筛选工作流 -->
     <section class="panel">
-      <h2>⚙️ 自动筛选 <span id="auto-screen-status" class="muted"></span></h2>
-      <p class="hint">填写默认岗位要求并保存后，每次邮箱抓取到新简历会自动筛选，也可点「开始筛选」立即执行。</p>
-      <textarea id="default-query-text" rows="4" placeholder="填写默认岗位要求（JD 文本），自动筛选用它…"></textarea>
-      <button id="run-auto-screen-btn" class="btn primary">开始筛选</button>
+      <h2>🤖 自动筛选工作流 <span id="auto-screen-status" class="muted"></span></h2>
+      <p class="hint">全自动：邮箱抓取新简历 → 自动筛选 → 工作台待处理。手动上传的简历也会自动加入。规则迭代（人工纠正→总结）手动操作。</p>
+      <div class="workflow-row">
+        <button id="email-fetch-btn" class="btn">📧 抓取邮箱简历</button>
+        <button id="run-auto-screen-btn" class="btn primary">▶ 开始筛选</button>
+      </div>
+      <textarea id="default-query-text" rows="3" placeholder="默认岗位要求（JD 文本）：自动筛选用它…"></textarea>
       <button id="save-default-query-btn" class="btn">保存默认岗位要求</button>
       <div id="auto-screen-log" class="log"></div>
       <div id="auto-screen-summary" class="auto-summary"></div>
