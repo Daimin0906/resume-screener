@@ -870,32 +870,49 @@ async function loadWorkbench() {
 
     const list = $("workbench-list");
     if (!data.candidates || data.candidates.length === 0) {
-      list.innerHTML = '<div class="empty">暂无已筛选候选人（运行自动筛选后出现）</div>';
+      list.innerHTML = '<div class="empty">暂无已筛选候选人（运行筛选后出现）</div>';
       return;
     }
-    list.innerHTML = data.candidates.map((c) => `
-      <div class="workbench-card" data-wb-id="${escapeHtml(c.resume_id)}">
-        <div class="wb-head">
-          <span class="badge ${WB_CLASS[c.work_status] || "badge-unknown"}">${WB_LABELS[c.work_status] || c.work_status}</span>
-          ${c.corrected_by_human ? '<span class="badge badge-unknown">已人工纠正</span>' : ""}
+    // 折叠卡片：一行摘要（姓名/分类/状态/分数），点击展开完整详情
+    list.innerHTML = data.candidates.map((c) => {
+      const scorePercent = c.overall_score != null ? Math.round(c.overall_score * 100) : "-";
+      const skillTags = (c.skills || []).slice(0, 4)
+        .map((s) => `<span class="tag">${escapeHtml(s)}</span>`).join("");
+      const statusLabel = WB_LABELS[c.work_status] || c.work_status;
+      const statusCls = c.work_status === "pending" ? "badge-unknown"
+        : c.work_status === "interview" ? "badge-ok"
+        : c.work_status === "review" ? "class-badge-review"
+        : "badge-err";
+      return `
+      <details class="workbench-card" data-wb-id="${escapeHtml(c.resume_id)}">
+        <summary class="wb-summary">
+          <span class="badge ${statusCls}">${statusLabel}</span>
+          <span class="wb-name">${escapeHtml(c.name || "(未命名)")}</span>
+          <span class="badge class-badge-${c.classification || "review"}">${CLASS_LABELS[c.classification] || c.classification}</span>
+          <span class="wb-score">${scorePercent}%</span>
+          ${c.corrected_by_human ? '<span class="badge badge-unknown">已纠正</span>' : ""}
+          ${skillTags ? `<span class="wb-skills">${skillTags}</span>` : ""}
+          <span class="wb-actions-inline">
+            <button data-wb-action="interview" class="btn wb-interview">🟢 约面试</button>
+            <button data-wb-action="review" class="btn wb-review">🟠 待核实</button>
+            <button data-wb-action="archived" class="btn wb-archived">🔴 归档</button>
+          </span>
+        </summary>
+        <div class="wb-detail">
+          ${candidateCardHtml({
+            ...c,
+            id: c.resume_id,
+            classification: c.classification,
+            classification_reason: c.classification_reason,
+            overall_score: c.overall_score,
+            skills: c.skills,
+            analysis: c.analysis,
+            assessment: {},
+            corrected_by_human: c.corrected_by_human,
+          })}
         </div>
-        ${candidateCardHtml({
-          ...c,
-          id: c.resume_id,
-          classification: c.classification,
-          classification_reason: c.classification_reason,
-          overall_score: c.overall_score,
-          skills: c.skills,
-          analysis: c.analysis,
-          assessment: {},
-          corrected_by_human: c.corrected_by_human,
-        })}
-        <div class="wb-actions">
-          <button data-wb-action="interview" class="btn wb-interview">🟢 约面试</button>
-          <button data-wb-action="review" class="btn wb-review">🟠 待核实</button>
-          <button data-wb-action="archived" class="btn wb-archived">🔴 归档淘汰</button>
-        </div>
-      </div>`).join("");
+      </details>`;
+    }).join("");
   } catch (e) {
     $("workbench-list").innerHTML = `<div class="empty">加载失败：${escapeHtml(e.message)}</div>`;
   }
@@ -947,10 +964,12 @@ $("email-test-btn").addEventListener("click", testEmailConfig);
 $("email-type").addEventListener("change", applyEmailProvider);
 $("run-manual-screen-btn").addEventListener("click", runManualScreen);
 
-// 工作台候选人操作按钮（事件委托）
+// 工作台候选人操作按钮（事件委托；阻止按钮点击触发展开/收起）
 $("workbench-list").addEventListener("click", (e) => {
   const btn = e.target.closest("[data-wb-action]");
   if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
   const card = btn.closest(".workbench-card");
   if (card) updateWorkbenchStatus(card.dataset.wbId, btn.dataset.wbAction);
 });

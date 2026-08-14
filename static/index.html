@@ -80,21 +80,12 @@
   <!-- 共用资源区：两个工作流共享，视觉上独立 -->
   <section class="panel shared-panel">
     <h2 class="shared-title">🔗 共用资源 <span class="muted">（手动与自动两个工作流共享）</span></h2>
-    <div class="shared-blocks">
-      <div class="shared-block">
-        <h3>📋 候选人处理工作台 <span id="workbench-meta" class="muted"></span></h3>
-        <p class="hint">两个工作流的筛选结果在这里聚合（去重）。处理：🟢 约面试 / 🟠 待核实 / 🔴 归档。</p>
-        <div class="workbench-toolbar">
-          <span id="workbench-pending" class="pending-badge"></span>
-          <button id="export-interview-btn" class="btn">导出面试名单 CSV</button>
-          <button id="workbench-refresh-btn" class="btn">刷新</button>
-        </div>
-        <div id="workbench-list" class="results"></div>
-      </div>
 
+    <!-- 上排：默认岗位要求 + 筛选规则 -->
+    <div class="shared-top">
       <div class="shared-block">
         <h3>🎯 默认岗位要求 <span class="muted">（两个工作流筛选时都用它）</span></h3>
-        <textarea id="default-query-text" rows="3" placeholder="填写默认岗位要求（JD 文本）…"></textarea>
+        <textarea id="default-query-text" rows="4" placeholder="填写默认岗位要求（JD 文本）…"></textarea>
         <button id="save-default-query-btn" class="btn primary">保存默认岗位要求</button>
       </div>
 
@@ -107,6 +98,19 @@
         <div id="rules-log" class="log"></div>
         <div id="compare-box" class="compare-box" hidden></div>
       </div>
+    </div>
+
+    <!-- 下排：候选人处理工作台（全宽，折叠卡片） -->
+    <div class="shared-block wb-block">
+      <h3>📋 候选人处理工作台 <span id="workbench-meta" class="muted"></span>
+        <span class="muted">（点击候选人展开详情）</span></h3>
+      <p class="hint">两个工作流的筛选结果在这里聚合（去重）。处理：🟢 约面试 / 🟠 待核实 / 🔴 归档。</p>
+      <div class="workbench-toolbar">
+        <span id="workbench-pending" class="pending-badge"></span>
+        <button id="export-interview-btn" class="btn">导出面试名单 CSV</button>
+        <button id="workbench-refresh-btn" class="btn">刷新</button>
+      </div>
+      <div id="workbench-list" class="results"></div>
     </div>
   </section>
   </main>
