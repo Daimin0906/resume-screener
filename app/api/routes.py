@@ -2,6 +2,7 @@
 API 路由
 """
 import asyncio
+import os
 import uuid
 import json
 from datetime import datetime
@@ -21,7 +22,7 @@ from app.api.models import (
     RulesCompareRequest, RulesCompareResponse, BatchDeleteRequest,
     AutoScreenQueryUpdate, AutoScreenQueryResponse, AutoScreenRunResponse,
     AutoScreenStatusResponse, AutoScreenResultsResponse,
-    WorkbenchResponse, WorkbenchStatusUpdate,
+    WorkbenchResponse, WorkbenchStatusUpdate, EmailConfigUpdate,
 )
 from app.core.cache_manager import CacheManager
 from app.core.document_parser import DocumentParser
@@ -127,11 +128,15 @@ def shutdown_upload_executor() -> None:
     upload_executor.shutdown(wait=False)
 
 
-def _process_resume_sync(resume_id: str, filename: str, content: bytes) -> None:
+def _process_resume_sync(resume_id: str, filename: str, content: bytes,
+                         source: str = "manual") -> None:
     """后台线程执行完整上传管线：解析→LLM抽取→存储→向量化→预分类。
 
     与 API 层共用模块级组件（document_parser/metadata_extractor/retriever/candidate_analyzer），
     供异步上传与邮箱抓取复用。状态转移：parsing -> ready / error。
+
+    Args:
+        source: "manual"（手动上传）/ "email"（邮箱抓取）
     """
     try:
         if filename.lower().endswith('.pdf'):
@@ -158,8 +163,9 @@ def _process_resume_sync(resume_id: str, filename: str, content: bytes) -> None:
             "text": resume_text,
             "metadata": metadata.dict(),
             "created_at": datetime.now(),
+            "source": source,
         }
-        retriever.add_resume(resume_id, resume_text, metadata.dict(), filename)
+        retriever.add_resume(resume_id, resume_text, metadata.dict(), filename, source)
         logger.info(f"[upload] 简历已入库: {resume_id} ({filename})")
 
         # 文本质量检测：扫描件等低质量文本给出警告（同步模式随响应返回）
@@ -190,6 +196,8 @@ def restore_resume_storage() -> None:
         for rid, text, raw_meta in zip(ids, documents, metadatas):
             meta = deserialize_metadata(raw_meta or {}) if raw_meta else {}
             filename = meta.pop("filename", None) or f"{meta.get('name', '未命名')}（已恢复）"
+            # 来源随元数据持久化，恢复时取回（旧数据无 source 时默认 manual）
+            source = meta.pop("source", None) or "manual"
             # 预分类随元数据持久化，恢复时取回（内存与向量库双写）
             preclassification = meta.pop("preclassification", None) or None
             data = {
@@ -198,6 +206,7 @@ def restore_resume_storage() -> None:
                 "text": text or "",
                 "metadata": meta,
                 "created_at": datetime.now(),
+                "source": source,
             }
             if preclassification:
                 data["preclassification"] = preclassification
@@ -376,6 +385,7 @@ async def list_resumes():
             "status": resume_tasks.get(rid, {}).get("status", "ready"),
             "warning": resume_tasks.get(rid, {}).get("warning"),
             "preclassification": data.get("preclassification"),
+            "source": data.get("source", "manual"),
             "created_at": data.get("created_at"),
         })
     return {"total": len(items), "resumes": items}
@@ -411,7 +421,7 @@ async def upload_resume(file: UploadFile = File(...)):
     try:
         if settings.UPLOAD_ASYNC:
             # 异步模式：立即返回，后台线程池解析
-            upload_executor.submit(_process_resume_sync, resume_id, file.filename, content)
+            upload_executor.submit(_process_resume_sync, resume_id, file.filename, content, "manual")
             return UploadResumeResponse(
                 resume_id=resume_id,
                 status="parsing",
@@ -419,7 +429,7 @@ async def upload_resume(file: UploadFile = File(...)):
             )
 
         # 同步模式（测试默认）：完整管线执行完再返回
-        _process_resume_sync(resume_id, file.filename, content)
+        _process_resume_sync(resume_id, file.filename, content, "manual")
         task = resume_tasks[resume_id]
         return UploadResumeResponse(
             resume_id=resume_id,
@@ -665,6 +675,39 @@ async def batch_delete_resumes(request: BatchDeleteRequest):
 # 邮箱抓取（IMAP）
 # ------------------------------------------------------------------
 
+EMAIL_CONFIG_PATH = os.path.join(settings.AUTO_SCREEN_DATA_DIR, "email_config.json")
+
+
+def _load_email_config() -> Dict[str, Any]:
+    """读取邮箱配置：优先 data/email_config.json（界面可改），回退 .env settings。"""
+    try:
+        if os.path.exists(EMAIL_CONFIG_PATH):
+            with open(EMAIL_CONFIG_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            if isinstance(data, dict) and data.get("host"):
+                return data
+    except (json.JSONDecodeError, OSError) as e:
+        logger.warning(f"Failed to read email config, falling back to env: {e}")
+    return {
+        "enabled": settings.IMAP_ENABLED,
+        "host": settings.IMAP_HOST,
+        "port": settings.IMAP_PORT,
+        "user": settings.IMAP_USER,
+        "password": settings.IMAP_PASSWORD,
+        "ssl": settings.IMAP_SSL,
+        "mailbox": settings.IMAP_MAILBOX,
+    }
+
+
+def _save_email_config(cfg: Dict[str, Any]) -> None:
+    """保存邮箱配置（界面切换邮箱账号用，原子写）。"""
+    os.makedirs(settings.AUTO_SCREEN_DATA_DIR, exist_ok=True)
+    tmp = EMAIL_CONFIG_PATH + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(cfg, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, EMAIL_CONFIG_PATH)
+
+
 def _get_ready_resume_ids() -> List[str]:
     """所有已解析完成（非 parsing/error）的简历 id，按入库时间升序。"""
     return sorted(
@@ -698,16 +741,17 @@ def fetch_emails_and_ingest(limit: int = 10) -> Dict[str, Any]:
     流程：抓取未读附件 → 每份简历提交后台解析 → 一封邮件全部提交成功后标记已读
     （失败留未读，下轮重试，防止丢简历）。抓取完成后自动触发一轮自动筛选。
     """
-    if not settings.IMAP_ENABLED or not settings.IMAP_HOST:
-        raise ValueError("IMAP 未配置（IMAP_ENABLED/IMAP_HOST）")
+    cfg = _load_email_config()
+    if not cfg.get("enabled") or not cfg.get("host") or not cfg.get("user"):
+        raise ValueError("邮箱未配置（请在自动筛选面板填写邮箱配置）")
 
     fetcher = EmailFetcher(
-        host=settings.IMAP_HOST,
-        port=settings.IMAP_PORT,
-        ssl=settings.IMAP_SSL,
-        user=settings.IMAP_USER,
-        password=settings.IMAP_PASSWORD,
-        mailbox=settings.IMAP_MAILBOX,
+        host=cfg["host"],
+        port=int(cfg.get("port") or 993),
+        ssl=cfg.get("ssl", True),
+        user=cfg.get("user", ""),
+        password=cfg.get("password", ""),
+        mailbox=cfg.get("mailbox", "INBOX"),
         mark_read=settings.IMAP_MARK_READ,
         max_attachment_bytes=settings.IMAP_ATTACHMENT_MAX_MB * 1024 * 1024,
     )
@@ -726,7 +770,7 @@ def fetch_emails_and_ingest(limit: int = 10) -> Dict[str, Any]:
                 "created_at": datetime.now(),
             }
             resume_tasks[resume_id] = {"status": "parsing", "error": None}
-            upload_executor.submit(_process_resume_sync, resume_id, att["filename"], att["content_bytes"])
+            upload_executor.submit(_process_resume_sync, resume_id, att["filename"], att["content_bytes"], "email")
             ingested.append({
                 "resume_id": resume_id,
                 "filename": att["filename"],
@@ -1068,3 +1112,93 @@ async def export_workbench_csv():
     except Exception as e:
         logger.exception("导出面试名单失败")
         raise HTTPException(status_code=500, detail=f"导出失败: {e}")
+
+
+# ------------------------------------------------------------------
+# 邮箱配置（界面可切换邮箱账号）
+# ------------------------------------------------------------------
+
+@router.get("/email-config")
+async def get_email_config():
+    """读取当前邮箱配置（密码脱敏返回）。"""
+    cfg = await run_in_threadpool(_load_email_config)
+    if cfg.get("password"):
+        cfg["password"] = "******"  # 脱敏
+    return cfg
+
+
+@router.put("/email-config")
+async def set_email_config(request: EmailConfigUpdate):
+    """保存邮箱配置（界面切换邮箱账号用）。密码为空时保留原值。"""
+    cfg = await run_in_threadpool(_load_email_config)
+    if request.password and request.password != "******":
+        cfg["password"] = request.password
+    cfg.update({
+        "enabled": request.enabled,
+        "host": request.host,
+        "port": request.port,
+        "user": request.user,
+        "ssl": request.ssl,
+        "mailbox": request.mailbox,
+    })
+    if not cfg.get("host") or not cfg.get("user"):
+        raise HTTPException(status_code=400, detail="请填写邮箱服务器地址和账号")
+    await run_in_threadpool(_save_email_config, cfg)
+    return {"message": "邮箱配置已保存"}
+
+
+@router.post("/email-config/test")
+async def test_email_config():
+    """测试邮箱连接（用当前配置尝试登录）。"""
+    try:
+        cfg = await run_in_threadpool(_load_email_config)
+        if not cfg.get("host") or not cfg.get("user") or not cfg.get("password"):
+            raise HTTPException(status_code=400, detail="邮箱配置不完整（缺少 host/user/password）")
+
+        import imaplib
+        conn = imaplib.IMAP4_SSL(cfg["host"], int(cfg.get("port") or 993))
+        conn.login(cfg["user"], cfg["password"])
+        conn.select(cfg.get("mailbox", "INBOX"), readonly=True)
+        conn.logout()
+        return {"ok": True, "message": f"连接成功（{cfg['host']}）"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"连接失败: {e}")
+
+
+# ------------------------------------------------------------------
+# 一键工作流：抓取邮箱 → 自动筛选
+# ------------------------------------------------------------------
+
+@router.post("/workflow/run")
+async def run_workflow():
+    """一键工作流：先抓取邮箱新简历，再对新简历跑自动筛选（无人值守）。"""
+    if not settings.AUTO_SCREEN_ENABLED:
+        raise HTTPException(status_code=400, detail="自动筛选未启用")
+
+    if auto_screener.is_running():
+        return {"status": "already_running", "message": "自动筛选正在运行中"}
+
+    try:
+        # 1. 抓取邮箱（末尾会自动触发自动筛选）
+        fetch_result = await run_in_threadpool(fetch_emails_and_ingest, 20)
+        # 2. 等待自动筛选完成（最长 10 分钟）
+        import time as _time
+        deadline = _time.time() + 600
+        while _time.time() < deadline:
+            if not auto_screener.is_running():
+                break
+            await asyncio.sleep(3)
+        latest = auto_screener.latest_run()
+        return {
+            "status": "completed",
+            "fetched_emails": fetch_result.get("fetched", 0),
+            "screened_count": (latest or {}).get("screened_count", 0),
+            "message": f"抓取 {fetch_result.get('fetched', 0)} 封邮件，筛选完成",
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.exception("一键工作流失败")
+        raise HTTPException(status_code=500, detail=f"工作流失败: {e}")

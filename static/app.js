@@ -224,7 +224,11 @@ async function loadResumeList() {
       list.innerHTML = '<li class="empty">暂无简历</li>';
       return;
     }
-    list.innerHTML = data.resumes.map((r) => {
+    // 按来源分组：邮箱自动抓取 / 手动上传
+    const emailList = data.resumes.filter((r) => (r.source || "manual") === "email");
+    const manualList = data.resumes.filter((r) => (r.source || "manual") !== "email");
+
+    const renderGroup = (items) => items.map((r) => {
       // 技能标签预览（最多 5 个）
       const skillTags = (r.skills || []).slice(0, 5)
         .map((s) => `<span class="tag">${escapeHtml(s)}</span>`).join("");
@@ -264,6 +268,14 @@ async function loadResumeList() {
         <div class="resume-detail" hidden></div>
       </li>`;
     }).join("");
+
+    const groupHtml = (title, items, emptyText) => `
+      <li class="group-title">${title}（${items.length}）</li>
+      ${items.length ? renderGroup(items) : `<li class="empty">${emptyText}</li>`}`;
+
+    list.innerHTML =
+      groupHtml("📧 邮箱自动抓取", emailList, "暂无邮箱抓取的简历") +
+      groupHtml("📥 手动上传", manualList, "暂无手动上传的简历");
     resetSelectionUI();
   } catch (e) {
     list.innerHTML = `<li class="empty">加载失败：${escapeHtml(e.message)}</li>`;
@@ -599,42 +611,6 @@ async function compareRules() {
   }
 }
 
-// ---------------- 邮箱抓取 ----------------
-async function fetchEmails() {
-  const log = $("upload-log");
-  const btn = $("email-fetch-btn");
-  btn.disabled = true;
-  log.innerHTML = '<span class="wait">正在连接招聘邮箱抓取未读简历…</span>';
-  saveLogs();
-  try {
-    const res = await fetch(`${API}/emails/fetch`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ limit: 10 }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || "抓取失败");
-    if (data.fetched === 0) {
-      log.innerHTML = '<span class="ok">✓ 邮箱中没有未读简历附件</span>';
-    } else {
-      let html = `<span class="ok">✓ 从 ${data.fetched} 封邮件中抓取了简历：</span>`;
-      for (const mail of data.results) {
-        for (const r of mail.resumes) {
-          html += `\n<span class="wait">⏳ ${escapeHtml(r.filename)}（来自：${escapeHtml(mail.subject || mail.sender || "未知邮件")}）后台解析中…</span>`;
-        }
-      }
-      log.innerHTML = html;
-    }
-    saveLogs();
-    loadResumeList();
-  } catch (e) {
-    log.innerHTML = `<span class="err">${escapeHtml(e.message)}</span>`;
-    saveLogs();
-  } finally {
-    btn.disabled = false;
-  }
-}
-
 // ---------------- 自动筛选面板 ----------------
 async function loadAutoScreenPanel() {
   // 默认岗位要求（仅当用户未在编辑时回填，避免覆盖输入）
@@ -717,17 +693,68 @@ async function saveDefaultQuery() {
 
 async function runAutoScreen() {
   const log = $("auto-screen-log");
-  log.innerHTML = '<span class="wait">正在运行自动筛选（可能需要几分钟）…</span>';
+  log.innerHTML = '<span class="wait">▶ 一键工作流：抓取邮箱 → 自动筛选（可能需要几分钟）…</span>';
   try {
-    const res = await fetch(`${API}/auto-screen/run`, { method: "POST" });
+    const res = await fetch(`${API}/workflow/run`, { method: "POST" });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || "触发失败");
     if (data.status === "already_running") {
       log.innerHTML = '<span class="err">自动筛选正在运行中，请稍后查看结果</span>';
       return;
     }
-    log.innerHTML = `<span class="ok">✓ ${escapeHtml(data.message || "自动筛选已开始")}</span>`;
+    log.innerHTML = `<span class="ok">✓ ${escapeHtml(data.message || "工作流完成")}（筛选 ${data.screened_count} 份）</span>`;
     loadAutoScreenPanel();
+    loadWorkbench();
+  } catch (e) {
+    log.innerHTML = `<span class="err">${escapeHtml(e.message)}</span>`;
+  }
+}
+
+// ---------------- 邮箱配置（界面切换账号） ----------------
+async function loadEmailConfig() {
+  try {
+    const res = await fetch(`${API}/email-config`);
+    const cfg = await res.json();
+    if (!res.ok) throw new Error(cfg.detail || "加载失败");
+    $("email-host").value = cfg.host || "";
+    $("email-user").value = cfg.user || "";
+    $("email-port").value = cfg.port || 993;
+    $("email-password").value = cfg.password && cfg.password !== "******" ? cfg.password : "";
+    $("email-password").placeholder = cfg.password === "******" ? "已保存（留空保持不变）" : "授权码";
+  } catch (e) { /* 忽略 */ }
+}
+
+async function saveEmailConfig() {
+  const log = $("email-config-log");
+  try {
+    const res = await fetch(`${API}/email-config`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        enabled: true,
+        host: $("email-host").value.trim(),
+        user: $("email-user").value.trim(),
+        password: $("email-password").value.trim(),
+        port: parseInt($("email-port").value) || 993,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "保存失败");
+    log.innerHTML = '<span class="ok">✓ 邮箱配置已保存</span>';
+    loadEmailConfig();
+  } catch (e) {
+    log.innerHTML = `<span class="err">保存失败：${escapeHtml(e.message)}</span>`;
+  }
+}
+
+async function testEmailConfig() {
+  const log = $("email-config-log");
+  log.innerHTML = '<span class="wait">正在测试邮箱连接…</span>';
+  try {
+    const res = await fetch(`${API}/email-config/test`, { method: "POST" });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "测试失败");
+    log.innerHTML = `<span class="ok">✓ ${escapeHtml(data.message)}</span>`;
   } catch (e) {
     log.innerHTML = `<span class="err">${escapeHtml(e.message)}</span>`;
   }
@@ -827,11 +854,12 @@ $("upload-btn").addEventListener("click", uploadResumes);
 $("refresh-btn").addEventListener("click", loadResumeList);
 $("summarize-rules-btn").addEventListener("click", summarizeRules);
 $("compare-rules-btn").addEventListener("click", compareRules);
-$("email-fetch-btn").addEventListener("click", fetchEmails);
 $("save-default-query-btn").addEventListener("click", saveDefaultQuery);
 $("run-auto-screen-btn").addEventListener("click", runAutoScreen);
 $("export-interview-btn").addEventListener("click", exportInterviewList);
 $("workbench-refresh-btn").addEventListener("click", loadWorkbench);
+$("email-save-btn").addEventListener("click", saveEmailConfig);
+$("email-test-btn").addEventListener("click", testEmailConfig);
 
 // 工作台候选人操作按钮（事件委托）
 $("workbench-list").addEventListener("click", (e) => {
@@ -885,5 +913,6 @@ loadRules();
 restoreState();
 loadAutoScreenPanel();
 loadWorkbench();
+loadEmailConfig();
 setInterval(checkHealth, 30000);
 setInterval(() => { loadAutoScreenPanel(); loadWorkbench(); }, 60000); // 每分钟刷新自动筛选 + 工作台

@@ -67,6 +67,17 @@ class WorkbenchStatusUpdate(BaseModel):
     status: str  # pending/interview/review/archived
 
 
+class EmailConfigUpdate(BaseModel):
+    """邮箱配置保存请求（界面切换邮箱账号）"""
+    enabled: bool = True
+    host: str = ""
+    port: int = 993
+    user: str = ""
+    password: str = ""  # 为空或 ****** 时保留原密码
+    ssl: bool = True
+    mailbox: str = "INBOX"
+
+
 class UploadResumeResponse(BaseModel):
     """上传简历响应模型"""
     resume_id: str

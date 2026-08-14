@@ -38,9 +38,20 @@
       <h2>🤖 自动筛选工作流 <span id="auto-screen-status" class="muted"></span></h2>
       <p class="hint">全自动：邮箱抓取新简历 → 自动筛选 → 工作台待处理。手动上传的简历也会自动加入。规则迭代（人工纠正→总结）手动操作。</p>
       <div class="workflow-row">
-        <button id="email-fetch-btn" class="btn">📧 抓取邮箱简历</button>
-        <button id="run-auto-screen-btn" class="btn primary">▶ 开始筛选</button>
+        <button id="run-auto-screen-btn" class="btn primary">▶ 开始筛选（抓取+筛选）</button>
       </div>
+      <details class="email-config-box">
+        <summary>📮 邮箱配置（切换招聘邮箱）</summary>
+        <input id="email-host" type="text" placeholder="IMAP 服务器，如 imap.qq.com" />
+        <input id="email-user" type="text" placeholder="邮箱账号，如 xxx@qq.com" />
+        <input id="email-password" type="password" placeholder="授权码（QQ邮箱为授权码，非登录密码）" />
+        <div class="email-config-row">
+          <input id="email-port" type="number" placeholder="端口(993)" style="width: 90px" />
+          <button id="email-test-btn" class="btn">测试连接</button>
+          <button id="email-save-btn" class="btn primary">保存邮箱配置</button>
+        </div>
+        <div id="email-config-log" class="log"></div>
+      </details>
       <textarea id="default-query-text" rows="3" placeholder="默认岗位要求（JD 文本）：自动筛选用它…"></textarea>
       <button id="save-default-query-btn" class="btn">保存默认岗位要求</button>
       <div id="auto-screen-log" class="log"></div>

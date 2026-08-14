@@ -21,7 +21,7 @@ class Retriever:
         logger.info("Initialized Retriever")
 
     def add_resume(self, resume_id: str, resume_text: str, metadata: Optional[Dict[str, Any]] = None,
-                   filename: Optional[str] = None) -> None:
+                   filename: Optional[str] = None, source: Optional[str] = None) -> None:
         """
         将简历文本添加到向量数据库中
 
@@ -30,6 +30,7 @@ class Retriever:
             resume_text (str): 简历文本内容
             metadata (Dict[str, Any], optional): 简历元数据
             filename (str, optional): 原始文件名（随元数据入库，服务重启后可据此恢复列表）
+            source (str, optional): 简历来源（manual/email），随元数据持久化
         """
         try:
             # 确保集合存在
@@ -40,10 +41,12 @@ class Retriever:
                 # 如果集合不存在，则创建它
                 self.vector_store_manager.create_collection(collection_name)
 
-            # 文件名并入元数据（不污染简历结构化字段）
+            # 文件名/来源并入元数据（不污染简历结构化字段）
             meta = dict(metadata or {})
             if filename:
                 meta["filename"] = filename
+            if source:
+                meta["source"] = source
 
             # 添加文档到向量数据库（序列化由 add_documents 内部统一处理）
             self.vector_store_manager.add_documents(

@@ -345,6 +345,46 @@ textarea { resize: vertical; }
 .wb-archived { color: var(--err); border-color: var(--err); }
 .wb-archived:hover { background: #fdecea; }
 
+/* 邮箱配置折叠区 */
+.email-config-box {
+  margin: 6px 0 10px;
+  font-size: 13px;
+}
+.email-config-box summary {
+  cursor: pointer;
+  color: var(--primary);
+  user-select: none;
+  margin-bottom: 6px;
+}
+.email-config-box input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 6px;
+  font-family: inherit;
+}
+.email-config-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+}
+.email-config-row .btn { margin: 0; }
+
+/* 简历列表分组标题 */
+.group-title {
+  font-weight: 700;
+  color: var(--primary-dark);
+  background: #eef2fb;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin: 8px 0 6px;
+  font-size: 13px;
+  cursor: default;
+}
+
 /* 自动筛选工作流行（抓取+开始按钮并排） */
 .workflow-row {
   display: flex;
