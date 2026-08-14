@@ -390,14 +390,25 @@ async function batchDeleteResumes() {
 
 // ---------------- 提交查询 + 获取结果 ----------------
 async function runQuery() {
-  const text = $("query-text").value.trim();
+  let text = $("query-text").value.trim();
   const log = $("query-log");
   const btn = $("query-btn");
   const results = $("results");
   const meta = $("result-meta");
   if (!text) {
-    log.innerHTML = '<span class="err">请输入岗位需求</span>';
-    return;
+    // 留空时使用默认岗位要求（自动筛选面板里保存的 JD）
+    try {
+      const qres = await fetch(`${API}/auto-screen/query`);
+      const qdata = await qres.json();
+      if (qres.ok && qdata.query_text) {
+        text = qdata.query_text;
+        log.innerHTML = '<span class="wait">岗位需求留空，使用默认岗位要求…</span>';
+      }
+    } catch (e) { /* 网络异常走下方提示 */ }
+    if (!text) {
+      log.innerHTML = '<span class="err">请输入岗位需求，或在「自动筛选」面板先保存默认岗位要求</span>';
+      return;
+    }
   }
   btn.disabled = true;
   meta.textContent = "";
