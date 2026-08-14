@@ -104,6 +104,7 @@ def isolated_auto_screen_dir(monkeypatch, tmp_path):
     """所有测试将自动筛选数据目录隔离到 tmp_path，避免污染真实 data/。"""
     from app.api import routes
     from app.core.auto_screener import AutoScreener
+    from app.core.workbench import Workbench
 
     screener = AutoScreener(
         str(tmp_path / "auto_data"),
@@ -112,4 +113,7 @@ def isolated_auto_screen_dir(monkeypatch, tmp_path):
         rules_version_cb=lambda: 0,
     )
     monkeypatch.setattr(routes, "auto_screener", screener)
+    # 工作台同样隔离（处理状态文件共用同一 data 目录）
+    workbench = Workbench(str(tmp_path / "auto_data"))
+    monkeypatch.setattr(routes, "workbench", workbench)
     return screener

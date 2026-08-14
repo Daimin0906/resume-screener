@@ -733,6 +733,95 @@ async function runAutoScreen() {
   }
 }
 
+// ---------------- 候选人处理工作台 ----------------
+const WB_LABELS = {
+  pending: "待处理",
+  interview: "约面试",
+  review: "待核实",
+  archived: "已归档",
+};
+const WB_CLASS = {
+  pending: "badge-unknown",
+  interview: "badge-ok",
+  review: "badge class-badge-review",
+  archived: "badge-err",
+};
+
+async function loadWorkbench() {
+  try {
+    const res = await fetch(`${API}/workbench/candidates`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "加载失败");
+
+    $("workbench-meta").textContent = `(共 ${data.total} 人)`;
+    $("workbench-pending").textContent = data.pending_count > 0
+      ? `🔴 ${data.pending_count} 人待处理` : "";
+
+    const list = $("workbench-list");
+    if (!data.candidates || data.candidates.length === 0) {
+      list.innerHTML = '<div class="empty">暂无已筛选候选人（运行自动筛选后出现）</div>';
+      return;
+    }
+    list.innerHTML = data.candidates.map((c) => `
+      <div class="workbench-card" data-wb-id="${escapeHtml(c.resume_id)}">
+        <div class="wb-head">
+          <span class="badge ${WB_CLASS[c.work_status] || "badge-unknown"}">${WB_LABELS[c.work_status] || c.work_status}</span>
+          ${c.corrected_by_human ? '<span class="badge badge-unknown">已人工纠正</span>' : ""}
+        </div>
+        ${candidateCardHtml({
+          ...c,
+          id: c.resume_id,
+          classification: c.classification,
+          classification_reason: c.classification_reason,
+          overall_score: c.overall_score,
+          skills: c.skills,
+          analysis: c.analysis,
+          assessment: {},
+          corrected_by_human: c.corrected_by_human,
+        })}
+        <div class="wb-actions">
+          <button data-wb-action="interview" class="btn wb-interview">🟢 约面试</button>
+          <button data-wb-action="review" class="btn wb-review">🟠 待核实</button>
+          <button data-wb-action="archived" class="btn wb-archived">🔴 归档淘汰</button>
+        </div>
+      </div>`).join("");
+  } catch (e) {
+    $("workbench-list").innerHTML = `<div class="empty">加载失败：${escapeHtml(e.message)}</div>`;
+  }
+}
+
+async function updateWorkbenchStatus(resumeId, status) {
+  try {
+    const res = await fetch(`${API}/workbench/candidates/${resumeId}/status`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "更新失败");
+    loadWorkbench(); // 刷新工作台
+  } catch (e) {
+    alert("更新失败：" + e.message);
+  }
+}
+
+function exportInterviewList() {
+  fetch(`${API}/workbench/export`)
+    .then((res) => {
+      if (!res.ok) throw new Error("没有可导出的候选人");
+      return res.blob();
+    })
+    .then((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "面试名单.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    })
+    .catch((e) => alert("导出失败：" + e.message));
+}
+
 // ---------------- 事件绑定 ----------------
 $("upload-btn").addEventListener("click", uploadResumes);
 $("refresh-btn").addEventListener("click", loadResumeList);
@@ -741,6 +830,16 @@ $("compare-rules-btn").addEventListener("click", compareRules);
 $("email-fetch-btn").addEventListener("click", fetchEmails);
 $("save-default-query-btn").addEventListener("click", saveDefaultQuery);
 $("run-auto-screen-btn").addEventListener("click", runAutoScreen);
+$("export-interview-btn").addEventListener("click", exportInterviewList);
+$("workbench-refresh-btn").addEventListener("click", loadWorkbench);
+
+// 工作台候选人操作按钮（事件委托）
+$("workbench-list").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-wb-action]");
+  if (!btn) return;
+  const card = btn.closest(".workbench-card");
+  if (card) updateWorkbenchStatus(card.dataset.wbId, btn.dataset.wbAction);
+});
 
 // 简历列表：点击展开详情 / 删除按钮 / 选择框（事件委托）
 $("resume-list").addEventListener("click", (e) => {
@@ -785,5 +884,6 @@ loadResumeList();
 loadRules();
 restoreState();
 loadAutoScreenPanel();
+loadWorkbench();
 setInterval(checkHealth, 30000);
-setInterval(loadAutoScreenPanel, 60000); // 每分钟刷新自动筛选面板状态
+setInterval(() => { loadAutoScreenPanel(); loadWorkbench(); }, 60000); // 每分钟刷新自动筛选 + 工作台

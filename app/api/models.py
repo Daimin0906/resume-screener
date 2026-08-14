@@ -40,6 +40,33 @@ class AutoScreenResultsResponse(BaseModel):
     runs: List[Dict[str, Any]] = []
 
 
+class WorkbenchCandidate(BaseModel):
+    """工作台候选人（聚合自动筛选结果 + 处理状态）"""
+    resume_id: str
+    name: str = ""
+    classification: str = "review"
+    classification_reason: str = ""
+    overall_score: float = 0.0
+    skills: List[str] = []
+    analysis: str = ""
+    corrected_by_human: bool = False
+    screened_at: str = ""
+    rules_version_used: int = 0
+    work_status: str = "pending"  # pending/interview/review/archived
+
+
+class WorkbenchResponse(BaseModel):
+    """工作台响应"""
+    total: int
+    pending_count: int
+    candidates: List[WorkbenchCandidate] = []
+
+
+class WorkbenchStatusUpdate(BaseModel):
+    """处理状态更新请求"""
+    status: str  # pending/interview/review/archived
+
+
 class UploadResumeResponse(BaseModel):
     """上传简历响应模型"""
     resume_id: str

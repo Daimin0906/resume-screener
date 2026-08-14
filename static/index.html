@@ -45,6 +45,15 @@
       <div id="auto-screen-summary" class="auto-summary"></div>
       <div id="auto-screen-results" class="results"></div>
 
+      <h2>📋 候选人处理工作台 <span id="workbench-meta" class="muted"></span></h2>
+      <p class="hint">聚合所有自动筛选的候选人（去重）。处理流程：🟢 约面试 → 进入面试名单；🟠 待核实 → 人工再看；🔴 归档 → 已处理。</p>
+      <div class="workbench-toolbar">
+        <span id="workbench-pending" class="pending-badge"></span>
+        <button id="export-interview-btn" class="btn">导出面试名单 CSV</button>
+        <button id="workbench-refresh-btn" class="btn">刷新</button>
+      </div>
+      <div id="workbench-list" class="results"></div>
+
       <h2>2. 筛选规则 <span id="rules-meta" class="muted"></span></h2>
       <p class="hint">AI 分类被人工纠正后，可总结纠正规律生成筛选规则，下次筛选自动生效。
         规则更新后建议「换一批简历」重新筛选，或点击「对比验证」查看新旧规则的效果差异。</p>

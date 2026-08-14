@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional
 from concurrent.futures import ThreadPoolExecutor
 
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from loguru import logger
 from starlette.concurrency import run_in_threadpool
 
@@ -21,6 +21,7 @@ from app.api.models import (
     RulesCompareRequest, RulesCompareResponse, BatchDeleteRequest,
     AutoScreenQueryUpdate, AutoScreenQueryResponse, AutoScreenRunResponse,
     AutoScreenStatusResponse, AutoScreenResultsResponse,
+    WorkbenchResponse, WorkbenchStatusUpdate,
 )
 from app.core.cache_manager import CacheManager
 from app.core.document_parser import DocumentParser
@@ -29,6 +30,7 @@ from app.core.llm_client import LLMClient
 from app.core.query_parser import QueryParser
 from app.core.rules_manager import RulesManager, InsufficientFeedbackError
 from app.core.auto_screener import AutoScreener
+from app.core.workbench import Workbench
 from app.core.vector_store_factory import get_vector_store_manager
 from app.core.retriever import Retriever
 from app.core.filter import HardFilter
@@ -104,6 +106,9 @@ auto_screener = AutoScreener(
 
 # 单线程 executor：自动筛选只允许一个并发实例（防重入第二道防线）
 auto_screen_executor = ThreadPoolExecutor(max_workers=1)
+
+# 候选人处理工作台（处理状态存储于 data/candidate_status.json）
+workbench = Workbench(settings.AUTO_SCREEN_DATA_DIR)
 
 
 def shutdown_auto_screen_executor() -> None:
@@ -1005,3 +1010,61 @@ async def get_auto_screen_status():
     status = await run_in_threadpool(auto_screener.get_status)
     status["enabled"] = settings.AUTO_SCREEN_ENABLED
     return AutoScreenStatusResponse(**status)
+
+
+# ------------------------------------------------------------------
+# 候选人处理工作台（对齐 Codeex 邮箱标签流程）
+# ------------------------------------------------------------------
+
+@router.get("/workbench/candidates", response_model=WorkbenchResponse)
+async def get_workbench_candidates():
+    """聚合所有自动筛选结果中的候选人（去重），含处理状态。"""
+    try:
+        runs = await run_in_threadpool(auto_screener.list_runs, 50)
+        candidates = await run_in_threadpool(workbench.aggregate, runs)
+        pending_count = sum(
+            1 for c in candidates if c.get("work_status") == "pending"
+        )
+        return WorkbenchResponse(
+            total=len(candidates),
+            pending_count=pending_count,
+            candidates=candidates,
+        )
+    except Exception as e:
+        logger.exception("获取工作台候选人失败")
+        raise HTTPException(status_code=500, detail=f"获取工作台失败: {e}")
+
+
+@router.post("/workbench/candidates/{resume_id}/status")
+async def update_workbench_status(resume_id: str, request: WorkbenchStatusUpdate):
+    """更新候选人处理状态（约面试/待核实/归档淘汰/待处理）。"""
+    try:
+        result = await run_in_threadpool(workbench.set_status, resume_id, request.status)
+        return {"resume_id": resume_id, "status": result["status"], "updated_at": result["updated_at"]}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.exception("更新处理状态失败")
+        raise HTTPException(status_code=500, detail=f"更新失败: {e}")
+
+
+@router.get("/workbench/export")
+async def export_workbench_csv():
+    """导出「值得面试」候选人名单 CSV。"""
+    try:
+        runs = await run_in_threadpool(auto_screener.list_runs, 50)
+        candidates = await run_in_threadpool(workbench.aggregate, runs)
+        csv_text = await run_in_threadpool(workbench.export_interview_csv, candidates)
+        if not csv_text:
+            raise HTTPException(status_code=404, detail="没有值得面试的候选人可导出")
+        filename = f"interview_list_{datetime.now().strftime('%Y%m%d_%H%M')}.csv"
+        return Response(
+            content=csv_text.encode("utf-8-sig"),  # BOM 兼容 Excel 中文
+            media_type="text/csv; charset=utf-8",
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("导出面试名单失败")
+        raise HTTPException(status_code=500, detail=f"导出失败: {e}")
