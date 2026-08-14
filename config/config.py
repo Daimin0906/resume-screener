@@ -100,7 +100,8 @@ class Settings:
 
     # 必需技能的通过命中比例（0~1）。JD 常解析出大量"必需"技能，
     # 全部命中不现实，命中比例达到该阈值即视为通过硬性过滤。
-    REQUIRED_SKILL_HIT_RATIO: float = float(os.getenv("REQUIRED_SKILL_HIT_RATIO", "0.7"))
+    # 0.6：宽松（5 个必需技能命中 3 个即可通过，适合免费模型技能抽取不全的场景）
+    REQUIRED_SKILL_HIT_RATIO: float = float(os.getenv("REQUIRED_SKILL_HIT_RATIO", "0.6"))
 
     # ---- 邮箱抓取（IMAP）----
     IMAP_ENABLED: bool = os.getenv("IMAP_ENABLED", "false").lower() == "true"

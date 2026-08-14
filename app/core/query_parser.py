@@ -15,6 +15,9 @@ class QueryParser:
     # 若不由代码截断，10+ 个必需技能配合命中比例阈值会误杀所有候选人。
     MAX_REQUIRED_SKILLS = 5
 
+    # 模型编造的占位词（JD 未提及时常见输出），会污染硬性过滤字段导致误杀
+    PLACEHOLDER_WORDS = {"未提及", "无", "无要求", "不限", "任意", "n/a", "na", "none", "无特别要求", "不要求"}
+
     def __init__(self, llm_client: LLMClient):
         """
         初始化查询解析器
@@ -58,6 +61,10 @@ class QueryParser:
                     f"Required skills truncated from {len(required)} to "
                     f"{self.MAX_REQUIRED_SKILLS}; {len(extra)} moved to preferred"
                 )
+
+            # 代码层兜底：过滤模型编造的占位词（"未提及"等），
+            # 避免污染地点/语言/证书等硬性过滤字段导致误杀所有候选人
+            self._clean_placeholder_values(query_dict)
 
             # 创建QueryMetadata对象
             query_metadata = QueryMetadata(**query_dict)
@@ -120,6 +127,23 @@ class QueryParser:
 只返回JSON，不要包含其他解释文本。
 """
         return prompt
+
+    def _clean_placeholder_values(self, query_dict: Dict[str, Any]) -> None:
+        """过滤硬性过滤字段中的占位词（未提及/无/不限等，模型编造值）。
+
+        这些字段在 filter 中是硬性条件（一票否决），占位词会导致误杀。
+        """
+        for field in ("locations", "required_languages", "required_certifications"):
+            values = query_dict.get(field) or []
+            if not isinstance(values, list):
+                continue
+            cleaned = [
+                v for v in values
+                if str(v).strip().lower() not in self.PLACEHOLDER_WORDS
+            ]
+            if len(cleaned) != len(values):
+                query_dict[field] = cleaned
+                logger.info(f"Removed placeholder values from {field}: {values} -> {cleaned}")
 
     def _parse_response(self, response: str) -> Dict[str, Any]:
         """

@@ -62,7 +62,7 @@
 | 📥 **邮箱自动抓取** | IMAP 连接招聘邮箱，自动拉取未读简历附件入库 |
 | ⏰ **定时自动化** | APScheduler：定时抓邮箱 + 定时预分类补跑，全流程无人值守 |
 | 🚀 **异步高性能** | 异步上传（秒级返回）+ 8 路并发解析 + 筛选结果缓存（秒回） |
-| 🔍 **语义检索 + 硬性过滤** | 向量召回 + 技能/经验/地点/学历过滤，必需技能按命中比例判定（≥70%） |
+| 🔍 **语义检索 + 硬性过滤** | 向量召回 + 技能/经验/地点/学历过滤，必需技能按命中比例判定（≥60%） |
 | 📊 **多维加权评分** | 技能、行业、薪资、学历、地点、标签 6 维度加权综合打分 |
 | 📝 **候选人分析报告** | LLM 为每位候选人生成匹配度分析 |
 | 🖥️ **开箱即用 Web UI** | FastAPI 自带静态前端，无需单独部署前端工程 |
@@ -272,7 +272,7 @@ cp .env.example .env
 | `LOG_LEVEL` | 日志级别 | `INFO` |
 | `EMBEDDING_BACKEND` | 向量后端：`local`（本地免费）/ `openai`（云端） | `openai` |
 | `LOCAL_EMBEDDING_MODEL` | 本地向量模型（fastembed BGE 系列） | `BAAI/bge-small-zh-v1.5` |
-| `REQUIRED_SKILL_HIT_RATIO` | 必需技能通过命中比例（0~1） | `0.7` |
+| `REQUIRED_SKILL_HIT_RATIO` | 必需技能通过命中比例（0~1） | `0.6` |
 | `IMAP_ENABLED` / `IMAP_HOST` / `IMAP_USER` / `IMAP_PASSWORD` | 邮箱抓取配置（Gmail 需应用专用密码） | `false` |
 | `SCHEDULER_ENABLED` | 定时任务开关 | `true` |
 | `SCHEDULER_EMAIL_FETCH_INTERVAL_MINUTES` | 邮箱抓取间隔（分钟） | `30` |

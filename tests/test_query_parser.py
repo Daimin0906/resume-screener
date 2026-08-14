@@ -84,6 +84,25 @@ class TestQueryParser:
         md = parser.parse_query("测试")
         assert md.required_skills == ["Python", "FastAPI", "RAG"]
 
+    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key", "OPENAI_BASE_URL": "https://test.url/v1"})
+    @patch("app.core.query_parser.LLMClient")
+    def test_parse_query_filters_placeholder_values(self, mock_llm_client_class):
+        """过滤模型编造的占位词（未提及等），防止污染硬性过滤字段"""
+        mock_llm = MagicMock()
+        mock_llm.generate_text.return_value = json.dumps({
+            "locations": ["未提及"],
+            "required_languages": ["中文", "英语", "未提及"],
+            "required_certifications": ["未提及", "N/A"],
+            "required_skills": ["Python"],
+        }, ensure_ascii=False)
+        mock_llm_client_class.return_value = mock_llm
+        parser = QueryParser(mock_llm)
+
+        md = parser.parse_query("测试")
+        assert md.locations == []                # 未提及被过滤
+        assert md.required_languages == ["中文", "英语"]  # 真实语言保留
+        assert md.required_certifications == []  # 占位词全部过滤
+
     def test_parse_response(self):
         """测试解析响应"""
         # 创建真实的查询解析器实例（不依赖LLM客户端）
