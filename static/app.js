@@ -817,6 +817,22 @@ async function testEmailConfig() {
   const log = $("email-config-log");
   log.innerHTML = '<span class="wait">正在测试邮箱连接…</span>';
   try {
+    // 先用输入框内容保存（测试 = 测你刚填的配置，而不是旧配置）
+    const saveRes = await fetch(`${API}/email-config`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        enabled: true,
+        host: $("email-host").value.trim(),
+        user: $("email-user").value.trim(),
+        password: $("email-password").value.trim(),
+        port: parseInt($("email-port").value) || 993,
+      }),
+    });
+    const saveData = await saveRes.json();
+    if (!saveRes.ok) throw new Error(saveData.detail || "保存失败");
+
+    // 再测试连接
     const res = await fetch(`${API}/email-config/test`, { method: "POST" });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || "测试失败");
