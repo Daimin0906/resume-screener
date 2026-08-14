@@ -119,6 +119,9 @@ def _process_resume_sync(resume_id: str, filename: str, content: bytes) -> None:
         retriever.add_resume(resume_id, resume_text, metadata.dict(), filename)
         logger.info(f"[upload] 简历已入库: {resume_id} ({filename})")
 
+        # 文本质量检测：扫描件等低质量文本给出警告（同步模式随响应返回）
+        warning = _text_quality_warning(resume_text)
+
         # 入库即预分类（失败不影响入库结果）
         if settings.PRECLASSIFY_ON_INGEST:
             try:
@@ -126,7 +129,7 @@ def _process_resume_sync(resume_id: str, filename: str, content: bytes) -> None:
             except Exception as e:
                 logger.warning(f"[upload] 预分类失败 {resume_id}: {e}")
 
-        resume_tasks[resume_id] = {"status": "ready", "error": None}
+        resume_tasks[resume_id] = {"status": "ready", "error": None, "warning": warning}
     except Exception as e:
         logger.exception(f"[upload] 简历解析失败: {resume_id}")
         resume_tasks[resume_id] = {"status": "error", "error": str(e)}
@@ -233,6 +236,21 @@ def _clean_control_chars(text: str) -> str:
     return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", text or "")
 
 
+def _text_quality_warning(text: str) -> Optional[str]:
+    """检测文本提取质量，低质量（扫描件乱码特征）时返回警告文案。
+
+    规则：控制字符残留占比 >1% 或 可打印字符占比 <90% 视为质量差。
+    """
+    if not text:
+        return "PDF 未能提取出文本内容，可能是扫描件/图片型 PDF，建议使用文本型 PDF 或先 OCR"
+    import re
+    control_count = len(re.findall(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", text))
+    printable = sum(1 for ch in text if ch.isprintable())
+    if control_count / len(text) > 0.01 or printable / len(text) < 0.9:
+        return "警告：PDF 文本提取质量较差（疑似扫描件），技能/经历识别可能不完整，建议使用文本型 PDF"
+    return None
+
+
 def _safe_json_loads(value: Any, default: Any = None) -> Any:
     """安全解析 JSON 字符串；若已是目标类型则直接返回。"""
     if default is None:
@@ -313,6 +331,7 @@ async def list_resumes():
             "name": meta.get("name", ""),
             "skills": meta.get("skills", []) or [],
             "status": resume_tasks.get(rid, {}).get("status", "ready"),
+            "warning": resume_tasks.get(rid, {}).get("warning"),
             "preclassification": data.get("preclassification"),
             "created_at": data.get("created_at"),
         })
@@ -358,9 +377,11 @@ async def upload_resume(file: UploadFile = File(...)):
 
         # 同步模式（测试默认）：完整管线执行完再返回
         _process_resume_sync(resume_id, file.filename, content)
+        task = resume_tasks[resume_id]
         return UploadResumeResponse(
             resume_id=resume_id,
-            status=resume_tasks[resume_id]["status"],
+            status=task["status"],
+            warning=task.get("warning"),
             message=f"简历 '{file.filename}' 上传成功"
         )
 
@@ -516,6 +537,7 @@ async def get_resume_status(resume_id: str):
         resume_id=resume_id,
         status=task.get("status", "ready"),
         error=task.get("error"),
+        warning=task.get("warning"),
     )
 
 

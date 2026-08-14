@@ -183,7 +183,8 @@ async function uploadResumes() {
       const res = await fetch(`${API}/resumes`, { method: "POST", body: fd });
       const data = await res.json();
       if (res.ok) {
-        return { file, resumeId: data.resume_id, status: data.status || "parsing", error: null };
+        return { file, resumeId: data.resume_id, status: data.status || "parsing",
+                 error: null, warning: data.warning || null };
       }
       return { file, resumeId: null, status: "error", error: data.detail || "提交失败" };
     } catch (e) {
@@ -220,7 +221,11 @@ async function uploadResumes() {
         if (data.status === "ready") {
           ok++;
           pending.splice(i, 1);
-          replaceLine(s, `<span class="ok">✓ ${escapeHtml(s.file.name)} 解析完成</span>`);
+          const warn = data.warning || s.warning;
+          const warnHtml = warn
+            ? `<span class="err">⚠ ${escapeHtml(warn)}</span>`
+            : "";
+          replaceLine(s, `<span class="ok">✓ ${escapeHtml(s.file.name)} 解析完成</span>${warnHtml}`);
         } else if (data.status === "error") {
           fail++;
           pending.splice(i, 1);
@@ -270,6 +275,10 @@ async function loadResumeList() {
         : r.status === "error"
           ? '<span class="badge badge-err">解析失败</span>'
           : '<span class="badge badge-unknown">解析中</span>';
+      // 文本质量警告徽章（扫描件等低质量 PDF）
+      const warnBadge = r.warning
+        ? '<span class="badge badge-err" title="' + escapeHtml(r.warning) + '">文本质量差</span>'
+        : "";
       // 预分类徽章（入库即通用评估：不针对特定岗位，仅按独立负责/真实用户/可量化结果判断）
       const pre = r.preclassification || null;
       const preBadge = pre
@@ -285,7 +294,7 @@ async function loadResumeList() {
       <li data-resume-id="${escapeHtml(r.resume_id)}">
         <div class="fn">
           ${escapeHtml(r.name || r.filename || "(未命名)")}
-          <span>${statusBadge} ${preBadge}</span>
+          <span>${statusBadge} ${preBadge} ${warnBadge}</span>
           <button class="btn-mini del-btn" title="删除简历" data-name="${escapeHtml(r.name || r.filename || "")}">🗑 删除</button>
         </div>
         <div class="rid">${escapeHtml(r.filename || "")}${timeStr ? ` · 🕐 ${escapeHtml(timeStr)}` : ""} · ${escapeHtml(r.resume_id.slice(0, 8))}（点击查看详情）</div>

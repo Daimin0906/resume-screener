@@ -9,6 +9,8 @@ class UploadResumeResponse(BaseModel):
     message: str
     # 解析状态：parsing（后台解析中）/ ready（完成）
     status: str = "parsing"
+    # 文本质量警告（如扫描件 PDF 提取质量差）
+    warning: Optional[str] = None
 
 
 class QueryRequest(BaseModel):
@@ -130,6 +132,7 @@ class ResumeStatusResponse(BaseModel):
     resume_id: str
     status: str  # parsing / ready / error
     error: Optional[str] = None
+    warning: Optional[str] = None
 
 
 class EmailFetchRequest(BaseModel):
