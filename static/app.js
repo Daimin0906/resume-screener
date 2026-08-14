@@ -11,44 +11,18 @@ const CLASS_LABELS = {
 };
 
 // 当前查询 id（提交查询成功后记录，供反馈提交使用）
-let currentQueryId = null;
-
 // ---------------- 状态持久化（localStorage）----------------
-// 刷新页面后恢复：岗位需求输入、筛选结果、上传/查询日志、当前查询 id
+// 刷新页面后恢复上传日志（手动筛选流程已移除，仅保留上传日志）
 const LS = {
-  queryText: "rs_query_text",
-  lastResults: "rs_last_results",
-  currentQueryId: "rs_current_query_id",
   uploadLog: "rs_upload_log",
-  queryLog: "rs_query_log",
 };
-
-function saveQueryText() {
-  localStorage.setItem(LS.queryText, $("query-text").value);
-}
 
 function saveLogs() {
   localStorage.setItem(LS.uploadLog, $("upload-log").innerHTML);
-  localStorage.setItem(LS.queryLog, $("query-log").innerHTML);
-}
-
-function saveResults(data) {
-  localStorage.setItem(LS.lastResults, JSON.stringify(data));
-  if (data && data.query_id) {
-    currentQueryId = data.query_id;
-    localStorage.setItem(LS.currentQueryId, data.query_id);
-  }
 }
 
 function restoreState() {
-  // 岗位需求输入
-  const qt = localStorage.getItem(LS.queryText);
-  if (qt != null) $("query-text").value = qt;
-
-  // 当前查询 id（反馈提交需要）
-  currentQueryId = localStorage.getItem(LS.currentQueryId);
-
-  // 上传/查询日志
+  // 上传日志恢复
   const ul = localStorage.getItem(LS.uploadLog);
   if (ul) {
     $("upload-log").innerHTML = ul;
@@ -57,19 +31,6 @@ function restoreState() {
     if (ul.includes("正在 AI 解析")) {
       $("upload-log").innerHTML +=
         '\n<span class="err">（以上为刷新前的解析过程记录，实际状态请看左侧列表徽章）</span>';
-    }
-  }
-  const ql = localStorage.getItem(LS.queryLog);
-  if (ql) $("query-log").innerHTML = ql;
-
-  // 最近一次筛选结果
-  const saved = localStorage.getItem(LS.lastResults);
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-      if (data && data.candidates) renderResults(data, true);
-    } catch (e) {
-      // 数据损坏则忽略，不影响页面加载
     }
   }
 }
@@ -388,78 +349,6 @@ async function batchDeleteResumes() {
   }
 }
 
-// ---------------- 提交查询 + 获取结果 ----------------
-async function runQuery() {
-  let text = $("query-text").value.trim();
-  const log = $("query-log");
-  const btn = $("query-btn");
-  const results = $("results");
-  const meta = $("result-meta");
-  if (!text) {
-    // 留空时使用默认岗位要求（自动筛选面板里保存的 JD）
-    try {
-      const qres = await fetch(`${API}/auto-screen/query`);
-      const qdata = await qres.json();
-      if (qres.ok && qdata.query_text) {
-        text = qdata.query_text;
-        log.innerHTML = '<span class="wait">岗位需求留空，使用默认岗位要求…</span>';
-      }
-    } catch (e) { /* 网络异常走下方提示 */ }
-    if (!text) {
-      log.innerHTML = '<span class="err">请输入岗位需求，或在「自动筛选」面板先保存默认岗位要求</span>';
-      return;
-    }
-  }
-  btn.disabled = true;
-  meta.textContent = "";
-  results.innerHTML = '<div class="spinner">正在解析查询并筛选候选人，请稍候…</div>';
-  log.textContent = "提交查询中…";
-  try {
-    const qres = await fetch(`${API}/queries`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query_text: text }),
-    });
-    const qdata = await qres.json();
-    if (!qres.ok) throw new Error(qdata.detail || "提交查询失败");
-    const queryId = qdata.query_id;
-    currentQueryId = queryId;
-    log.innerHTML = `<span class="ok">查询已提交 (${escapeHtml(queryId)})，正在评估候选人…</span>`;
-
-    const rres = await fetch(`${API}/results/${queryId}`);
-    const rdata = await rres.json();
-    if (!rres.ok) throw new Error(rdata.detail || "获取结果失败");
-    renderResults(rdata);
-    if (rdata.rules_version_used != null && rdata.rules_version_used > 0) {
-      log.innerHTML += `\n<span class="ok">本次筛选已应用筛选规则 v${rdata.rules_version_used}</span>`;
-    }
-  } catch (e) {
-    results.innerHTML = `<div class="empty">出错：${escapeHtml(e.message)}</div>`;
-    log.innerHTML = `<span class="err">${escapeHtml(e.message)}</span>`;
-  } finally {
-    btn.disabled = false;
-    saveLogs();
-  }
-}
-
-function renderResults(data, restored) {
-  const results = $("results");
-  const meta = $("result-meta");
-  meta.textContent = `(共 ${data.total_candidates} 位候选人)` +
-    (restored ? "（已恢复刷新前的结果）" : "");
-  if (!restored) {
-    $("query-log").innerHTML = '<span class="ok">筛选完成</span>';
-  }
-  saveResults(data); // 持久化，刷新后可恢复
-
-  if (!data.candidates || data.candidates.length === 0) {
-    results.innerHTML = '<div class="empty">没有符合条件的候选人。</div>';
-    return;
-  }
-  results.innerHTML = data.candidates.map(candidateCardHtml).join("");
-}
-
-// 候选人卡片 HTML（手动筛选结果与自动筛选结果共用）
 function candidateCardHtml(c) {
   const skills = (c.skills || []).map((s) => `<span class="tag">${escapeHtml(s)}</span>`).join("");
   const locations = escapeHtml((c.preferred_locations || []).join("、"));
@@ -532,19 +421,14 @@ function candidateCardHtml(c) {
 
 // ---------------- 人工纠正反馈 ----------------
 async function submitFeedback(candidateEl, fbClass, reason) {
-  const log = $("query-log");
   const resumeId = candidateEl.dataset.resumeId;
   const nameEl = candidateEl.querySelector(".name");
   const scoreEl = candidateEl.querySelector(".score-num");
-  const badgeEl = candidateEl.querySelector(".class-badge-" + (candidateEl.dataset.cls || "review"));
 
-  if (!currentQueryId) {
-    log.innerHTML = '<span class="err">请先执行一次筛选再提交纠正</span>';
-    return;
-  }
   const body = {
     resume_id: resumeId,
-    query_id: currentQueryId,
+    // 自动筛选场景无 query_id，用 "auto" 标识（后端不强校验 query_id）
+    query_id: "auto",
     candidate_name: nameEl ? nameEl.textContent : "",
     ai_classification: candidateEl.dataset.cls || "review",
     human_classification: fbClass,
@@ -648,18 +532,18 @@ async function compareRules() {
   box.hidden = false;
   box.innerHTML = '<span class="muted">正在对比新旧规则（需两轮 AI 分析，可能耗时较长）…</span>';
 
-  // 取对比对象：优先当前查询；否则用最近一次结果里的候选人
-  let body = { query_id: currentQueryId };
-  if (!currentQueryId) {
-    try {
-      const saved = JSON.parse(localStorage.getItem(LS.lastResults) || "null");
-      if (saved && saved.candidates && saved.candidates.length) {
-        body = { resume_ids: saved.candidates.map((c) => c.id) };
-      }
-    } catch (e) { /* ignore */ }
-  }
-  if (!body.query_id && !body.resume_ids) {
-    box.innerHTML = '<span class="err">请先执行一次筛选，或上传简历后再对比</span>';
+  // 对比对象：最近一次自动筛选结果里的候选人
+  let body = null;
+  try {
+    const res = await fetch(`${API}/auto-screen/results?limit=1`);
+    const data = await res.json();
+    const run = data.runs && data.runs[0];
+    if (run && run.candidates && run.candidates.length) {
+      body = { resume_ids: run.candidates.map((c) => c.id) };
+    }
+  } catch (e) { /* ignore */ }
+  if (!body) {
+    box.innerHTML = '<span class="err">请先运行一次自动筛选，再对比新旧规则</span>';
     return;
   }
 
@@ -852,11 +736,9 @@ async function runAutoScreen() {
 // ---------------- 事件绑定 ----------------
 $("upload-btn").addEventListener("click", uploadResumes);
 $("refresh-btn").addEventListener("click", loadResumeList);
-$("query-btn").addEventListener("click", runQuery);
 $("summarize-rules-btn").addEventListener("click", summarizeRules);
 $("compare-rules-btn").addEventListener("click", compareRules);
 $("email-fetch-btn").addEventListener("click", fetchEmails);
-$("query-text").addEventListener("input", saveQueryText);
 $("save-default-query-btn").addEventListener("click", saveDefaultQuery);
 $("run-auto-screen-btn").addEventListener("click", runAutoScreen);
 
