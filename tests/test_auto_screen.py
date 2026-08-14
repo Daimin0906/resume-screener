@@ -208,6 +208,43 @@ class TestPersistence:
         assert s.list_runs() == []  # skipped_running 不追加
 
 
+class TestManualScreenAPI:
+    """手动筛选工作流（独立于邮箱线）"""
+
+    def test_manual_screen_screens_only_manual(self, isolated_auto_screen_dir, monkeypatch):
+        """手动筛选只处理 source=manual 的简历"""
+        from app.api import routes
+        routes.resume_storage.clear()
+        # 手动简历 2 份 + 邮箱简历 1 份
+        for rid, src in [("m1", "manual"), ("m2", "manual"), ("e1", "email")]:
+            routes.resume_storage[rid] = {"id": rid, "text": "x", "metadata": {},
+                                          "filename": f"{rid}.txt", "source": src}
+            routes.resume_tasks[rid] = {"status": "ready", "error": None}
+
+        # mock 查询解析 + 筛选回调（记录收到的简历 id）
+        mock_qp = MagicMock()
+        mock_qp.parse_query.return_value = MagicMock()
+        monkeypatch.setattr(routes, "query_parser", mock_qp)
+
+        received = []
+        def fake_screen(qm, ids):
+            received.extend(ids)
+            return {"total_candidates": len(ids), "candidates": [
+                {"id": i, "classification": "review"} for i in ids]}
+
+        monkeypatch.setattr(isolated_auto_screen_dir, "run_screening_cb", fake_screen)
+        isolated_auto_screen_dir.set_default_query("JD")
+
+        resp = client.post("/api/v1/manual-screen/run")
+        assert resp.status_code == 200
+        assert set(received) == {"m1", "m2"}  # 只筛手动简历，e1 不参与
+        assert resp.json()["screened_count"] == 2
+
+        # 手动筛选结果带 trigger=manual_screen，工作台可见
+        runs = isolated_auto_screen_dir.list_runs()
+        assert runs[0]["trigger"] == "manual_screen"
+
+
 class TestAutoScreenAPI:
     """自动筛选 API（同步模式，query_parser 用 mock 避免真实 LLM）"""
 

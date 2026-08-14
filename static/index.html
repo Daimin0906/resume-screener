@@ -15,28 +15,31 @@
   </header>
 
   <main class="layout">
-    <!-- 左列：手动上传（补充入口） -->
+    <!-- 左列：手动筛选工作流（独立） -->
     <section class="panel">
-      <h2>📥 手动上传简历</h2>
-      <p class="hint">邮箱自动抓取之外的其他来源简历（如线下收集），上传后会自动加入默认岗位的自动筛选。</p>
+      <h2>📥 手动筛选工作流 <span id="manual-screen-status" class="muted"></span></h2>
+      <p class="hint">其他来源的简历手动上传后，点「开始筛选手动简历」按默认岗位要求筛选（独立于邮箱自动筛选）。</p>
       <input type="file" id="resume-files" multiple accept=".txt,.pdf,.md" />
       <button id="upload-btn" class="btn primary">上传</button>
+      <button id="run-manual-screen-btn" class="btn primary">▶ 开始筛选手动简历</button>
       <div id="upload-log" class="log"></div>
+      <div id="manual-screen-summary" class="auto-summary"></div>
+      <div id="manual-screen-results" class="results"></div>
 
-      <h2>已上传简历 <span id="resume-count" class="muted"></span></h2>
+      <h2>📥 手动上传的简历 <span id="manual-count" class="muted"></span></h2>
       <div class="list-toolbar">
         <label class="sel-all"><input type="checkbox" id="sel-all-cb" /> 全选</label>
         <span id="sel-count" class="muted"></span>
         <button id="batch-del-btn" class="btn btn-danger" disabled>删除选中</button>
         <button id="refresh-btn" class="btn">刷新列表</button>
       </div>
-      <ul id="resume-list" class="resume-list"></ul>
+      <ul id="manual-resume-list" class="resume-list"></ul>
     </section>
 
-    <!-- 右列：全自动筛选工作流 -->
+    <!-- 右列：自动筛选工作流（邮箱，独立） -->
     <section class="panel">
-      <h2>🤖 自动筛选工作流 <span id="auto-screen-status" class="muted"></span></h2>
-      <p class="hint">全自动：邮箱抓取新简历 → 自动筛选 → 工作台待处理。手动上传的简历也会自动加入。规则迭代（人工纠正→总结）手动操作。</p>
+      <h2>🤖 自动筛选工作流（邮箱） <span id="auto-screen-status" class="muted"></span></h2>
+      <p class="hint">全自动：邮箱抓取新简历 → 自动筛选 → 工作台待处理。每小时自动抓取。</p>
       <div class="workflow-row">
         <button id="run-auto-screen-btn" class="btn primary">▶ 开始筛选（抓取+筛选）</button>
       </div>
@@ -52,14 +55,17 @@
         </div>
         <div id="email-config-log" class="log"></div>
       </details>
-      <textarea id="default-query-text" rows="3" placeholder="默认岗位要求（JD 文本）：自动筛选用它…"></textarea>
+      <textarea id="default-query-text" rows="3" placeholder="默认岗位要求（JD 文本）：两个工作流共用…"></textarea>
       <button id="save-default-query-btn" class="btn">保存默认岗位要求</button>
       <div id="auto-screen-log" class="log"></div>
       <div id="auto-screen-summary" class="auto-summary"></div>
       <div id="auto-screen-results" class="results"></div>
 
+      <h2>📧 邮箱抓取的简历 <span id="email-count" class="muted"></span></h2>
+      <ul id="email-resume-list" class="resume-list"></ul>
+
       <h2>📋 候选人处理工作台 <span id="workbench-meta" class="muted"></span></h2>
-      <p class="hint">聚合所有自动筛选的候选人（去重）。处理流程：🟢 约面试 → 进入面试名单；🟠 待核实 → 人工再看；🔴 归档 → 已处理。</p>
+      <p class="hint">两个工作流的筛选结果在这里聚合（去重）。处理：🟢 约面试 / 🟠 待核实 / 🔴 归档。</p>
       <div class="workbench-toolbar">
         <span id="workbench-pending" class="pending-badge"></span>
         <button id="export-interview-btn" class="btn">导出面试名单 CSV</button>
@@ -67,9 +73,8 @@
       </div>
       <div id="workbench-list" class="results"></div>
 
-      <h2>2. 筛选规则 <span id="rules-meta" class="muted"></span></h2>
-      <p class="hint">AI 分类被人工纠正后，可总结纠正规律生成筛选规则，下次筛选自动生效。
-        规则更新后建议「换一批简历」重新筛选，或点击「对比验证」查看新旧规则的效果差异。</p>
+      <h2>⚖️ 筛选规则 <span id="rules-meta" class="muted"></span></h2>
+      <p class="hint">AI 分类被人工纠正后，总结纠正规律生成规则，两个工作流筛选时都会自动生效。</p>
       <div id="rules-box" class="rules-box">尚未总结筛选规则</div>
       <button id="summarize-rules-btn" class="btn primary">总结筛选规则</button>
       <button id="compare-rules-btn" class="btn">对比验证</button>

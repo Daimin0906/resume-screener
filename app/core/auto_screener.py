@@ -157,8 +157,8 @@ class AutoScreener:
         """执行一轮自动筛选。
 
         Args:
-            trigger: "after_fetch"（抓取后自动）| "manual"（手动触发）
-            ready_resume_ids: 返回全部已解析完成简历 id 列表的回调
+            trigger: "after_fetch"（抓取后自动）| "manual"（手动触发）| "manual_screen"（手动筛选）
+            ready_resume_ids: 返回待筛选简历 id 列表的回调（按来源过滤由调用方负责）
 
         Returns:
             本次 run 记录 dict（含 status）
@@ -198,7 +198,7 @@ class AutoScreener:
             # 2. 解析查询（复用截断/占位词兜底）
             query_metadata = self.query_parser.parse_query(query_text)
 
-            # 3. 待筛选的新简历（已就绪 且 未处理过）
+            # 3. 待筛选的新简历（已就绪 且 未处理过；来源过滤由调用方在回调中完成）
             all_ready = ready_resume_ids()
             pending = [rid for rid in all_ready if not self.is_processed(rid)]
 

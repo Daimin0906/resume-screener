@@ -214,21 +214,17 @@ async function uploadResumes() {
 
 // ---------------- 简历列表 ----------------
 async function loadResumeList() {
-  const list = $("resume-list");
-  const count = $("resume-count");
   try {
     const res = await fetch(`${API}/resumes`);
     const data = await res.json();
-    count.textContent = `(${data.total})`;
-    if (!data.resumes || data.resumes.length === 0) {
-      list.innerHTML = '<li class="empty">暂无简历</li>';
-      return;
-    }
-    // 按来源分组：邮箱自动抓取 / 手动上传
+    // 按来源拆分到两个独立列表
     const emailList = data.resumes.filter((r) => (r.source || "manual") === "email");
     const manualList = data.resumes.filter((r) => (r.source || "manual") !== "email");
 
-    const renderGroup = (items) => items.map((r) => {
+    $("manual-count").textContent = `(${manualList.length})`;
+    $("email-count").textContent = `(${emailList.length})`;
+
+    const renderItems = (items) => items.map((r) => {
       // 技能标签预览（最多 5 个）
       const skillTags = (r.skills || []).slice(0, 5)
         .map((s) => `<span class="tag">${escapeHtml(s)}</span>`).join("");
@@ -269,16 +265,15 @@ async function loadResumeList() {
       </li>`;
     }).join("");
 
-    const groupHtml = (title, items, emptyText) => `
-      <li class="group-title">${title}（${items.length}）</li>
-      ${items.length ? renderGroup(items) : `<li class="empty">${emptyText}</li>`}`;
-
-    list.innerHTML =
-      groupHtml("📧 邮箱自动抓取", emailList, "暂无邮箱抓取的简历") +
-      groupHtml("📥 手动上传", manualList, "暂无手动上传的简历");
+    $("manual-resume-list").innerHTML = manualList.length
+      ? renderItems(manualList)
+      : '<li class="empty">暂无手动上传的简历</li>';
+    $("email-resume-list").innerHTML = emailList.length
+      ? renderItems(emailList)
+      : '<li class="empty">暂无邮箱抓取的简历</li>';
     resetSelectionUI();
   } catch (e) {
-    list.innerHTML = `<li class="empty">加载失败：${escapeHtml(e.message)}</li>`;
+    $("manual-resume-list").innerHTML = `<li class="empty">加载失败：${escapeHtml(e.message)}</li>`;
   }
 }
 
@@ -332,15 +327,15 @@ async function deleteResume(resumeId, name) {
 
 // ---------------- 批量删除 ----------------
 function resetSelectionUI() {
-  const cbs = document.querySelectorAll('#resume-list input[data-sel]');
-  const checked = document.querySelectorAll('#resume-list input[data-sel]:checked').length;
+  const cbs = document.querySelectorAll('#manual-resume-list input[data-sel]');
+  const checked = document.querySelectorAll('#manual-resume-list input[data-sel]:checked').length;
   $("sel-count").textContent = checked > 0 ? `已选 ${checked} 份` : "";
   $("batch-del-btn").disabled = checked === 0;
   $("sel-all-cb").checked = cbs.length > 0 && checked === cbs.length;
 }
 
 async function batchDeleteResumes() {
-  const ids = Array.from(document.querySelectorAll('#resume-list input[data-sel]:checked'))
+  const ids = Array.from(document.querySelectorAll('#manual-resume-list input[data-sel]:checked'))
     .map((cb) => cb.dataset.sel);
   if (ids.length === 0) return;
   if (!confirm(`确定删除选中的 ${ids.length} 份简历吗？将从服务器和向量库中删除，无法恢复。`)) return;
@@ -710,6 +705,53 @@ async function runAutoScreen() {
   }
 }
 
+// ---------------- 手动筛选工作流（独立于邮箱自动筛选） ----------------
+async function runManualScreen() {
+  const log = $("upload-log");
+  log.innerHTML = '<span class="wait">▶ 正在筛选手动上传的简历（可能需要几分钟）…</span>';
+  saveLogs();
+  try {
+    const res = await fetch(`${API}/manual-screen/run`, { method: "POST" });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "触发失败");
+    if (data.status === "already_running") {
+      log.innerHTML = '<span class="err">筛选正在运行中，请稍后查看结果</span>';
+      saveLogs();
+      return;
+    }
+    log.innerHTML = `<span class="ok">✓ ${escapeHtml(data.message || "手动筛选完成")}</span>`;
+    saveLogs();
+    loadManualScreenPanel();
+    loadWorkbench();
+  } catch (e) {
+    log.innerHTML = `<span class="err">${escapeHtml(e.message)}</span>`;
+    saveLogs();
+  }
+}
+
+async function loadManualScreenPanel() {
+  // 从自动筛选结果中筛选 trigger=manual_screen 的最近一次
+  try {
+    const res = await fetch(`${API}/auto-screen/results?limit=20`);
+    const data = await res.json();
+    const runs = (data.runs || []).filter((r) => r.trigger === "manual_screen");
+    const box = $("manual-screen-results");
+    const summary = $("manual-screen-summary");
+    $("manual-screen-status").textContent = "";
+    if (!runs.length) {
+      box.innerHTML = "";
+      summary.innerHTML = "";
+      return;
+    }
+    const run = runs[0];
+    const d = run.distributions || {};
+    summary.innerHTML = `最近一次手动筛选：${run.screened_count || 0} 份（🟢${d.interview || 0} 🟠${d.review || 0} 🔴${d.reject || 0}）· ${escapeHtml((run.finished_at || "").replace("T", " ").slice(0, 16))}`;
+    box.innerHTML = run.candidates && run.candidates.length
+      ? run.candidates.map(candidateCardHtml).join("")
+      : '<div class="empty">无筛选结果（先上传简历，或点「开始筛选手动简历」）</div>';
+  } catch (e) { /* 忽略 */ }
+}
+
 // ---------------- 邮箱配置（界面切换账号） ----------------
 async function loadEmailConfig() {
   try {
@@ -860,6 +902,7 @@ $("export-interview-btn").addEventListener("click", exportInterviewList);
 $("workbench-refresh-btn").addEventListener("click", loadWorkbench);
 $("email-save-btn").addEventListener("click", saveEmailConfig);
 $("email-test-btn").addEventListener("click", testEmailConfig);
+$("run-manual-screen-btn").addEventListener("click", runManualScreen);
 
 // 工作台候选人操作按钮（事件委托）
 $("workbench-list").addEventListener("click", (e) => {
@@ -870,7 +913,14 @@ $("workbench-list").addEventListener("click", (e) => {
 });
 
 // 简历列表：点击展开详情 / 删除按钮 / 选择框（事件委托）
-$("resume-list").addEventListener("click", (e) => {
+$("manual-resume-list").addEventListener("click", (e) => {
+  bindResumeListClick(e);
+});
+$("email-resume-list").addEventListener("click", (e) => {
+  bindResumeListClick(e);
+});
+
+function bindResumeListClick(e) {
   const selCb = e.target.closest('input[data-sel]');
   if (selCb) {
     e.stopPropagation();
@@ -886,11 +936,11 @@ $("resume-list").addEventListener("click", (e) => {
   }
   const li = e.target.closest("li[data-resume-id]");
   if (li) toggleResumeDetail(li, li.dataset.resumeId);
-});
+}
 
 // 全选 / 批量删除
 $("sel-all-cb").addEventListener("change", (e) => {
-  document.querySelectorAll('#resume-list input[data-sel]').forEach((cb) => {
+  document.querySelectorAll('#manual-resume-list input[data-sel]').forEach((cb) => {
     cb.checked = e.target.checked;
   });
   resetSelectionUI();
@@ -912,6 +962,7 @@ loadResumeList();
 loadRules();
 restoreState();
 loadAutoScreenPanel();
+loadManualScreenPanel();
 loadWorkbench();
 loadEmailConfig();
 setInterval(checkHealth, 30000);

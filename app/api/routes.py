@@ -1202,3 +1202,40 @@ async def run_workflow():
     except Exception as e:
         logger.exception("一键工作流失败")
         raise HTTPException(status_code=500, detail=f"工作流失败: {e}")
+
+
+# ------------------------------------------------------------------
+# 手动筛选工作流（手动上传的简历，独立于邮箱自动筛选）
+# ------------------------------------------------------------------
+
+def _get_ready_manual_resume_ids() -> List[str]:
+    """已解析完成的【手动上传】简历 id（source=manual），按入库时间升序。"""
+    return sorted(
+        (rid for rid in resume_storage
+         if resume_tasks.get(rid, {}).get("status", "ready") == "ready"
+         and resume_storage[rid].get("source", "manual") == "manual"),
+        key=lambda r: resume_storage[r].get("created_at") or datetime.min)
+
+
+@router.post("/manual-screen/run")
+async def run_manual_screen():
+    """手动筛选：对【手动上传】的简历跑一轮完整筛选（用默认岗位要求 + 当前规则）。
+
+    结果与自动筛选共用存储（工作台聚合），trigger 标记为 manual_screen。
+    """
+    if not settings.AUTO_SCREEN_ENABLED:
+        raise HTTPException(status_code=400, detail="自动筛选未启用")
+
+    if auto_screener.is_running():
+        return {"status": "already_running", "message": "筛选正在运行中"}
+
+    if settings.AUTO_SCREEN_ASYNC:
+        auto_screen_executor.submit(auto_screener.run, "manual_screen", _get_ready_manual_resume_ids)
+        return {"status": "started", "message": "手动筛选已开始，完成后刷新查看结果"}
+
+    record = await run_in_threadpool(auto_screener.run, "manual_screen", _get_ready_manual_resume_ids)
+    return {
+        "status": record.get("status", "completed"),
+        "screened_count": record.get("screened_count", 0),
+        "message": f"手动筛选完成：{record.get('screened_count', 0)} 份简历",
+    }
