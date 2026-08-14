@@ -61,6 +61,7 @@ async def lifespan(app: FastAPI):
         except Exception:
             pass
     routes.shutdown_upload_executor()
+    routes.shutdown_auto_screen_executor()
 
 
 app = FastAPI(

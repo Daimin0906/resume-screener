@@ -305,6 +305,23 @@ textarea { resize: vertical; }
   border-color: var(--err);
 }
 
+/* ---- 自动筛选面板 ---- */
+.auto-summary {
+  font-size: 13px;
+  color: var(--primary-dark);
+  background: #f0f4ff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 8px 0;
+}
+.auto-run-title {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--primary);
+  user-select: none;
+}
+
 /* ---- 筛选规则面板 ---- */
 .rules-box {
   font-size: 13px;

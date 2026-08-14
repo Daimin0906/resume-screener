@@ -445,75 +445,78 @@ function renderResults(data, restored) {
     results.innerHTML = '<div class="empty">没有符合条件的候选人。</div>';
     return;
   }
-  results.innerHTML = data.candidates.map((c) => {
-    const skills = (c.skills || []).map((s) => `<span class="tag">${escapeHtml(s)}</span>`).join("");
-    const locations = escapeHtml((c.preferred_locations || []).join("、"));
-    const scorePercent = (c.overall_score != null) ? Math.round(c.overall_score * 100) : "-";
-    const email = c.email ? "📧 " + escapeHtml(c.email) + "　" : "";
-    const phone = c.phone ? "📱 " + escapeHtml(c.phone) : "";
-    const salary = c.expected_salary ? "<br>💰 期望薪资：" + escapeHtml(c.expected_salary) : "";
-    const analysis = c.analysis ? `<div class="analysis">${markdownToHtml(c.analysis)}</div>` : "";
+  results.innerHTML = data.candidates.map(candidateCardHtml).join("");
+}
 
-    // 三分类徽章 + 判定理由 + 人工纠正标记
-    const cls = c.classification || "review";
-    const clsBadge = `<span class="badge class-badge-${cls}">${CLASS_LABELS[cls] || cls}</span>`;
-    const correctedMark = c.corrected_by_human
-      ? '<span class="badge badge-unknown">已人工纠正</span>' : "";
-    const reasonLine = c.classification_reason
-      ? `<div class="cls-reason">判定理由：${escapeHtml(c.classification_reason)}</div>` : "";
+// 候选人卡片 HTML（手动筛选结果与自动筛选结果共用）
+function candidateCardHtml(c) {
+  const skills = (c.skills || []).map((s) => `<span class="tag">${escapeHtml(s)}</span>`).join("");
+  const locations = escapeHtml((c.preferred_locations || []).join("、"));
+  const scorePercent = (c.overall_score != null) ? Math.round(c.overall_score * 100) : "-";
+  const email = c.email ? "📧 " + escapeHtml(c.email) + "　" : "";
+  const phone = c.phone ? "📱 " + escapeHtml(c.phone) : "";
+  const salary = c.expected_salary ? "<br>💰 期望薪资：" + escapeHtml(c.expected_salary) : "";
+  const analysis = c.analysis ? `<div class="analysis">${markdownToHtml(c.analysis)}</div>` : "";
 
-    // 6 维评估展示（含独立负责/真实用户/可量化结果）
-    let assessmentHtml = "";
-    const assess = c.assessment || {};
-    const assessKeys = [
-      ["skill_match", "技能匹配"],
-      ["experience_match", "经验匹配"],
-      ["education_match", "教育匹配"],
-      ["ownership", "独立负责"],
-      ["real_users", "真实用户"],
-      ["quantified_results", "可量化结果"],
-    ];
-    const assessItems = assessKeys
-      .filter(([k]) => assess[k] != null)
-      .map(([k, label]) => `${label} ${Math.round(assess[k] * 100)}%`);
-    if (assessItems.length) {
-      assessmentHtml = `<div class="cls-reason">评估：${assessItems.join(" · ")}</div>`;
-    }
+  // 三分类徽章 + 判定理由 + 人工纠正标记
+  const cls = c.classification || "review";
+  const clsBadge = `<span class="badge class-badge-${cls}">${CLASS_LABELS[cls] || cls}</span>`;
+  const correctedMark = c.corrected_by_human
+    ? '<span class="badge badge-unknown">已人工纠正</span>' : "";
+  const reasonLine = c.classification_reason
+    ? `<div class="cls-reason">判定理由：${escapeHtml(c.classification_reason)}</div>` : "";
 
-    // 人工纠正表单（折叠）
-    const feedbackForm = `
-      <details class="feedback-box">
-        <summary>纠正分类</summary>
-        <select data-fb="class">
-          <option value="interview">值得面试</option>
-          <option value="review">HR审核</option>
-          <option value="reject">直接淘汰</option>
-        </select>
-        <input data-fb="reason" type="text" placeholder="纠正原因（选填，建议填写以帮助总结规则）" />
-        <button data-fb="submit" class="btn">提交纠正</button>
-      </details>`;
+  // 6 维评估展示（含独立负责/真实用户/可量化结果）
+  let assessmentHtml = "";
+  const assess = c.assessment || {};
+  const assessKeys = [
+    ["skill_match", "技能匹配"],
+    ["experience_match", "经验匹配"],
+    ["education_match", "教育匹配"],
+    ["ownership", "独立负责"],
+    ["real_users", "真实用户"],
+    ["quantified_results", "可量化结果"],
+  ];
+  const assessItems = assessKeys
+    .filter(([k]) => assess[k] != null)
+    .map(([k, label]) => `${label} ${Math.round(assess[k] * 100)}%`);
+  if (assessItems.length) {
+    assessmentHtml = `<div class="cls-reason">评估：${assessItems.join(" · ")}</div>`;
+  }
 
-    return `
-      <div class="candidate" data-resume-id="${escapeHtml(c.id)}" data-cls="${escapeHtml(cls)}">
-        <div class="candidate-head">
-          <div><span class="rank">${escapeHtml(c.rank)}</span><span class="name">${escapeHtml(c.name || "(未命名)")}</span></div>
-          <div class="score">
-            ${clsBadge} ${correctedMark}
-            <span class="score-num">${escapeHtml(scorePercent)}%</span>
-          </div>
+  // 人工纠正表单（折叠）
+  const feedbackForm = `
+    <details class="feedback-box">
+      <summary>纠正分类</summary>
+      <select data-fb="class">
+        <option value="interview">值得面试</option>
+        <option value="review">HR审核</option>
+        <option value="reject">直接淘汰</option>
+      </select>
+      <input data-fb="reason" type="text" placeholder="纠正原因（选填，建议填写以帮助总结规则）" />
+      <button data-fb="submit" class="btn">提交纠正</button>
+    </details>`;
+
+  return `
+    <div class="candidate" data-resume-id="${escapeHtml(c.id)}" data-cls="${escapeHtml(cls)}">
+      <div class="candidate-head">
+        <div><span class="rank">${escapeHtml(c.rank)}</span><span class="name">${escapeHtml(c.name || "(未命名)")}</span></div>
+        <div class="score">
+          ${clsBadge} ${correctedMark}
+          <span class="score-num">${escapeHtml(scorePercent)}%</span>
         </div>
-        ${reasonLine}
-        ${assessmentHtml}
-        <div class="meta">
-          ${email}${phone}
-          ${locations ? "<br>📍 期望地点：" + locations : ""}
-          ${salary}
-        </div>
-        ${skills ? `<div class="skills">${skills}</div>` : ""}
-        ${analysis}
-        ${feedbackForm}
-      </div>`;
-  }).join("");
+      </div>
+      ${reasonLine}
+      ${assessmentHtml}
+      <div class="meta">
+        ${email}${phone}
+        ${locations ? "<br>📍 期望地点：" + locations : ""}
+        ${salary}
+      </div>
+      ${skills ? `<div class="skills">${skills}</div>` : ""}
+      ${analysis}
+      ${feedbackForm}
+    </div>`;
 }
 
 // ---------------- 人工纠正反馈 ----------------
@@ -737,6 +740,104 @@ async function fetchEmails() {
   }
 }
 
+// ---------------- 自动筛选面板 ----------------
+async function loadAutoScreenPanel() {
+  // 默认岗位要求（仅当用户未在编辑时回填，避免覆盖输入）
+  const editing = document.activeElement === $("default-query-text");
+  if (!editing) {
+    try {
+      const res = await fetch(`${API}/auto-screen/query`);
+      const data = await res.json();
+      if (res.ok && data.query_text) {
+        if ($("default-query-text").value !== data.query_text) {
+          $("default-query-text").value = data.query_text;
+        }
+      }
+    } catch (e) { /* 忽略 */ }
+  }
+
+  // 状态行
+  try {
+    const res = await fetch(`${API}/auto-screen/status`);
+    const st = await res.json();
+    const statusEl = $("auto-screen-status");
+    if (!res.ok) throw new Error(st.detail || "加载失败");
+    let statusText = st.running ? "⏳ 自动筛选中…" : "";
+    if (!st.default_query_set) {
+      statusText = "未设置默认岗位要求";
+    } else if (st.last_run && st.last_run.status === "completed") {
+      const d = st.last_run.distributions || {};
+      statusText = `上次自动筛选：${escapeHtml(st.last_run.screened_count)} 份 · ` +
+        `🟢${d.interview || 0} 🟠${d.review || 0} 🔴${d.reject || 0}`;
+    }
+    statusEl.textContent = statusText;
+  } catch (e) { /* 忽略 */ }
+
+  // 最近一次结果
+  try {
+    const res = await fetch(`${API}/auto-screen/results?limit=1`);
+    const data = await res.json();
+    const box = $("auto-screen-results");
+    const summary = $("auto-screen-summary");
+    if (!res.ok || !data.runs || data.runs.length === 0) {
+      box.innerHTML = "";
+      summary.innerHTML = "";
+      return;
+    }
+    const run = data.runs[0];
+    const d = run.distributions || {};
+    summary.innerHTML = `最近一次：${escapeHtml(run.status === "completed" ? `筛了 ${run.screened_count} 份（🟢${d.interview || 0} 🟠${d.review || 0} 🔴${d.reject || 0}）` : `状态：${escapeHtml(run.status)}`)} · 规则 v${run.rules_version_used || 0} · ${escapeHtml((run.finished_at || "").replace("T", " ").slice(0, 16))}`;
+    if (run.candidates && run.candidates.length) {
+      box.innerHTML = `<details open>
+        <summary class="auto-run-title">候选人列表（${run.candidates.length}）</summary>
+        ${run.candidates.map(candidateCardHtml).join("")}
+      </details>`;
+    } else {
+      box.innerHTML = "";
+    }
+  } catch (e) { /* 忽略 */ }
+}
+
+async function saveDefaultQuery() {
+  const log = $("auto-screen-log");
+  const text = $("default-query-text").value.trim();
+  if (!text) {
+    log.innerHTML = '<span class="err">请输入默认岗位要求</span>';
+    return;
+  }
+  try {
+    const res = await fetch(`${API}/auto-screen/query`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query_text: text }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "保存失败");
+    log.innerHTML = '<span class="ok">✓ 默认岗位要求已保存，邮箱抓取新简历后会自动筛选</span>';
+    loadAutoScreenPanel();
+  } catch (e) {
+    log.innerHTML = `<span class="err">保存失败：${escapeHtml(e.message)}</span>`;
+  }
+}
+
+async function runAutoScreen() {
+  const log = $("auto-screen-log");
+  log.innerHTML = '<span class="wait">正在运行自动筛选（可能需要几分钟）…</span>';
+  try {
+    const res = await fetch(`${API}/auto-screen/run`, { method: "POST" });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "触发失败");
+    if (data.status === "already_running") {
+      log.innerHTML = '<span class="err">自动筛选正在运行中，请稍后查看结果</span>';
+      return;
+    }
+    log.innerHTML = `<span class="ok">✓ ${escapeHtml(data.message || "自动筛选已开始")}</span>`;
+    loadAutoScreenPanel();
+  } catch (e) {
+    log.innerHTML = `<span class="err">${escapeHtml(e.message)}</span>`;
+  }
+}
+
 // ---------------- 事件绑定 ----------------
 $("upload-btn").addEventListener("click", uploadResumes);
 $("refresh-btn").addEventListener("click", loadResumeList);
@@ -745,6 +846,8 @@ $("summarize-rules-btn").addEventListener("click", summarizeRules);
 $("compare-rules-btn").addEventListener("click", compareRules);
 $("email-fetch-btn").addEventListener("click", fetchEmails);
 $("query-text").addEventListener("input", saveQueryText);
+$("save-default-query-btn").addEventListener("click", saveDefaultQuery);
+$("run-auto-screen-btn").addEventListener("click", runAutoScreen);
 
 // 简历列表：点击展开详情 / 删除按钮 / 选择框（事件委托）
 $("resume-list").addEventListener("click", (e) => {
@@ -788,4 +891,6 @@ checkHealth();
 loadResumeList();
 loadRules();
 restoreState();
+loadAutoScreenPanel();
 setInterval(checkHealth, 30000);
+setInterval(loadAutoScreenPanel, 60000); // 每分钟刷新自动筛选面板状态

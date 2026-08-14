@@ -20,6 +20,9 @@ data/*.pdf
 *.log
 # 筛选规则与反馈日志（含候选人信息，运行数据不入库）
 rules/
+# 自动筛选数据（默认岗位要求/状态/结果，含候选人 PII）
+data/auto_screen*.json
+data/default_query.txt
 
 # 虚拟环境
 .venv/

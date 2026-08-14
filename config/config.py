@@ -136,6 +136,20 @@ class Settings:
     # 上传解析完成后，自动按当前规则做一次无岗位通用分类（仅列表/详情展示）
     PRECLASSIFY_ON_INGEST: bool = os.getenv("PRECLASSIFY_ON_INGEST", "true").lower() == "true"
 
+    # ---- 全流程自动筛选 ----
+    # 邮箱抓取新简历后自动按默认岗位要求跑完整筛选（无人值守）
+    AUTO_SCREEN_ENABLED: bool = os.getenv("AUTO_SCREEN_ENABLED", "true").lower() == "true"
+    AUTO_SCREEN_DATA_DIR: str = os.getenv("AUTO_SCREEN_DATA_DIR", "data")
+    # 结果文件保留最近 N 次运行
+    AUTO_SCREEN_MAX_RUNS: int = int(os.getenv("AUTO_SCREEN_MAX_RUNS", "20"))
+    # 单轮最多筛选份数（超出留待下轮，防止单轮 LLM 调用过多）
+    AUTO_SCREEN_MAX_BATCH: int = int(os.getenv("AUTO_SCREEN_MAX_BATCH", "50"))
+    # 手动触发是否后台执行（false=同步，测试用）
+    AUTO_SCREEN_ASYNC: bool = os.getenv("AUTO_SCREEN_ASYNC", "true").lower() == "true"
+    # 抓取后等待本次入库简历解析完成的最长时间/轮询间隔（秒）
+    AUTO_SCREEN_PARSE_WAIT_SECONDS: int = int(os.getenv("AUTO_SCREEN_PARSE_WAIT_SECONDS", "600"))
+    AUTO_SCREEN_POLL_SECONDS: int = int(os.getenv("AUTO_SCREEN_POLL_SECONDS", "5"))
+
     # ---- 筛选规则 / 反馈自迭代 ----
     # 规则与反馈日志存储目录（JSON 文件）
     RULES_DIR: str = os.getenv("RULES_DIR", "rules")

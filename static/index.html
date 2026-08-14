@@ -34,8 +34,17 @@
       <ul id="resume-list" class="resume-list"></ul>
     </section>
 
-    <!-- 右列：查询 + 结果 -->
+    <!-- 右列：自动筛选 + 查询 + 结果 -->
     <section class="panel">
+      <h2>⚙️ 自动筛选 <span id="auto-screen-status" class="muted"></span></h2>
+      <p class="hint">保存默认岗位要求后，每次邮箱抓取到新简历会自动跑一次完整筛选，全程无人值守。规则迭代（人工纠正→总结）仍手动操作。</p>
+      <textarea id="default-query-text" rows="3" placeholder="填写默认岗位要求（JD 文本），邮箱抓取新简历后自动用它筛选…"></textarea>
+      <button id="save-default-query-btn" class="btn primary">保存默认岗位要求</button>
+      <button id="run-auto-screen-btn" class="btn">立即运行一次</button>
+      <div id="auto-screen-log" class="log"></div>
+      <div id="auto-screen-summary" class="auto-summary"></div>
+      <div id="auto-screen-results" class="results"></div>
+
       <h2>2. 输入岗位需求</h2>
       <textarea id="query-text" rows="5"
         placeholder="示例：招聘一名有3年以上经验的Python后端工程师，熟悉FastAPI和分布式系统，本科及以上学历，工作地点北京。"></textarea>

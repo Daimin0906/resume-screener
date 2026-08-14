@@ -19,6 +19,8 @@ from app.api.models import (
     RulesSummarizeRequest, RulesSummaryResponse, ResumeStatusResponse,
     EmailFetchRequest, EmailFetchResponse, EmailFetchItem, EmailIngestedResume,
     RulesCompareRequest, RulesCompareResponse, BatchDeleteRequest,
+    AutoScreenQueryUpdate, AutoScreenQueryResponse, AutoScreenRunResponse,
+    AutoScreenStatusResponse, AutoScreenResultsResponse,
 )
 from app.core.cache_manager import CacheManager
 from app.core.document_parser import DocumentParser
@@ -26,6 +28,7 @@ from app.core.extractor import MetadataExtractor
 from app.core.llm_client import LLMClient
 from app.core.query_parser import QueryParser
 from app.core.rules_manager import RulesManager, InsufficientFeedbackError
+from app.core.auto_screener import AutoScreener
 from app.core.vector_store_factory import get_vector_store_manager
 from app.core.retriever import Retriever
 from app.core.filter import HardFilter
@@ -71,6 +74,41 @@ resume_tasks: Dict[str, Dict[str, Any]] = {}
 
 # 后台解析线程池（上传/邮箱抓取共用）
 upload_executor = ThreadPoolExecutor(max_workers=settings.UPLOAD_MAX_WORKERS)
+
+
+# ------------------------------------------------------------------
+# 全流程自动筛选
+# ------------------------------------------------------------------
+
+def _run_screening_for_auto(query_metadata: QueryMetadata,
+                            resume_ids: List[str]) -> Dict[str, Any]:
+    """自动筛选用的筛选回调（注入 AutoScreener）：
+    对指定简历直接 score→rank→analyze→format→feedback 覆盖（跳过检索/硬过滤）。"""
+    ranked = _run_screening_stages(query_metadata, resume_ids)
+    payload = _build_screening_payload(
+        query_metadata, "auto", "auto", ranked,
+        rules_manager.active_rules_text(),
+        rules_manager.get_active_rules().get("version") or 0,
+    )
+    return payload.model_dump()
+
+
+auto_screener = AutoScreener(
+    data_dir=settings.AUTO_SCREEN_DATA_DIR,
+    query_parser=query_parser,
+    run_screening_cb=_run_screening_for_auto,
+    rules_version_cb=lambda: rules_manager.get_active_rules().get("version") or 0,
+    max_runs=settings.AUTO_SCREEN_MAX_RUNS,
+    max_batch=settings.AUTO_SCREEN_MAX_BATCH,
+)
+
+# 单线程 executor：自动筛选只允许一个并发实例（防重入第二道防线）
+auto_screen_executor = ThreadPoolExecutor(max_workers=1)
+
+
+def shutdown_auto_screen_executor() -> None:
+    """服务关闭时调用。"""
+    auto_screen_executor.shutdown(wait=False)
 
 
 def reset_task_statuses_after_restart() -> None:
@@ -419,6 +457,86 @@ async def submit_query(query_request: QueryRequest):
         raise HTTPException(status_code=500, detail="提交查询失败，请稍后重试")
 
 
+def _build_screening_payload(query_metadata: QueryMetadata, query_text: str,
+                             query_id: str, ranked_resumes: List[Dict[str, Any]],
+                             rules_text: str, rules_version: int) -> ScreeningResult:
+    """筛选管线后半段共用（手动 /results 与自动筛选）：分析→格式化→人工纠正覆盖。
+
+    注意：此函数为同步函数，调用方用 run_in_threadpool 包装（与现有调用模式一致）。
+    """
+    # 合并入库时的通用评估到候选人数据（注入分析 prompt 作参考，不覆盖岗位筛选判定）
+    for resume in ranked_resumes:
+        rid = resume.get("id")
+        if rid and rid in resume_storage and resume_storage[rid].get("preclassification"):
+            resume["preclassification"] = resume_storage[rid]["preclassification"]
+
+    analyzed_candidates = candidate_analyzer.analyze_candidates(
+        ranked_resumes, query_metadata, rules_text)
+    formatted_results = result_formatter.format_results(analyzed_candidates, query_metadata)
+
+    # 人工纠正反馈：被纠正过的候选人以人工分类覆盖 AI 分类显示
+    # （按简历匹配，跨查询生效——纠正针对候选人而非某次查询）
+    feedback_map = rules_manager.get_feedback_map_for_resumes()
+
+    candidates = []
+    for candidate_data in formatted_results["candidates"]:
+        basic_info = candidate_data.get("basic_info", {}) or {}
+        scores = candidate_data.get("scores", {}) or {}
+        overall_skill_score = scores.get("skill_score", 0)
+
+        resume_skills = _safe_json_loads(basic_info.get("skills", []), [])
+        skill_scores = _calc_skill_scores(resume_skills, query_metadata, overall_skill_score)
+
+        work_experience = _safe_json_loads(basic_info.get("work_experience", []), [])
+        education = _safe_json_loads(basic_info.get("education", []), [])
+
+        candidate_id = candidate_data.get("id", "")
+        feedback_entry = feedback_map.get(candidate_id)
+
+        classification = candidate_data.get("classification", "review")
+        classification_reason = candidate_data.get("classification_reason", "")
+        classification_source = candidate_data.get("classification_source", "llm")
+        corrected_by_human = False
+        if feedback_entry:
+            # 人工纠正过：以人工分类覆盖显示
+            classification = feedback_entry.get("human_classification", classification)
+            classification_reason = feedback_entry.get("human_reason", "") or classification_reason
+            classification_source = "human"
+            corrected_by_human = True
+
+        candidates.append({
+            "id": candidate_id,
+            "rank": candidate_data.get("rank", 0),
+            "name": candidate_data.get("name", ""),
+            "email": candidate_data.get("contact_info", {}).get("email"),
+            "phone": candidate_data.get("contact_info", {}).get("phone"),
+            "overall_score": scores.get("overall_score", 0),
+            "work_experience": work_experience,
+            "education": education,
+            "skill_scores": skill_scores,
+            "skills": resume_skills,
+            "expected_salary": basic_info.get("expected_salary"),
+            "preferred_locations": basic_info.get("preferred_locations", []),
+            "analysis": candidate_data.get("analysis", ""),
+            "classification": classification,
+            "classification_reason": classification_reason,
+            "classification_source": classification_source,
+            "assessment": candidate_data.get("assessment", {}) or {},
+            "corrected_by_human": corrected_by_human,
+            "strengths": candidate_data.get("strengths", []) or [],
+            "risks": candidate_data.get("risks", []) or [],
+        })
+
+    return ScreeningResult(
+        query_id=query_id,
+        query_text=query_text,
+        total_candidates=formatted_results["total_candidates"],
+        candidates=candidates,
+        created_at=datetime.now(),
+        rules_version_used=rules_version,
+    )
+
+
 @router.get("/results/{query_id}", response_model=ScreeningResult)
 async def get_screening_results(query_id: str):
     """
@@ -445,77 +563,11 @@ async def get_screening_results(query_id: str):
 
         ranked_resumes = await run_in_threadpool(_run_screening_stages, query_metadata)
 
-        # 合并入库时的通用评估到候选人数据（注入分析 prompt 作参考，不覆盖岗位筛选判定）
-        for resume in ranked_resumes:
-            rid = resume.get("id")
-            if rid and rid in resume_storage and resume_storage[rid].get("preclassification"):
-                resume["preclassification"] = resume_storage[rid]["preclassification"]
-
-        analyzed_candidates = await run_in_threadpool(
-            candidate_analyzer.analyze_candidates, ranked_resumes, query_metadata, rules_text)
-        formatted_results = await run_in_threadpool(result_formatter.format_results, analyzed_candidates, query_metadata)
-
-        # 人工纠正反馈：被纠正过的候选人以人工分类覆盖 AI 分类显示
-        # （按简历匹配，跨查询生效——纠正针对候选人而非某次查询）
-        feedback_map = rules_manager.get_feedback_map_for_resumes()
-
-        candidates = []
-        for candidate_data in formatted_results["candidates"]:
-            basic_info = candidate_data.get("basic_info", {}) or {}
-            scores = candidate_data.get("scores", {}) or {}
-            overall_skill_score = scores.get("skill_score", 0)
-
-            resume_skills = _safe_json_loads(basic_info.get("skills", []), [])
-            skill_scores = _calc_skill_scores(resume_skills, query_metadata, overall_skill_score)
-
-            work_experience = _safe_json_loads(basic_info.get("work_experience", []), [])
-            education = _safe_json_loads(basic_info.get("education", []), [])
-
-            candidate_id = candidate_data.get("id", "")
-            feedback_entry = feedback_map.get(candidate_id)
-
-            classification = candidate_data.get("classification", "review")
-            classification_reason = candidate_data.get("classification_reason", "")
-            classification_source = candidate_data.get("classification_source", "llm")
-            corrected_by_human = False
-            if feedback_entry:
-                # 人工纠正过：以人工分类覆盖显示
-                classification = feedback_entry.get("human_classification", classification)
-                classification_reason = feedback_entry.get("human_reason", "") or classification_reason
-                classification_source = "human"
-                corrected_by_human = True
-
-            candidate = {
-                "id": candidate_id,
-                "rank": candidate_data.get("rank", 0),
-                "name": candidate_data.get("name", ""),
-                "email": candidate_data.get("contact_info", {}).get("email"),
-                "phone": candidate_data.get("contact_info", {}).get("phone"),
-                "overall_score": scores.get("overall_score", 0),
-                "work_experience": work_experience,
-                "education": education,
-                "skill_scores": skill_scores,
-                "skills": resume_skills,
-                "expected_salary": basic_info.get("expected_salary"),
-                "preferred_locations": basic_info.get("preferred_locations", []),
-                "analysis": candidate_data.get("analysis", ""),
-                "classification": classification,
-                "classification_reason": classification_reason,
-                "classification_source": classification_source,
-                "assessment": candidate_data.get("assessment", {}) or {},
-                "corrected_by_human": corrected_by_human,
-                "strengths": candidate_data.get("strengths", []) or [],
-                "risks": candidate_data.get("risks", []) or [],
-            }
-            candidates.append(candidate)
-
-        result = ScreeningResult(
-            query_id=query_id,
-            query_text=query_data["text"],
-            total_candidates=formatted_results["total_candidates"],
-            candidates=candidates,
-            created_at=query_data["created_at"],
-            rules_version_used=rules_version,
+        # 筛选管线后半段（分析→格式化→人工纠正覆盖）——与自动筛选共用
+        result = await run_in_threadpool(
+            _build_screening_payload,
+            query_metadata, query_data["text"], query_id, ranked_resumes,
+            rules_text, rules_version,
         )
         if settings.RESULTS_CACHE_ENABLED:
             cache_manager.set(cache_key, result.model_dump(), expire=settings.RESULTS_CACHE_TTL_SECONDS)
@@ -608,11 +660,38 @@ async def batch_delete_resumes(request: BatchDeleteRequest):
 # 邮箱抓取（IMAP）
 # ------------------------------------------------------------------
 
+def _get_ready_resume_ids() -> List[str]:
+    """所有已解析完成（非 parsing/error）的简历 id，按入库时间升序。"""
+    return sorted(
+        (rid for rid in resume_storage
+         if resume_tasks.get(rid, {}).get("status", "ready") == "ready"),
+        key=lambda r: resume_storage[r].get("created_at") or datetime.min)
+
+
+def _auto_screen_after_fetch_worker(ingested_ids: List[str]) -> None:
+    """自动筛选后台线程：先等本次入库简历解析完成（超时则跑已就绪批次，其余下轮自愈）。"""
+    import time as _time
+
+    deadline = _time.time() + settings.AUTO_SCREEN_PARSE_WAIT_SECONDS
+    while _time.time() < deadline:
+        alive = [i for i in ingested_ids if i in resume_storage]
+        if not alive or all(
+            resume_tasks.get(i, {}).get("status", "ready") != "parsing" for i in alive
+        ):
+            break
+        _time.sleep(settings.AUTO_SCREEN_POLL_SECONDS)
+
+    try:
+        auto_screener.run(trigger="after_fetch", ready_resume_ids=_get_ready_resume_ids)
+    except Exception:
+        logger.exception("[auto-screen] after_fetch run crashed")
+
+
 def fetch_emails_and_ingest(limit: int = 10) -> Dict[str, Any]:
     """抓取招聘邮箱未读简历并入库存档（手动 API 与定时任务共用入口）。
 
     流程：抓取未读附件 → 每份简历提交后台解析 → 一封邮件全部提交成功后标记已读
-    （失败留未读，下轮重试，防止丢简历）。
+    （失败留未读，下轮重试，防止丢简历）。抓取完成后自动触发一轮自动筛选。
     """
     if not settings.IMAP_ENABLED or not settings.IMAP_HOST:
         raise ValueError("IMAP 未配置（IMAP_ENABLED/IMAP_HOST）")
@@ -661,6 +740,14 @@ def fetch_emails_and_ingest(limit: int = 10) -> Dict[str, Any]:
 
     logger.info(f"Email fetch: {len(results)} emails, "
                 f"{sum(len(r['resumes']) for r in results)} resumes ingested")
+
+    # 自动筛选触发：抓取后对新简历跑一轮完整筛选（无人值守）
+    if settings.AUTO_SCREEN_ENABLED:
+        all_ingested = [r["resume_id"] for mail in results for r in mail.get("resumes", [])]
+        auto_screener.record_fetch()
+        auto_screen_executor.submit(_auto_screen_after_fetch_worker, all_ingested)
+        logger.info(f"[auto-screen] triggered after fetch ({len(all_ingested)} resumes)")
+
     return {"fetched": len(results), "results": results}
 
 
@@ -857,3 +944,64 @@ async def summarize_rules(request: RulesSummarizeRequest):
     except Exception as e:
         logger.exception("规则总结失败")
         raise HTTPException(status_code=502, detail=f"规则总结失败，请稍后重试: {e}")
+
+
+# ------------------------------------------------------------------
+# 全流程自动筛选 API
+# ------------------------------------------------------------------
+
+@router.get("/auto-screen/query", response_model=AutoScreenQueryResponse)
+async def get_auto_screen_query():
+    """读取默认岗位要求（自动筛选用）。"""
+    data = await run_in_threadpool(auto_screener.get_default_query)
+    return AutoScreenQueryResponse(**data)
+
+
+@router.put("/auto-screen/query", response_model=AutoScreenQueryResponse)
+async def set_auto_screen_query(request: AutoScreenQueryUpdate):
+    """保存默认岗位要求（空文本 → 400）。"""
+    try:
+        data = await run_in_threadpool(auto_screener.set_default_query, request.query_text)
+        return AutoScreenQueryResponse(**data)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.exception("保存默认岗位要求失败")
+        raise HTTPException(status_code=500, detail=f"保存失败: {e}")
+
+
+@router.post("/auto-screen/run", response_model=AutoScreenRunResponse)
+async def run_auto_screen():
+    """手动触发一轮自动筛选（异步后台执行 / 同步等待，按配置）。"""
+    if not settings.AUTO_SCREEN_ENABLED:
+        raise HTTPException(status_code=400, detail="自动筛选未启用（AUTO_SCREEN_ENABLED=false）")
+
+    if settings.AUTO_SCREEN_ASYNC:
+        if auto_screener.is_running():
+            return AutoScreenRunResponse(status="already_running", message="自动筛选正在运行中")
+        auto_screen_executor.submit(
+            auto_screener.run, "manual", _get_ready_resume_ids)
+        return AutoScreenRunResponse(status="started", message="自动筛选已开始，完成后刷新面板查看结果")
+
+    # 同步模式（测试用）
+    record = await run_in_threadpool(auto_screener.run, "manual", _get_ready_resume_ids)
+    return AutoScreenRunResponse(
+        status=record.get("status", "completed"),
+        run_id=record.get("run_id"),
+        message=f"自动筛选完成：{record.get('screened_count', 0)} 份简历",
+    )
+
+
+@router.get("/auto-screen/results", response_model=AutoScreenResultsResponse)
+async def get_auto_screen_results(limit: int = 20):
+    """最近自动筛选运行记录（最新在前，含候选人）。"""
+    runs = await run_in_threadpool(auto_screener.list_runs, limit)
+    return AutoScreenResultsResponse(runs=runs)
+
+
+@router.get("/auto-screen/status", response_model=AutoScreenStatusResponse)
+async def get_auto_screen_status():
+    """自动筛选状态（面板顶部状态行）。"""
+    status = await run_in_threadpool(auto_screener.get_status)
+    status["enabled"] = settings.AUTO_SCREEN_ENABLED
+    return AutoScreenStatusResponse(**status)

@@ -8,6 +8,38 @@ class BatchDeleteRequest(BaseModel):
     ids: List[str] = []
 
 
+class AutoScreenQueryUpdate(BaseModel):
+    """默认岗位要求保存请求"""
+    query_text: str
+
+
+class AutoScreenQueryResponse(BaseModel):
+    """默认岗位要求响应"""
+    query_text: str = ""
+    updated_at: Optional[datetime] = None
+
+
+class AutoScreenRunResponse(BaseModel):
+    """自动筛选触发响应"""
+    status: str  # started / already_running / 同步模式返回 run 的 status
+    run_id: Optional[str] = None
+    message: str = ""
+
+
+class AutoScreenStatusResponse(BaseModel):
+    """自动筛选状态响应"""
+    enabled: bool
+    running: bool
+    default_query_set: bool
+    last_fetch_at: Optional[str] = None
+    last_run: Optional[Dict[str, Any]] = None
+
+
+class AutoScreenResultsResponse(BaseModel):
+    """自动筛选结果响应"""
+    runs: List[Dict[str, Any]] = []
+
+
 class UploadResumeResponse(BaseModel):
     """上传简历响应模型"""
     resume_id: str

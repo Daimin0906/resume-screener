@@ -22,6 +22,8 @@ os.environ.setdefault("RESULTS_CACHE_ENABLED", "false")
 # 测试固定走云端 embedding 分支（FakeEmbeddings 会替换 OpenAIEmbeddings），
 # 避免加载本地模型或真实网络调用
 os.environ.setdefault("EMBEDDING_BACKEND", "openai")
+# 自动筛选 API 测试同步执行（确定性），数据目录由 isolated_auto_screen_dir 隔离
+os.environ.setdefault("AUTO_SCREEN_ASYNC", "false")
 
 import pytest
 
@@ -95,3 +97,19 @@ def isolated_cache_dir(monkeypatch, tmp_path):
     manager = routes.CacheManager(str(tmp_path / "cache"))
     monkeypatch.setattr(routes, "cache_manager", manager)
     return manager
+
+
+@pytest.fixture(autouse=True)
+def isolated_auto_screen_dir(monkeypatch, tmp_path):
+    """所有测试将自动筛选数据目录隔离到 tmp_path，避免污染真实 data/。"""
+    from app.api import routes
+    from app.core.auto_screener import AutoScreener
+
+    screener = AutoScreener(
+        str(tmp_path / "auto_data"),
+        routes.query_parser,
+        run_screening_cb=lambda qm, ids: {"total_candidates": 0, "candidates": []},
+        rules_version_cb=lambda: 0,
+    )
+    monkeypatch.setattr(routes, "auto_screener", screener)
+    return screener
