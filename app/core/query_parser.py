@@ -9,11 +9,16 @@ class QueryParser:
     """
     查询解析器，用于解析HR的自然语言查询
     """
-    
+
+    # 必需技能数量上限（超过则截断并降级为优先技能）。
+    # 代码层兜底：部分模型（如免费 glm-4-flash）不严格遵守提示词约束，
+    # 若不由代码截断，10+ 个必需技能配合命中比例阈值会误杀所有候选人。
+    MAX_REQUIRED_SKILLS = 5
+
     def __init__(self, llm_client: LLMClient):
         """
         初始化查询解析器
-        
+
         Args:
             llm_client (LLMClient): LLM客户端实例
         """
@@ -39,7 +44,21 @@ class QueryParser:
             
             # 解析响应为JSON
             query_dict = self._parse_response(response)
-            
+
+            # 代码层兜底：必需技能超上限时截断，多余技能降级为优先技能
+            # （不依赖模型遵守提示词约束，保证 filter 的命中比例阈值不被撑爆）
+            required = query_dict.get("required_skills") or []
+            if isinstance(required, list) and len(required) > self.MAX_REQUIRED_SKILLS:
+                extra = required[self.MAX_REQUIRED_SKILLS:]
+                query_dict["required_skills"] = required[: self.MAX_REQUIRED_SKILLS]
+                query_dict["preferred_skills"] = (
+                    list(query_dict.get("preferred_skills") or []) + extra
+                )
+                logger.info(
+                    f"Required skills truncated from {len(required)} to "
+                    f"{self.MAX_REQUIRED_SKILLS}; {len(extra)} moved to preferred"
+                )
+
             # 创建QueryMetadata对象
             query_metadata = QueryMetadata(**query_dict)
             

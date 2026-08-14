@@ -3,6 +3,7 @@
 """
 import pytest
 import os
+import json
 from unittest.mock import patch, MagicMock
 
 from app.core.query_parser import QueryParser
@@ -52,6 +53,36 @@ class TestQueryParser:
         assert "最多5个" in prompt
         assert "脚本编写" in prompt          # 职责描述词示例被明确排除
         assert "除核心必需技能外" in prompt  # 其余技能归入优先
+
+    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key", "OPENAI_BASE_URL": "https://test.url/v1"})
+    @patch("app.core.query_parser.LLMClient")
+    def test_parse_query_truncates_excess_required_skills(self, mock_llm_client_class):
+        """模型不遵守约束时，代码层强制截断必需技能（>5 降级为优先技能）"""
+        mock_llm = MagicMock()
+        mock_llm.generate_text.return_value = json.dumps({
+            "required_skills": ["S1", "S2", "S3", "S4", "S5", "S6", "S7"],
+            "preferred_skills": ["P1"],
+        }, ensure_ascii=False)
+        mock_llm_client_class.return_value = mock_llm
+        parser = QueryParser(mock_llm)
+
+        md = parser.parse_query("测试")
+        assert md.required_skills == ["S1", "S2", "S3", "S4", "S5"]
+        assert set(md.preferred_skills) == {"P1", "S6", "S7"}
+
+    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key", "OPENAI_BASE_URL": "https://test.url/v1"})
+    @patch("app.core.query_parser.LLMClient")
+    def test_parse_query_keeps_within_limit(self, mock_llm_client_class):
+        """必需技能未超上限时不做截断"""
+        mock_llm = MagicMock()
+        mock_llm.generate_text.return_value = json.dumps({
+            "required_skills": ["Python", "FastAPI", "RAG"],
+        }, ensure_ascii=False)
+        mock_llm_client_class.return_value = mock_llm
+        parser = QueryParser(mock_llm)
+
+        md = parser.parse_query("测试")
+        assert md.required_skills == ["Python", "FastAPI", "RAG"]
 
     def test_parse_response(self):
         """测试解析响应"""
