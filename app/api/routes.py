@@ -414,7 +414,8 @@ async def upload_resume(file: UploadFile = File(...)):
         "filename": file.filename,
         "text": "",
         "metadata": {},
-        "created_at": datetime.now()
+        "created_at": datetime.now(),
+        "source": "manual",
     }
     resume_tasks[resume_id] = {"status": "parsing", "error": None}
 
@@ -525,6 +526,8 @@ def _build_screening_payload(query_metadata: QueryMetadata, query_text: str,
             "name": candidate_data.get("name", ""),
             "email": candidate_data.get("contact_info", {}).get("email"),
             "phone": candidate_data.get("contact_info", {}).get("phone"),
+            # 简历来源（manual 手动上传 / email 邮箱抓取），前端按来源分组展示
+            "source": resume_storage.get(candidate_id, {}).get("source", "manual"),
             "overall_score": scores.get("overall_score", 0),
             "work_experience": work_experience,
             "education": education,
@@ -636,6 +639,7 @@ async def delete_resume(resume_id: str):
 
     try:
         del resume_storage[resume_id]
+        resume_tasks.pop(resume_id, None)
         await run_in_threadpool(vector_store_manager.delete_documents, "resumes", [resume_id])
         logger.info(f"Deleted resume {resume_id}")
         return {"message": "简历已删除"}
@@ -768,6 +772,7 @@ def fetch_emails_and_ingest(limit: int = 10) -> Dict[str, Any]:
                 "text": "",
                 "metadata": {},
                 "created_at": datetime.now(),
+                "source": "email",
             }
             resume_tasks[resume_id] = {"status": "parsing", "error": None}
             upload_executor.submit(_process_resume_sync, resume_id, att["filename"], att["content_bytes"], "email")
@@ -946,8 +951,9 @@ async def compare_rules(request: RulesCompareRequest):
             distributions["base"][base_cls] = distributions["base"].get(base_cls, 0) + 1
             distributions["current"][curr_cls] = distributions["current"].get(curr_cls, 0) + 1
             changed = base_cls != curr_cls
-            if changed or True:
-                deltas.append({
+            # deltas 保留全部候选人（前端按 changed 过滤展示），
+            # compared_count 统计的是对比总人数
+            deltas.append({
                     "resume_id": rid,
                     "name": c.get("metadata", {}).get("name") or curr.get("metadata", {}).get("name"),
                     "base_classification": base_cls,
@@ -1156,7 +1162,11 @@ async def test_email_config():
             raise HTTPException(status_code=400, detail="邮箱配置不完整（缺少 host/user/password）")
 
         import imaplib
-        conn = imaplib.IMAP4_SSL(cfg["host"], int(cfg.get("port") or 993))
+        if cfg.get("ssl", True):
+            conn = imaplib.IMAP4_SSL(cfg["host"], int(cfg.get("port") or 993))
+        else:
+            # 非 SSL（如内网/自建 143 端口），按配置走明文 IMAP
+            conn = imaplib.IMAP4(cfg["host"], int(cfg.get("port") or 143))
         conn.login(cfg["user"], cfg["password"])
         conn.select(cfg.get("mailbox", "INBOX"), readonly=True)
         conn.logout()
@@ -1204,8 +1214,34 @@ async def run_workflow():
         raise HTTPException(status_code=500, detail=f"工作流失败: {e}")
 
 
+@router.post("/screen/run")
+async def run_screen():
+    """统一筛选：对所有已就绪且未处理过的简历（手动上传 + 邮箱抓取）跑一轮完整筛选。
+
+    手动上传与邮箱抓取的简历共用同一套智能体筛选流水线，
+    trigger 标记为 screen；结果按候选人 source（manual/email）分组展示。
+    """
+    if not settings.AUTO_SCREEN_ENABLED:
+        raise HTTPException(status_code=400, detail="自动筛选未启用")
+
+    if auto_screener.is_running():
+        return {"status": "already_running", "message": "筛选正在运行中"}
+
+    if settings.AUTO_SCREEN_ASYNC:
+        auto_screen_executor.submit(auto_screener.run, "screen", _get_ready_resume_ids)
+        return {"status": "started", "message": "筛选已开始，完成后刷新查看结果"}
+
+    record = await run_in_threadpool(auto_screener.run, "screen", _get_ready_resume_ids)
+    return {
+        "status": record.get("status", "completed"),
+        "screened_count": record.get("screened_count", 0),
+        "message": f"筛选完成：{record.get('screened_count', 0)} 份简历",
+    }
+
+
 # ------------------------------------------------------------------
 # 手动筛选工作流（手动上传的简历，独立于邮箱自动筛选）
+# 注：保留以兼容旧客户端/测试；前端已统一使用 /screen/run
 # ------------------------------------------------------------------
 
 def _get_ready_manual_resume_ids() -> List[str]:

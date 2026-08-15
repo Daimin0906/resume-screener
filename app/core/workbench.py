@@ -112,6 +112,7 @@ class Workbench:
                 by_resume[rid] = {
                     "resume_id": rid,
                     "name": c.get("name") or "",
+                    "source": c.get("source", "manual"),
                     "classification": c.get("classification", "review"),
                     "classification_reason": c.get("classification_reason", ""),
                     "overall_score": c.get("overall_score", 0) or 0,

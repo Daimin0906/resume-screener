@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "candidates": {
+    "212fb9d7-3039-49d7-9486-77365dfd9d76": {
+      "status": "interview",
+      "updated_at": "2026-08-14T21:50:15"
+    },
+    "e1419039-f64b-4631-8c9b-a8e9efa4acfb": {
+      "status": "interview",
+      "updated_at": "2026-08-14T21:50:18"
+    },
+    "c4f4cfec-2fdb-4cfd-865a-937f75cae9bf": {
+      "status": "review",
+      "updated_at": "2026-08-14T21:50:22"
+    },
+    "8706641a-3afc-46b1-99a4-43c54b8414ac": {
+      "status": "review",
+      "updated_at": "2026-08-14T21:50:27"
+    },
+    "08254c74-b101-4512-b958-d99aa296af72": {
+      "status": "review",
+      "updated_at": "2026-08-14T21:50:28"
+    }
+  }
+}

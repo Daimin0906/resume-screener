@@ -1,0 +1,2816 @@
+﻿EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE [ 33%]
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE [ 67%]
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE    [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_candidate_analysis_and_result_formatting_integration _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of TestCandidateAnalyzer.test_init ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestCandidateAnalyzer.test_analyze_candidate ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestCandidateAnalyzer.test_analyze_candidates _______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestCandidateAnalyzer.test_format_work_experience _____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestCandidateAnalyzer.test_format_education ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestCandidateAnalyzerClassification.test_valid_json_classification _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestCandidateAnalyzerClassification.test_code_fence_wrapped_json _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestCandidateAnalyzerClassification.test_free_text_fallback_to_heuristic _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestCandidateAnalyzerClassification.test_json_with_surrounding_noise _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestCandidateAnalyzerClassification.test_low_score_heuristic_reject _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestCandidateAnalyzerClassification.test_rules_text_injected_into_prompt _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestCandidateAnalyzerClassification.test_prompt_contains_projects_and_quality_dimensions _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestAnalyzerGenericMode.test_analyze_with_none_query_metadata _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestAnalyzerGenericMode.test_generic_prompt_contains_generic_mode_text _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestAnalyzerGenericMode.test_generic_prompt_reuses_dimensions _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestAnalyzerGenericMode.test_generic_mode_rules_text_injected _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestAnalyzerGenericMode.test_non_generic_prompt_unchanged _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestAnalyzerGenericMode.test_analyze_candidates_batch_generic _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestAnalyzerGenericMode.test_preclassification_injected_into_prompt _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestAnalyzerGenericMode.test_no_preclassification_no_section _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________________ ERROR at setup of TestAPI.test_health_check _________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________________ ERROR at setup of TestAPI.test_upload_resume _________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________________ ERROR at setup of TestAPI.test_submit_query _________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of TestAPI.test_get_screening_results _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestAPI.test_get_resume_not_found _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestAPI.test_delete_resume_not_found ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________________ ERROR at setup of TestAPI.test_delete_resume _________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestAPI.test_batch_delete_resumes _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of TestAPI.test_batch_delete_empty_ids ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestAPI.test_get_screening_results_not_found ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____ ERROR at setup of TestFeedbackAndRulesAPI.test_submit_feedback_valid _____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestFeedbackAndRulesAPI.test_submit_feedback_invalid_classification _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___ ERROR at setup of TestFeedbackAndRulesAPI.test_get_rules_initial_state ____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestFeedbackAndRulesAPI.test_summarize_rules_insufficient _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___ ERROR at setup of TestFeedbackAndRulesAPI.test_summarize_rules_success ____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestFeedbackAndRulesAPI.test_feedback_overrides_result_display _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestFeedbackAndRulesAPI.test_feedback_list _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___ ERROR at setup of TestAsyncUpload.test_async_upload_parsing_then_ready ____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______ ERROR at setup of TestAsyncUpload.test_async_upload_error_status _______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestAsyncUpload.test_sync_upload_status_ready _______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestAsyncUpload.test_status_not_found ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__ ERROR at setup of TestAsyncUpload.test_reset_task_statuses_after_restart ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of TestDefaultQuery.test_empty_initial ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestDefaultQuery.test_set_and_get _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestDefaultQuery.test_set_empty_rejected __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______ ERROR at setup of TestDefaultQuery.test_persists_across_instances ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestState.test_processed_mark_and_check __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestState.test_prune_removes_deleted ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestState.test_state_persists _______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestRun.test_run_screens_new_resumes ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestRun.test_run_skips_no_new _______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestRun.test_run_screens_only_new _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of TestRun.test_run_no_query_skips ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________________ ERROR at setup of TestRun.test_run_batch_cap _________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestRun.test_run_failure_records_failed __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestRun.test_run_reentrancy_skips _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of TestRun.test_distributions_counted _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___ ERROR at setup of TestPersistence.test_results_persist_across_instances ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestPersistence.test_results_keep_recent_n _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestPersistence.test_skipped_running_not_appended _____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestManualScreenAPI.test_manual_screen_screens_only_manual _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestAutoScreenAPI.test_query_endpoints_roundtrip ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestAutoScreenAPI.test_put_empty_rejected _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestAutoScreenAPI.test_manual_run_endpoint _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestAutoScreenAPI.test_results_empty_initial ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestAutoScreenAPI.test_status_endpoint ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__ ERROR at setup of TestClassificationFlow.test_full_classification_fields ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestClassificationFlow.test_rules_text_injected_into_analyzer _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___ ERROR at setup of TestClassificationFlow.test_legacy_free_text_fallback ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestVectorStoreManager.test_init ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___ ERROR at setup of TestVectorStoreManager.test_create_and_get_collection ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestVectorStoreManager.test_list_collections ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____ ERROR at setup of TestVectorStoreManager.test_add_and_query_documents ____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________________ ERROR at setup of TestLLMClient.test_init __________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestLLMClient.test_generate_text ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestDocumentParser.test_init ________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________________ ERROR at setup of TestCacheManager.test_init _________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestCacheManager.test_set_and_get _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestCacheManager.test_delete ________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestMetadataModels.test_resume_metadata __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestMetadataModels.test_query_metadata ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestDocumentParser.test_init ________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of TestMetadataExtractor.test_init ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestMetadataExtractor.test_extract_metadata ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestMetadataExtractor.test_parse_response _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__ ERROR at setup of TestMetadataExtractor.test_parse_response_invalid_json ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___ ERROR at setup of TestMetadataExtractor.test_parse_response_code_fence ____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestMetadataExtractor.test_parse_response_with_control_chars _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___ ERROR at setup of TestDocumentParserRobustness.test_clean_control_chars ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestDocumentParserRobustness.test_is_garbled_normal_text __
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestDocumentParserRobustness.test_is_garbled_scanned_pdf __
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestDocumentParserRobustness.test_parse_pdf_rejects_garbled _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestDocumentParserRobustness.test_parse_pdf_cleans_control_chars _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___ ERROR at setup of TestEmailFetcher.test_fetch_new_extracts_attachments ____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____ ERROR at setup of TestEmailFetcher.test_skips_non_resume_attachments _____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestEmailFetcher.test_skips_oversized_attachment ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of TestEmailFetcher.test_mark_read ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______ ERROR at setup of TestEmailFetcher.test_connection_failure_raises ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestEmailFetchAPI.test_email_fetch_not_configured _____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestEmailFetchAPI.test_email_fetch_success _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________________ ERROR at setup of test_end_to_end_pipeline __________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________________ ERROR at setup of TestHardFilter.test_init __________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestHardFilter.test_filter_by_experience __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestHardFilter.test_filter_by_education __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestHardFilter.test_filter_by_skills ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__ ERROR at setup of TestHardFilter.test_filter_by_skills_partial_hit_ratio ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestHardFilter.test_filter_by_skills_ratio_below_threshold _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____ ERROR at setup of TestHardFilter.test_filter_by_skills_empty_required ____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestHardFilter.test_filter_by_locations __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestHardFilter.test_filter_by_languages __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestHardFilter.test_filter_by_certifications ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of TestHardFilter.test_filter_resumes _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of TestHardFilter.test_parse_year _______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestHardFilter.test_filter_by_experience_present ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________________ ERROR at setup of test_full_system_pipeline _________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of test_document_parsing_and_metadata_extraction _______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of test_create_and_list_collection ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of test_add_and_query_documents ________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of test_upsert_overwrites_same_id _______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________________ ERROR at setup of test_delete_collection ___________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of test_multi_stage_filtering_integration ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________________ ERROR at setup of test_placeholder ______________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestPreclassification.test_upload_with_preclassify_enabled _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__ ERROR at setup of TestPreclassification.test_upload_preclassify_disabled ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestPreclassification.test_preclassify_failure_does_not_fail_upload _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestPreclassification.test_preclassify_pending_only_missing _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____ ERROR at setup of TestPreclassification.test_preclassify_pending_none ____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of test_query_parsing_integration _______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________________ ERROR at setup of TestQueryParser.test_init _________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestQueryParser.test_parse_query ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestQueryParser.test_parsing_prompt_limits_required_skills _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestQueryParser.test_parse_query_truncates_excess_required_skills _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____ ERROR at setup of TestQueryParser.test_parse_query_keeps_within_limit ____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestQueryParser.test_parse_query_filters_placeholder_values _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of TestQueryParser.test_parse_response ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestQueryParser.test_parse_response_invalid_json ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________________ ERROR at setup of TestRanker.test_init ____________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestRanker.test_rank_resumes ________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of TestRanker.test_get_top_resumes ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of TestRanker.test_filter_by_threshold ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestResultFormatter.test_init _______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestResultFormatter.test_format_results __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestResultFormatter.test_format_query ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestResultFormatter.test_format_candidates _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestResultFormatter.test_generate_summary _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestResultFormatter.test_export_to_json __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestResultFormatter.test_export_to_text __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__ ERROR at setup of TestResultsCache.test_cache_hit_avoids_second_analysis ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestResultsCache.test_feedback_invalidates_cache ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__ ERROR at setup of TestResultsCache.test_cache_key_includes_rules_version ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______ ERROR at setup of TestResultsCache.test_cache_disabled_by_default ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________________ ERROR at setup of test_retrieval_integration _________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________________ ERROR at setup of TestRetriever.test_init __________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestRetriever.test_add_resume _______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________________ ERROR at setup of TestRetriever.test_retrieve ________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestRetriever.test_convert_query_to_text __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestRetriever.test_format_results _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestRetriever.test_format_results_empty __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestRulesCompare.test_compare_requires_one_param ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestRulesCompare.test_compare_query_not_found _______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______ ERROR at setup of TestRulesCompare.test_compare_two_rule_versions ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestRulesCompare.test_compare_with_resume_ids_skips_retrieval _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestRulesCompare.test_compare_no_candidates ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestAddFeedback.test_add_feedback_valid __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestAddFeedback.test_add_feedback_invalid_classification __
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestAddFeedback.test_add_feedback_trim ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______ ERROR at setup of TestAddFeedback.test_list_feedback_newest_first ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______ ERROR at setup of TestAddFeedback.test_get_feedback_map_by_query _______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestAddFeedback.test_get_feedback_map_latest_wins _____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestAddFeedback.test_concurrent_add_feedback ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestRulesPersistence.test_get_active_rules_default_when_missing _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestRulesPersistence.test_active_rules_text_empty_when_no_rules _
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____ ERROR at setup of TestRulesPersistence.test_corrupted_file_backed_up _____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestRulesPersistence.test_pending_feedback_count ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestSummarizeRules.test_insufficient_feedback _______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestSummarizeRules.test_summarize_success _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestSummarizeRules.test_summarize_with_code_fence _____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__ ERROR at setup of TestSummarizeRules.test_summarize_unparseable_no_write ___
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestSummarizeRules.test_rules_trim_to_max _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______ ERROR at setup of TestScheduler.test_create_scheduler_disabled ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestScheduler.test_create_scheduler_enabled ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestScheduler.test_create_scheduler_import_error ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestScheduler.test_register_jobs ______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______ ERROR at setup of TestScheduler.test_register_jobs_without_email _______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________________ ERROR at setup of TestScorer.test_init ____________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestScorer.test_calculate_skill_score ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestScorer.test_calculate_skill_score_fuzzy ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestScorer.test_calculate_industry_score __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestScorer.test_calculate_salary_score ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestScorer.test_parse_salary ________________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestScorer.test_calculate_education_score _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestScorer.test_calculate_location_score __________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______ ERROR at setup of TestScorer.test_calculate_location_score_fuzzy _______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of TestScorer.test_calculate_tag_score ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+________ ERROR at setup of TestScorer.test_calculate_tag_score_partial ________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_______________ ERROR at setup of TestScorer.test_score_resumes _______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of test_factory_default_returns_chroma ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of test_factory_unknown_falls_back_to_chroma _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+______________ ERROR at setup of test_factory_milvus_dispatches _______________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of test_factory_reads_settings_default ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestWorkbenchStatus.test_set_and_get ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestWorkbenchStatus.test_invalid_status_rejected ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____________ ERROR at setup of TestWorkbenchStatus.test_persists _____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestWorkbenchAggregate.test_aggregate_dedup_keeps_latest __
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestWorkbenchAggregate.test_aggregate_work_status _____
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_____ ERROR at setup of TestWorkbenchAggregate.test_export_interview_csv ______
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_ ERROR at setup of TestWorkbenchAggregate.test_export_with_manual_interview __
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestWorkbenchAPI.test_workbench_empty ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+_________ ERROR at setup of TestWorkbenchAPI.test_workbench_with_runs _________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+____________ ERROR at setup of TestWorkbenchAPI.test_update_status ____________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+___________ ERROR at setup of TestWorkbenchAPI.test_export_endpoint ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+__________ ERROR at setup of TestWorkbenchAPI.test_export_empty_404 ___________
+D:\SoftWare\Python\Lib\shutil.py:631: in _rmtree_unsafe
+    os.rmdir(path)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+
+During handling of the above exception, another exception occurred:
+D:\SoftWare\Python\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\SoftWare\Python\Lib\shutil.py:635: in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+E   PermissionError: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  D:\Project\LLM-Agent-Resume\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/test_analysis_integration.py: 1 warning
+tests/test_analyzer.py: 12 warnings
+tests/test_analyzer_generic_mode.py: 8 warnings
+tests/test_api.py: 17 warnings
+tests/test_async_upload.py: 5 warnings
+tests/test_auto_screen.py: 24 warnings
+tests/test_classification_flow.py: 3 warnings
+tests/test_core_modules.py: 12 warnings
+tests/test_document_parsing.py: 12 warnings
+tests/test_email_fetcher.py: 7 warnings
+tests/test_end_to_end.py: 1 warning
+tests/test_filter.py: 13 warnings
+tests/test_full_system.py: 1 warning
+tests/test_integration.py: 1 warning
+tests/test_milvus_store.py: 4 warnings
+tests/test_multi_stage_filtering.py: 1 warning
+tests/test_placeholder.py: 1 warning
+tests/test_preclassification.py: 5 warnings
+tests/test_query_integration.py: 1 warning
+tests/test_query_parser.py: 8 warnings
+tests/test_ranker.py: 4 warnings
+tests/test_result_formatter.py: 7 warnings
+tests/test_results_cache.py: 4 warnings
+tests/test_retrieval_integration.py: 1 warning
+tests/test_retriever.py: 6 warnings
+tests/test_rules_compare.py: 5 warnings
+tests/test_rules_manager.py: 16 warnings
+tests/test_scheduler.py: 5 warnings
+tests/test_scorer.py: 12 warnings
+tests/test_vector_store_factory.py: 4 warnings
+tests/test_workbench.py: 12 warnings
+  D:\Project\LLM-Agent-Resume\.venv\Lib\site-packages\_pytest\pathlib.py:102: PytestWarning: (rm_rf) unknown function <built-in function scandir> when removing \\?\D:\Project\LLM-Agent-Resume\.pytest_tmp:
+  <class 'PermissionError'>: [WinError 5] �ܾ����ʡ�: '\\\\?\\D:\\Project\\LLM-Agent-Resume\\.pytest_tmp'
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR tests/test_analysis_integration.py::test_candidate_analysis_and_result_formatting_integration
+ERROR tests/test_analyzer.py::TestCandidateAnalyzer::test_init - PermissionEr...
+ERROR tests/test_analyzer.py::TestCandidateAnalyzer::test_analyze_candidate
+ERROR tests/test_analyzer.py::TestCandidateAnalyzer::test_analyze_candidates
+ERROR tests/test_analyzer.py::TestCandidateAnalyzer::test_format_work_experience
+ERROR tests/test_analyzer.py::TestCandidateAnalyzer::test_format_education - ...
+ERROR tests/test_analyzer.py::TestCandidateAnalyzerClassification::test_valid_json_classification
+ERROR tests/test_analyzer.py::TestCandidateAnalyzerClassification::test_code_fence_wrapped_json
+ERROR tests/test_analyzer.py::TestCandidateAnalyzerClassification::test_free_text_fallback_to_heuristic
+ERROR tests/test_analyzer.py::TestCandidateAnalyzerClassification::test_json_with_surrounding_noise
+ERROR tests/test_analyzer.py::TestCandidateAnalyzerClassification::test_low_score_heuristic_reject
+ERROR tests/test_analyzer.py::TestCandidateAnalyzerClassification::test_rules_text_injected_into_prompt
+ERROR tests/test_analyzer.py::TestCandidateAnalyzerClassification::test_prompt_contains_projects_and_quality_dimensions
+ERROR tests/test_analyzer_generic_mode.py::TestAnalyzerGenericMode::test_analyze_with_none_query_metadata
+ERROR tests/test_analyzer_generic_mode.py::TestAnalyzerGenericMode::test_generic_prompt_contains_generic_mode_text
+ERROR tests/test_analyzer_generic_mode.py::TestAnalyzerGenericMode::test_generic_prompt_reuses_dimensions
+ERROR tests/test_analyzer_generic_mode.py::TestAnalyzerGenericMode::test_generic_mode_rules_text_injected
+ERROR tests/test_analyzer_generic_mode.py::TestAnalyzerGenericMode::test_non_generic_prompt_unchanged
+ERROR tests/test_analyzer_generic_mode.py::TestAnalyzerGenericMode::test_analyze_candidates_batch_generic
+ERROR tests/test_analyzer_generic_mode.py::TestAnalyzerGenericMode::test_preclassification_injected_into_prompt
+ERROR tests/test_analyzer_generic_mode.py::TestAnalyzerGenericMode::test_no_preclassification_no_section
+ERROR tests/test_api.py::TestAPI::test_health_check - PermissionError: [WinEr...
+ERROR tests/test_api.py::TestAPI::test_upload_resume - PermissionError: [WinE...
+ERROR tests/test_api.py::TestAPI::test_submit_query - PermissionError: [WinEr...
+ERROR tests/test_api.py::TestAPI::test_get_screening_results - PermissionErro...
+ERROR tests/test_api.py::TestAPI::test_get_resume_not_found - PermissionError...
+ERROR tests/test_api.py::TestAPI::test_delete_resume_not_found - PermissionEr...
+ERROR tests/test_api.py::TestAPI::test_delete_resume - PermissionError: [WinE...
+ERROR tests/test_api.py::TestAPI::test_batch_delete_resumes - PermissionError...
+ERROR tests/test_api.py::TestAPI::test_batch_delete_empty_ids - PermissionErr...
+ERROR tests/test_api.py::TestAPI::test_get_screening_results_not_found - Perm...
+ERROR tests/test_api.py::TestFeedbackAndRulesAPI::test_submit_feedback_valid
+ERROR tests/test_api.py::TestFeedbackAndRulesAPI::test_submit_feedback_invalid_classification
+ERROR tests/test_api.py::TestFeedbackAndRulesAPI::test_get_rules_initial_state
+ERROR tests/test_api.py::TestFeedbackAndRulesAPI::test_summarize_rules_insufficient
+ERROR tests/test_api.py::TestFeedbackAndRulesAPI::test_summarize_rules_success
+ERROR tests/test_api.py::TestFeedbackAndRulesAPI::test_feedback_overrides_result_display
+ERROR tests/test_api.py::TestFeedbackAndRulesAPI::test_feedback_list - Permis...
+ERROR tests/test_async_upload.py::TestAsyncUpload::test_async_upload_parsing_then_ready
+ERROR tests/test_async_upload.py::TestAsyncUpload::test_async_upload_error_status
+ERROR tests/test_async_upload.py::TestAsyncUpload::test_sync_upload_status_ready
+ERROR tests/test_async_upload.py::TestAsyncUpload::test_status_not_found - Pe...
+ERROR tests/test_async_upload.py::TestAsyncUpload::test_reset_task_statuses_after_restart
+ERROR tests/test_auto_screen.py::TestDefaultQuery::test_empty_initial - Permi...
+ERROR tests/test_auto_screen.py::TestDefaultQuery::test_set_and_get - Permiss...
+ERROR tests/test_auto_screen.py::TestDefaultQuery::test_set_empty_rejected - ...
+ERROR tests/test_auto_screen.py::TestDefaultQuery::test_persists_across_instances
+ERROR tests/test_auto_screen.py::TestState::test_processed_mark_and_check - P...
+ERROR tests/test_auto_screen.py::TestState::test_prune_removes_deleted - Perm...
+ERROR tests/test_auto_screen.py::TestState::test_state_persists - PermissionE...
+ERROR tests/test_auto_screen.py::TestRun::test_run_screens_new_resumes - Perm...
+ERROR tests/test_auto_screen.py::TestRun::test_run_skips_no_new - PermissionE...
+ERROR tests/test_auto_screen.py::TestRun::test_run_screens_only_new - Permiss...
+ERROR tests/test_auto_screen.py::TestRun::test_run_no_query_skips - Permissio...
+ERROR tests/test_auto_screen.py::TestRun::test_run_batch_cap - PermissionErro...
+ERROR tests/test_auto_screen.py::TestRun::test_run_failure_records_failed - P...
+ERROR tests/test_auto_screen.py::TestRun::test_run_reentrancy_skips - Permiss...
+ERROR tests/test_auto_screen.py::TestRun::test_distributions_counted - Permis...
+ERROR tests/test_auto_screen.py::TestPersistence::test_results_persist_across_instances
+ERROR tests/test_auto_screen.py::TestPersistence::test_results_keep_recent_n
+ERROR tests/test_auto_screen.py::TestPersistence::test_skipped_running_not_appended
+ERROR tests/test_auto_screen.py::TestManualScreenAPI::test_manual_screen_screens_only_manual
+ERROR tests/test_auto_screen.py::TestAutoScreenAPI::test_query_endpoints_roundtrip
+ERROR tests/test_auto_screen.py::TestAutoScreenAPI::test_put_empty_rejected
+ERROR tests/test_auto_screen.py::TestAutoScreenAPI::test_manual_run_endpoint
+ERROR tests/test_auto_screen.py::TestAutoScreenAPI::test_results_empty_initial
+ERROR tests/test_auto_screen.py::TestAutoScreenAPI::test_status_endpoint - Pe...
+ERROR tests/test_classification_flow.py::TestClassificationFlow::test_full_classification_fields
+ERROR tests/test_classification_flow.py::TestClassificationFlow::test_rules_text_injected_into_analyzer
+ERROR tests/test_classification_flow.py::TestClassificationFlow::test_legacy_free_text_fallback
+ERROR tests/test_core_modules.py::TestVectorStoreManager::test_init - Permiss...
+ERROR tests/test_core_modules.py::TestVectorStoreManager::test_create_and_get_collection
+ERROR tests/test_core_modules.py::TestVectorStoreManager::test_list_collections
+ERROR tests/test_core_modules.py::TestVectorStoreManager::test_add_and_query_documents
+ERROR tests/test_core_modules.py::TestLLMClient::test_init - PermissionError:...
+ERROR tests/test_core_modules.py::TestLLMClient::test_generate_text - Permiss...
+ERROR tests/test_core_modules.py::TestDocumentParser::test_init - PermissionE...
+ERROR tests/test_core_modules.py::TestCacheManager::test_init - PermissionErr...
+ERROR tests/test_core_modules.py::TestCacheManager::test_set_and_get - Permis...
+ERROR tests/test_core_modules.py::TestCacheManager::test_delete - PermissionE...
+ERROR tests/test_core_modules.py::TestMetadataModels::test_resume_metadata - ...
+ERROR tests/test_core_modules.py::TestMetadataModels::test_query_metadata - P...
+ERROR tests/test_document_parsing.py::TestDocumentParser::test_init - Permiss...
+ERROR tests/test_document_parsing.py::TestMetadataExtractor::test_init - Perm...
+ERROR tests/test_document_parsing.py::TestMetadataExtractor::test_extract_metadata
+ERROR tests/test_document_parsing.py::TestMetadataExtractor::test_parse_response
+ERROR tests/test_document_parsing.py::TestMetadataExtractor::test_parse_response_invalid_json
+ERROR tests/test_document_parsing.py::TestMetadataExtractor::test_parse_response_code_fence
+ERROR tests/test_document_parsing.py::TestMetadataExtractor::test_parse_response_with_control_chars
+ERROR tests/test_document_parsing.py::TestDocumentParserRobustness::test_clean_control_chars
+ERROR tests/test_document_parsing.py::TestDocumentParserRobustness::test_is_garbled_normal_text
+ERROR tests/test_document_parsing.py::TestDocumentParserRobustness::test_is_garbled_scanned_pdf
+ERROR tests/test_document_parsing.py::TestDocumentParserRobustness::test_parse_pdf_rejects_garbled
+ERROR tests/test_document_parsing.py::TestDocumentParserRobustness::test_parse_pdf_cleans_control_chars
+ERROR tests/test_email_fetcher.py::TestEmailFetcher::test_fetch_new_extracts_attachments
+ERROR tests/test_email_fetcher.py::TestEmailFetcher::test_skips_non_resume_attachments
+ERROR tests/test_email_fetcher.py::TestEmailFetcher::test_skips_oversized_attachment
+ERROR tests/test_email_fetcher.py::TestEmailFetcher::test_mark_read - Permiss...
+ERROR tests/test_email_fetcher.py::TestEmailFetcher::test_connection_failure_raises
+ERROR tests/test_email_fetcher.py::TestEmailFetchAPI::test_email_fetch_not_configured
+ERROR tests/test_email_fetcher.py::TestEmailFetchAPI::test_email_fetch_success
+ERROR tests/test_end_to_end.py::test_end_to_end_pipeline - PermissionError: [...
+ERROR tests/test_filter.py::TestHardFilter::test_init - PermissionError: [Win...
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_experience - Permi...
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_education - Permis...
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_skills - Permissio...
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_skills_partial_hit_ratio
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_skills_ratio_below_threshold
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_skills_empty_required
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_locations - Permis...
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_languages - Permis...
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_certifications - P...
+ERROR tests/test_filter.py::TestHardFilter::test_filter_resumes - PermissionE...
+ERROR tests/test_filter.py::TestHardFilter::test_parse_year - PermissionError...
+ERROR tests/test_filter.py::TestHardFilter::test_filter_by_experience_present
+ERROR tests/test_full_system.py::test_full_system_pipeline - PermissionError:...
+ERROR tests/test_integration.py::test_document_parsing_and_metadata_extraction
+ERROR tests/test_milvus_store.py::test_create_and_list_collection - Permissio...
+ERROR tests/test_milvus_store.py::test_add_and_query_documents - PermissionEr...
+ERROR tests/test_milvus_store.py::test_upsert_overwrites_same_id - Permission...
+ERROR tests/test_milvus_store.py::test_delete_collection - PermissionError: [...
+ERROR tests/test_multi_stage_filtering.py::test_multi_stage_filtering_integration
+ERROR tests/test_placeholder.py::test_placeholder - PermissionError: [WinErro...
+ERROR tests/test_preclassification.py::TestPreclassification::test_upload_with_preclassify_enabled
+ERROR tests/test_preclassification.py::TestPreclassification::test_upload_preclassify_disabled
+ERROR tests/test_preclassification.py::TestPreclassification::test_preclassify_failure_does_not_fail_upload
+ERROR tests/test_preclassification.py::TestPreclassification::test_preclassify_pending_only_missing
+ERROR tests/test_preclassification.py::TestPreclassification::test_preclassify_pending_none
+ERROR tests/test_query_integration.py::test_query_parsing_integration - Permi...
+ERROR tests/test_query_parser.py::TestQueryParser::test_init - PermissionErro...
+ERROR tests/test_query_parser.py::TestQueryParser::test_parse_query - Permiss...
+ERROR tests/test_query_parser.py::TestQueryParser::test_parsing_prompt_limits_required_skills
+ERROR tests/test_query_parser.py::TestQueryParser::test_parse_query_truncates_excess_required_skills
+ERROR tests/test_query_parser.py::TestQueryParser::test_parse_query_keeps_within_limit
+ERROR tests/test_query_parser.py::TestQueryParser::test_parse_query_filters_placeholder_values
+ERROR tests/test_query_parser.py::TestQueryParser::test_parse_response - Perm...
+ERROR tests/test_query_parser.py::TestQueryParser::test_parse_response_invalid_json
+ERROR tests/test_ranker.py::TestRanker::test_init - PermissionError: [WinErro...
+ERROR tests/test_ranker.py::TestRanker::test_rank_resumes - PermissionError: ...
+ERROR tests/test_ranker.py::TestRanker::test_get_top_resumes - PermissionErro...
+ERROR tests/test_ranker.py::TestRanker::test_filter_by_threshold - Permission...
+ERROR tests/test_result_formatter.py::TestResultFormatter::test_init - Permis...
+ERROR tests/test_result_formatter.py::TestResultFormatter::test_format_results
+ERROR tests/test_result_formatter.py::TestResultFormatter::test_format_query
+ERROR tests/test_result_formatter.py::TestResultFormatter::test_format_candidates
+ERROR tests/test_result_formatter.py::TestResultFormatter::test_generate_summary
+ERROR tests/test_result_formatter.py::TestResultFormatter::test_export_to_json
+ERROR tests/test_result_formatter.py::TestResultFormatter::test_export_to_text
+ERROR tests/test_results_cache.py::TestResultsCache::test_cache_hit_avoids_second_analysis
+ERROR tests/test_results_cache.py::TestResultsCache::test_feedback_invalidates_cache
+ERROR tests/test_results_cache.py::TestResultsCache::test_cache_key_includes_rules_version
+ERROR tests/test_results_cache.py::TestResultsCache::test_cache_disabled_by_default
+ERROR tests/test_retrieval_integration.py::test_retrieval_integration - Permi...
+ERROR tests/test_retriever.py::TestRetriever::test_init - PermissionError: [W...
+ERROR tests/test_retriever.py::TestRetriever::test_add_resume - PermissionErr...
+ERROR tests/test_retriever.py::TestRetriever::test_retrieve - PermissionError...
+ERROR tests/test_retriever.py::TestRetriever::test_convert_query_to_text - Pe...
+ERROR tests/test_retriever.py::TestRetriever::test_format_results - Permissio...
+ERROR tests/test_retriever.py::TestRetriever::test_format_results_empty - Per...
+ERROR tests/test_rules_compare.py::TestRulesCompare::test_compare_requires_one_param
+ERROR tests/test_rules_compare.py::TestRulesCompare::test_compare_query_not_found
+ERROR tests/test_rules_compare.py::TestRulesCompare::test_compare_two_rule_versions
+ERROR tests/test_rules_compare.py::TestRulesCompare::test_compare_with_resume_ids_skips_retrieval
+ERROR tests/test_rules_compare.py::TestRulesCompare::test_compare_no_candidates
+ERROR tests/test_rules_manager.py::TestAddFeedback::test_add_feedback_valid
+ERROR tests/test_rules_manager.py::TestAddFeedback::test_add_feedback_invalid_classification
+ERROR tests/test_rules_manager.py::TestAddFeedback::test_add_feedback_trim - ...
+ERROR tests/test_rules_manager.py::TestAddFeedback::test_list_feedback_newest_first
+ERROR tests/test_rules_manager.py::TestAddFeedback::test_get_feedback_map_by_query
+ERROR tests/test_rules_manager.py::TestAddFeedback::test_get_feedback_map_latest_wins
+ERROR tests/test_rules_manager.py::TestAddFeedback::test_concurrent_add_feedback
+ERROR tests/test_rules_manager.py::TestRulesPersistence::test_get_active_rules_default_when_missing
+ERROR tests/test_rules_manager.py::TestRulesPersistence::test_active_rules_text_empty_when_no_rules
+ERROR tests/test_rules_manager.py::TestRulesPersistence::test_corrupted_file_backed_up
+ERROR tests/test_rules_manager.py::TestRulesPersistence::test_pending_feedback_count
+ERROR tests/test_rules_manager.py::TestSummarizeRules::test_insufficient_feedback
+ERROR tests/test_rules_manager.py::TestSummarizeRules::test_summarize_success
+ERROR tests/test_rules_manager.py::TestSummarizeRules::test_summarize_with_code_fence
+ERROR tests/test_rules_manager.py::TestSummarizeRules::test_summarize_unparseable_no_write
+ERROR tests/test_rules_manager.py::TestSummarizeRules::test_rules_trim_to_max
+ERROR tests/test_scheduler.py::TestScheduler::test_create_scheduler_disabled
+ERROR tests/test_scheduler.py::TestScheduler::test_create_scheduler_enabled
+ERROR tests/test_scheduler.py::TestScheduler::test_create_scheduler_import_error
+ERROR tests/test_scheduler.py::TestScheduler::test_register_jobs - Permission...
+ERROR tests/test_scheduler.py::TestScheduler::test_register_jobs_without_email
+ERROR tests/test_scorer.py::TestScorer::test_init - PermissionError: [WinErro...
+ERROR tests/test_scorer.py::TestScorer::test_calculate_skill_score - Permissi...
+ERROR tests/test_scorer.py::TestScorer::test_calculate_skill_score_fuzzy - Pe...
+ERROR tests/test_scorer.py::TestScorer::test_calculate_industry_score - Permi...
+ERROR tests/test_scorer.py::TestScorer::test_calculate_salary_score - Permiss...
+ERROR tests/test_scorer.py::TestScorer::test_parse_salary - PermissionError: ...
+ERROR tests/test_scorer.py::TestScorer::test_calculate_education_score - Perm...
+ERROR tests/test_scorer.py::TestScorer::test_calculate_location_score - Permi...
+ERROR tests/test_scorer.py::TestScorer::test_calculate_location_score_fuzzy
+ERROR tests/test_scorer.py::TestScorer::test_calculate_tag_score - Permission...
+ERROR tests/test_scorer.py::TestScorer::test_calculate_tag_score_partial - Pe...
+ERROR tests/test_scorer.py::TestScorer::test_score_resumes - PermissionError:...
+ERROR tests/test_vector_store_factory.py::test_factory_default_returns_chroma
+ERROR tests/test_vector_store_factory.py::test_factory_unknown_falls_back_to_chroma
+ERROR tests/test_vector_store_factory.py::test_factory_milvus_dispatches - Pe...
+ERROR tests/test_vector_store_factory.py::test_factory_reads_settings_default
+ERROR tests/test_workbench.py::TestWorkbenchStatus::test_set_and_get - Permis...
+ERROR tests/test_workbench.py::TestWorkbenchStatus::test_invalid_status_rejected
+ERROR tests/test_workbench.py::TestWorkbenchStatus::test_persists - Permissio...
+ERROR tests/test_workbench.py::TestWorkbenchAggregate::test_aggregate_dedup_keeps_latest
+ERROR tests/test_workbench.py::TestWorkbenchAggregate::test_aggregate_work_status
+ERROR tests/test_workbench.py::TestWorkbenchAggregate::test_export_interview_csv
+ERROR tests/test_workbench.py::TestWorkbenchAggregate::test_export_with_manual_interview
+ERROR tests/test_workbench.py::TestWorkbenchAPI::test_workbench_empty - Permi...
+ERROR tests/test_workbench.py::TestWorkbenchAPI::test_workbench_with_runs - P...
+ERROR tests/test_workbench.py::TestWorkbenchAPI::test_update_status - Permiss...
+ERROR tests/test_workbench.py::TestWorkbenchAPI::test_export_endpoint - Permi...
+ERROR tests/test_workbench.py::TestWorkbenchAPI::test_export_empty_404 - Perm...
+214 warnings, 213 errors in 9.80s
