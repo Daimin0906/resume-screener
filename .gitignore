@@ -32,3 +32,10 @@ env/
 # IDE
 .idea/
 .vscode/
+
+# 轻量智能体运行数据
+agent/data/
+agent/inbox/*.pdf
+agent/inbox/*.txt
+agent/inbox/*.md
+

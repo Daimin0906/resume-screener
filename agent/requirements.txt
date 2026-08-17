@@ -1,0 +1,4 @@
+# 轻量简历智能体依赖（远小于主系统）
+requests
+pypdf
+pyyaml
