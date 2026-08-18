@@ -1,12 +1,12 @@
 :root {
-  --bg: #f4f6fb;
+  --bg: #f2f4f8;
   --panel: #ffffff;
   --primary: #3b6df0;
   --primary-dark: #2f57c4;
   --primary-soft: #eaf0ff;
   --text: #1f2a44;
   --muted: #8893a8;
-  --border: #e3e8f2;
+  --border: #e4e9f2;
   --ok: #1faa59;
   --err: #e2483a;
   --warn: #e8a317;
@@ -21,6 +21,7 @@ body {
   font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
+  line-height: 1.5;
 }
 
 /* ---------------- 顶部栏 ---------------- */
@@ -33,9 +34,7 @@ body {
   color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
-.topbar-left { display: flex; align-items: baseline; gap: 12px; }
 .topbar h1 { font-size: 19px; margin: 0; }
-.topbar-sub { font-size: 13px; opacity: 0.85; }
 .status { font-size: 13px; }
 
 .badge {
@@ -49,11 +48,11 @@ body {
 .badge-err { color: var(--err); }
 .badge-unknown { color: var(--muted); }
 
-/* ---------------- 主布局：流水线单列，内部两栏 ---------------- */
+/* ---------------- 主布局 ---------------- */
 .layout {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 24px 40px;
+  padding: 24px 24px 48px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -69,49 +68,26 @@ body {
 .panel-head { margin-bottom: 14px; }
 .panel-head h2 {
   font-size: 16px;
-  margin: 0 0 4px;
+  margin: 0;
   display: flex;
-  align-items: center;
-  gap: 6px;
+  align-items: baseline;
+  gap: 8px;
 }
-.hint { font-size: 13px; color: var(--muted); margin: 0; }
 .muted { color: var(--muted); font-weight: normal; font-size: 12px; }
 
-/* 两栏网格（筛选配置 / 工作流） */
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: start;
-}
-@media (max-width: 900px) {
-  .grid-2 { grid-template-columns: 1fr; }
-}
-
-.sub-block {
-  background: #fbfcff;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 16px;
-}
-.sub-block h3 {
-  font-size: 14px;
-  margin: 0 0 8px;
-  color: var(--text);
-}
-
 /* ---------------- 表单控件 ---------------- */
-input[type="file"], textarea {
-  width: 100%;
-  padding: 10px;
+input[type="file"], textarea, input[type="text"], input[type="password"], input[type="number"], select {
+  padding: 9px 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 14px;
-  margin-bottom: 10px;
   font-family: inherit;
   background: #fff;
+  color: var(--text);
 }
+input[type="file"], textarea { width: 100%; margin-bottom: 10px; }
 textarea { resize: vertical; }
+input[type="text"], input[type="password"], input[type="number"] { width: 100%; margin-bottom: 8px; }
 
 .btn {
   padding: 8px 16px;
@@ -121,26 +97,27 @@ textarea { resize: vertical; }
   color: var(--text);
   cursor: pointer;
   font-size: 14px;
-  margin-right: 8px;
+  transition: background 0.15s, border-color 0.15s;
 }
-.btn:hover { background: #f0f3fb; }
+.btn:hover { background: #f0f3fb; border-color: #cfd8ea; }
 .btn.primary {
   background: var(--primary);
   border-color: var(--primary);
   color: #fff;
 }
 .btn.primary:hover { background: var(--primary-dark); }
-.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
 .btn-sm { padding: 5px 12px; font-size: 13px; }
+.btn-lg { padding: 10px 22px; font-size: 15px; }
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .btn-row .btn { margin: 0; }
 
 .log {
   font-size: 13px;
-  margin-top: 10px;
+  margin-top: 8px;
   white-space: pre-wrap;
   color: var(--muted);
-  min-height: 18px;
+  min-height: 16px;
   line-height: 1.6;
 }
 .log .ok { color: var(--ok); }
@@ -156,54 +133,80 @@ textarea { resize: vertical; }
 .upload-row input[type="file"] { flex: 1; margin: 0; }
 .upload-row .btn { margin: 0; white-space: nowrap; }
 
-/* 列表工具条（全选/批量删除） */
+/* 手动 / 邮箱两个分组并排（紧凑） */
+.resume-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .resume-groups { grid-template-columns: 1fr; }
+}
+.resume-group {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fbfcff;
+}
+.resume-group .group-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.resume-group .group-head h3 {
+  font-size: 14px;
+  margin: 2px 0 8px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.resume-group .group-head .upload-row { flex: 1; }
+.resume-group .group-head .upload-row input[type="file"] {
+  padding: 7px 10px;
+  font-size: 13px;
+}
+
 .list-toolbar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 8px;
+  gap: 12px;
+  margin: 10px 0 8px;
   font-size: 13px;
+  flex-wrap: wrap;
 }
 .sel-all { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
-.btn-danger {
-  border-color: var(--err);
-  color: var(--err);
-}
-.btn-danger:not(:disabled):hover { background: #fdecea; }
+.btn-danger { border-color: var(--err); color: var(--err); }
+.btn-danger:not(:disabled):hover { background: #fdecea; border-color: var(--err); }
 .btn-danger:disabled { opacity: 0.5; }
 
 .resume-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 200px;
+  max-height: 280px;
   overflow-y: auto;
 }
 .resume-list li {
-  padding: 4px 8px;
+  padding: 9px 12px;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  margin-bottom: 4px;
-  font-size: 12px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
   background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
+.resume-list li:hover { border-color: var(--primary); box-shadow: 0 1px 4px rgba(59, 109, 240, 0.12); }
 .resume-list .fn {
-  font-weight: 500;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   justify-content: space-between;
 }
-.resume-list .rid { color: var(--text); font-size: 12px; display: flex; align-items: center; gap: 4px; }
-.resume-list li { cursor: pointer; }
-.resume-list li:hover { border-color: var(--primary); }
-/* 预分类色点（紧凑列表用） */
-.cls-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
+.resume-list .rid { color: var(--muted); font-size: 11px; margin-top: 2px; }
+.resume-list .skills { margin: 6px 0 0; }
 .btn-mini {
   padding: 2px 8px;
   border: 1px solid var(--border);
@@ -222,13 +225,9 @@ textarea { resize: vertical; }
   line-height: 1.6;
 }
 .resume-detail ul { margin: 2px 0 6px 16px; padding: 0; }
-.sel-cb { margin-right: 4px; display: inline-flex; align-items: center; }
+.sel-cb { display: inline-flex; align-items: center; }
 
-/* 简历来源标签 */
-.src-email { background: #eef7ff; color: #2b6cb0; }
-.src-manual { background: #f3f0ff; color: #6b4fc0; }
-
-/* 上传全部完成的醒目提示块 */
+/* 上传完成提示 */
 .upload-done {
   display: block;
   margin-top: 10px;
@@ -246,42 +245,75 @@ textarea { resize: vertical; }
 }
 
 /* ---------------- ② 筛选 ---------------- */
-/* 结果按来源分两栏（手动上传 / 邮箱） */
-.screen-results {
-  margin-top: 18px;
+.screen-setup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: stretch; /* 两栏等高 */
 }
-.screen-results .sub-block h3 {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
+@media (max-width: 900px) {
+  .screen-setup { grid-template-columns: 1fr; }
 }
 
-.flow-status { font-size: 13px; color: var(--muted); margin: 4px 0; min-height: 18px; }
-
-/* 筛选规则折叠面板（默认收起，点击展开） */
-.rules-panel {
-  margin-top: 18px;
+.sub-block {
+  background: #fbfcff;
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 12px 16px;
-  background: #fbfcff;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
 }
-.rules-panel summary {
-  cursor: pointer;
+.sub-block h3 {
   font-size: 14px;
-  font-weight: 600;
+  margin: 0 0 10px;
   color: var(--text);
-  user-select: none;
 }
-.rules-panel summary:hover { color: var(--primary); }
+.sub-block .log { margin-top: 6px; }
+
+/* 左侧"默认岗位要求"：textarea 自动拉伸占满剩余高度 */
+.screen-setup .sub-block:first-child textarea {
+  flex: 1;
+  min-height: 90px;
+}
+/* 右侧"筛选入口"：两个流程区块均匀分布 */
+.screen-setup .sub-block:last-child {
+  justify-content: flex-start;
+}
+
+/* 筛选入口（手动 / 邮箱两个独立流程） */
+.flow-entry {
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+.flow-entry:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+.flow-entry-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.flow-name { font-weight: 600; font-size: 14px; color: var(--text); }
+.flow-entry .btn { margin: 0; }
+
+/* 筛选运行中（灰色，可点击停止） */
+.btn-running {
+  background: #9aa3b2;
+  border-color: #9aa3b2;
+  color: #fff;
+}
+.btn-running:hover { background: #7d8798; }
+
+.flow-status { font-size: 13px; color: var(--muted); margin: 6px 0 0; min-height: 16px; }
 
 /* 邮箱配置折叠区 */
 .email-config-box {
-  margin: 4px 0 10px;
+  margin-top: 12px;
   font-size: 13px;
   border: 1px dashed var(--border);
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   background: #fff;
 }
 .email-config-box summary {
@@ -306,34 +338,42 @@ textarea { resize: vertical; }
   margin-top: 4px;
 }
 .email-config-row .btn { margin: 0; }
-.email-config-row select {
-  padding: 6px 8px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 13px;
-}
+.email-config-row select { padding: 6px 8px; }
 
-/* ---------------- 结果区 ---------------- */
-.results { margin-top: 10px; }
+/* 结果分组（手动 / 邮箱） */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+.screen-results { margin-top: 16px; }
+
 .auto-summary {
   font-size: 13px;
   color: var(--primary-dark);
   background: var(--primary-soft);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 8px 12px;
-  margin: 8px 0;
+  padding: 7px 12px;
+  margin: 0 0 10px;
 }
-/* 结果分组折叠：摘要行 + 展开候选人列表 */
+.empty { color: var(--muted); font-size: 13px; padding: 8px 0; }
+.results { margin-top: 4px; }
+
+/* 结果分组折叠：整个候选人列表可收起 */
 .results-collapse {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: #fff;
-  margin-top: 4px;
 }
 .results-collapse summary {
   cursor: pointer;
   font-size: 13px;
+  font-weight: 600;
   color: var(--primary);
   user-select: none;
   padding: 8px 12px;
@@ -346,53 +386,156 @@ textarea { resize: vertical; }
 .results-collapse summary::before {
   content: "▸";
   transition: transform 0.15s;
+  color: var(--muted);
 }
 .results-collapse[open] summary::before {
   transform: rotate(90deg);
 }
-.results-collapse > .candidate:first-of-type {
-  margin-top: 4px;
+.results-collapse .candidate:first-of-type {
+  margin-top: 2px;
 }
-.auto-run-title {
-  cursor: pointer;
-  font-size: 13px;
-  color: var(--primary);
-  user-select: none;
-}
-.empty { color: var(--muted); font-size: 13px; padding: 8px 0; }
 
-/* ---------------- 候选人卡片 ---------------- */
+/* 候选人列表展开后的固定高度滚动区（与简历库列表一致） */
+.collapse-body {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 0 6px 6px;
+}
+
+/* ---------------- 候选人折叠卡片 ---------------- */
 .candidate {
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 14px 16px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   background: #fff;
+  overflow: hidden;
+  transition: border-color 0.15s;
 }
+.candidate[open] { border-color: var(--primary); }
 .candidate-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
 }
-.candidate-head .rank {
-  background: var(--primary);
-  color: #fff;
-  border-radius: 50%;
-  width: 26px; height: 26px;
+.candidate-head::-webkit-details-marker { display: none; }
+.candidate-head::before {
+  content: "▸";
+  color: var(--muted);
+  font-size: 12px;
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+.candidate[open] .candidate-head::before {
+  transform: rotate(90deg);
+}
+.candidate-head:hover { background: #f7f9ff; }
+
+/* 候选人复选框（勾选不触发展开） */
+.cand-sel {
   display: inline-flex;
-  align-items: center; justify-content: center;
-  font-size: 13px; margin-right: 8px;
+  align-items: center;
+  flex-shrink: 0;
+  cursor: pointer;
 }
-.candidate-head .name { font-weight: 700; font-size: 15px; }
-.score {
-  font-weight: 700;
-  color: var(--primary-dark);
+.cand-sel input { cursor: pointer; }
+
+/* 结果分组工具条（全选/删除选中） */
+.cand-toolbar {
   display: flex;
   align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  flex-wrap: wrap;
 }
-.candidate .meta { font-size: 13px; color: var(--muted); margin: 6px 0; }
+.cand-toolbar .sel-all { margin: 0; }
+.cand-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.cand-name .name { font-weight: 700; font-size: 14px; }
+
+/* 候选人卡片内的删除按钮 */
+.cand-del-btn {
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity 0.15s, background 0.15s;
+}
+.candidate:hover .cand-del-btn { opacity: 1; }
+.score {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+.score-num { font-size: 14px; }
+.cls-reason { font-size: 12px; color: var(--muted); margin: 4px 0; }
+
+.candidate-body {
+  padding: 0 14px 12px;
+  border-top: 1px dashed var(--border);
+  margin-top: 0;
+}
+.candidate-body .meta { font-size: 13px; color: var(--muted); margin: 8px 0; }
 .skills { margin: 8px 0; }
+
+/* 候选人结构化速览（技能/薪资地点/工作经历/项目经历/教育） */
+.resume-summary {
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 8px 0;
+  background: #f7f9ff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.rs-line { margin: 3px 0; }
+.rs-list {
+  margin: 2px 0 6px 18px;
+  padding: 0;
+}
+.rs-list li { margin: 3px 0; }
+.exp-desc { color: var(--muted); font-size: 12px; }
+
+/* AI 分析报告折叠（默认收起，点击展开） */
+.analysis-collapse {
+  margin-top: 8px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+}
+.analysis-collapse summary {
+  cursor: pointer;
+  color: var(--primary);
+  user-select: none;
+  padding: 8px 12px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.analysis-collapse summary::-webkit-details-marker { display: none; }
+.analysis-collapse summary::before {
+  content: "▸";
+  transition: transform 0.15s;
+  color: var(--muted);
+}
+.analysis-collapse[open] summary::before {
+  transform: rotate(90deg);
+}
+.analysis-collapse .analysis {
+  margin: 0;
+  padding: 8px 12px;
+  border-top: 1px dashed var(--border);
+}
 .tag {
   display: inline-block;
   background: var(--primary-soft);
@@ -421,14 +564,26 @@ textarea { resize: vertical; }
   font-family: monospace;
 }
 
-/* ---- 三分类徽章（interview=绿 / review=橙 / reject=红）---- */
+/* 三分类徽章 */
 .class-badge-interview { background: #e7f6ec; color: var(--ok); }
 .class-badge-review    { background: #fdf3e0; color: var(--warn); }
 .class-badge-reject    { background: #fdecea; color: var(--err); }
-.score-num { margin-left: 8px; font-weight: 700; color: var(--primary-dark); }
-.cls-reason { font-size: 12px; color: var(--muted); margin: 4px 0; }
 
-/* ---- 人工纠正反馈表单 ---- */
+/* 简历列表中的预分类小圆点（用分类配色） */
+.cls-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 2px;
+}
+
+/* 简历来源标签 */
+.src-email { background: #eef7ff; color: #2b6cb0; }
+.src-manual { background: #f3f0ff; color: #6b4fc0; }
+
+/* ---------------- 人工纠正 ---------------- */
 .feedback-box {
   margin-top: 10px;
   font-size: 13px;
@@ -452,7 +607,6 @@ textarea { resize: vertical; }
 }
 .feedback-box .btn { margin-top: 8px; padding: 5px 12px; font-size: 13px; }
 
-/* 纠正反馈结果提示（显示在卡片内，6 秒后淡出） */
 .fb-result {
   margin: 8px 0 0;
   padding: 6px 10px;
@@ -469,77 +623,15 @@ textarea { resize: vertical; }
   border-color: var(--err);
 }
 
-/* ---------------- ④ 候选人工作台 ---------------- */
-.workbench-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 12px;
-  flex-wrap: wrap;
-}
-.workbench-toolbar .btn { margin: 0; }
-.pending-badge {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--err);
-}
-.workbench-card {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  margin-bottom: 8px;
-  background: #fff;
-}
-.workbench-card[open] {
-  border-color: var(--primary);
-}
-.wb-summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  cursor: pointer;
-  list-style: none;
-  flex-wrap: wrap;
-}
-.wb-summary::-webkit-details-marker { display: none; }
-.wb-summary::before {
-  content: "▸";
-  color: var(--muted);
-  transition: transform 0.15s;
-}
-.workbench-card[open] .wb-summary::before {
-  transform: rotate(90deg);
-}
-.wb-name { font-weight: 700; font-size: 14px; }
-.wb-score { color: var(--primary-dark); font-weight: 700; font-size: 13px; }
-.wb-skills { display: inline-flex; gap: 4px; flex-wrap: wrap; }
-.wb-actions-inline {
-  margin-left: auto;
-  display: inline-flex;
-  gap: 6px;
-  white-space: nowrap;
-}
-.wb-actions-inline .btn { padding: 3px 9px; font-size: 12px; margin: 0; }
-.wb-interview { color: var(--ok); border-color: var(--ok); }
-.wb-interview:hover { background: #e7f6ec; }
-.wb-review { color: var(--warn); border-color: var(--warn); }
-.wb-review:hover { background: #fdf3e0; }
-.wb-archived { color: var(--err); border-color: var(--err); }
-.wb-archived:hover { background: #fdecea; }
-.wb-detail {
-  padding: 0 14px 12px;
-  border-top: 1px dashed var(--border);
-}
-
-/* ---------------- 筛选规则面板 ---------------- */
+/* ---------------- ③ 筛选规则 ---------------- */
 .rules-box {
   font-size: 13px;
   color: var(--text);
-  background: #fff;
+  background: #fbfcff;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px 12px;
-  margin: 8px 0;
+  margin: 0 0 10px;
 }
 .rules-list { margin: 4px 0 8px; padding-left: 18px; }
 .rules-list li { margin: 4px 0; }
@@ -550,14 +642,42 @@ textarea { resize: vertical; }
   padding-top: 6px;
 }
 
-/* ---- 规则版本对比 ---- */
+/* 规则版本对比 */
 .compare-box {
   font-size: 13px;
-  margin-top: 10px;
+  margin-top: 12px;
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: #fff;
+  background: #fbfcff;
+}
+
+/* 规则人工编辑区 */
+.rules-edit {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px dashed var(--primary);
+  border-radius: 8px;
+  background: #f7f9ff;
+}
+.rules-edit textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  margin-bottom: 8px;
+  resize: vertical;
+}
+.rules-edit input[type="text"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  margin-bottom: 8px;
 }
 .compare-box h3 { font-size: 14px; margin: 0 0 8px; }
 .compare-table {
@@ -577,5 +697,5 @@ textarea { resize: vertical; }
 .up { color: var(--err); font-weight: 700; }
 .down { color: var(--ok); font-weight: 700; }
 
-/* 通用 */
+/* 其他 */
 .spinner { color: var(--primary); font-size: 14px; }

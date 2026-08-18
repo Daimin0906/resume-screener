@@ -39,3 +39,4 @@ agent/inbox/*.pdf
 agent/inbox/*.txt
 agent/inbox/*.md
 
+agent/config.yaml

@@ -10,30 +10,7 @@ const CLASS_LABELS = {
   reject: "直接淘汰",
 };
 
-// 当前查询 id（提交查询成功后记录，供反馈提交使用）
-// ---------------- 状态持久化（localStorage）----------------
-// 刷新页面后恢复上传日志（手动筛选流程已移除，仅保留上传日志）
-const LS = {
-  uploadLog: "rs_upload_log",
-};
-
-function saveLogs() {
-  localStorage.setItem(LS.uploadLog, $("upload-log").innerHTML);
-}
-
-function restoreState() {
-  // 上传日志恢复
-  const ul = localStorage.getItem(LS.uploadLog);
-  if (ul) {
-    $("upload-log").innerHTML = ul;
-    // 日志里若还停留在"正在解析"，说明是刷新前的中间快照：
-    // 实际解析状态以左侧列表徽章为准（服务端会持续更新）
-    if (ul.includes("正在 AI 解析")) {
-      $("upload-log").innerHTML +=
-        '\n<span class="err">（以上为刷新前的解析过程记录，实际状态请看左侧列表徽章）</span>';
-    }
-  }
-}
+// ---------------- 上传/删除日志（仅本次会话，刷新即清空）----------------
 
 // 转义 HTML，防止 XSS
 function escapeHtml(text) {
@@ -134,7 +111,6 @@ async function uploadResumes() {
   }
   btn.disabled = true;
   log.textContent = `开始提交 ${files.length} 个文件…\n（提交后立即返回，简历在后台并行解析，可继续其他操作）`;
-  saveLogs();
 
   // 并行提交所有文件
   const submitted = await Promise.all(files.map(async (file) => {
@@ -208,17 +184,21 @@ async function uploadResumes() {
   }
   btn.disabled = false;
   input.value = "";
-  saveLogs();
   loadResumeList();
 }
 
-// ---------------- 简历列表 ----------------
+// ---------------- 简历列表（手动 / 邮箱两个分组） ----------------
 async function loadResumeList() {
   try {
     const res = await fetch(`${API}/resumes`);
     const data = await res.json();
 
+    const emailList = data.resumes.filter((r) => (r.source || "manual") === "email");
+    const manualList = data.resumes.filter((r) => (r.source || "manual") !== "email");
+
     $("resume-count").textContent = `(${data.resumes.length})`;
+    $("manual-count").textContent = `(${manualList.length})`;
+    $("email-count").textContent = `(${emailList.length})`;
 
     const renderItems = (items) => items.map((r) => {
       // 紧凑一行：状态简标 + 预分类色点 + 文件名 + 时间 + 删除
@@ -250,12 +230,16 @@ async function loadResumeList() {
       </li>`;
     }).join("");
 
-    $("resume-list").innerHTML = data.resumes.length
-      ? renderItems(data.resumes)
-      : '<li class="empty">暂无简历（手动上传或邮箱抓取后显示）</li>';
+    $("manual-resume-list").innerHTML = manualList.length
+      ? renderItems(manualList)
+      : '<li class="empty">暂无手动上传的简历</li>';
+    $("email-resume-list").innerHTML = emailList.length
+      ? renderItems(emailList)
+      : '<li class="empty">暂无邮箱抓取的简历</li>';
     resetSelectionUI();
   } catch (e) {
-    $("resume-list").innerHTML = `<li class="empty">加载失败：${escapeHtml(e.message)}</li>`;
+    $("manual-resume-list").innerHTML = `<li class="empty">加载失败：${escapeHtml(e.message)}</li>`;
+    $("email-resume-list").innerHTML = "";
   }
 }
 
@@ -302,9 +286,52 @@ async function deleteResume(resumeId, name) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || "删除失败");
     loadResumeList();
+    loadScreenPanel(); // 筛选结果里的候选人卡片同步消失
   } catch (e) {
     alert("删除失败：" + e.message);
   }
+}
+
+// ---------------- 筛选结果候选人：批量删除 ----------------
+// 每个结果分组独立：manual（手动上传结果）/ email（邮箱结果）
+const CAND_GROUPS = {
+  manual: { listId: "manual-screen-results", selAllId: "manual-sel-all-cb", countId: "manual-sel-count", delBtnId: "manual-batch-del-btn" },
+  email:  { listId: "auto-screen-results",   selAllId: "email-sel-all-cb",   countId: "email-sel-count",   delBtnId: "email-batch-del-btn" },
+};
+
+function resetCandSelection(group) {
+  const g = CAND_GROUPS[group];
+  if (!g) return;
+  const list = $(g.listId);
+  const cbs = list ? list.querySelectorAll('input[data-sel-cand]') : [];
+  const checked = list ? list.querySelectorAll('input[data-sel-cand]:checked').length : 0;
+  $(g.countId).textContent = checked > 0 ? `已选 ${checked}` : "";
+  $(g.delBtnId).disabled = checked === 0;
+  $(g.selAllId).checked = cbs.length > 0 && checked === cbs.length;
+}
+
+async function batchDeleteCandidates(group) {
+  const g = CAND_GROUPS[group];
+  if (!g) return;
+  const list = $(g.listId);
+  const ids = list
+    ? Array.from(list.querySelectorAll('input[data-sel-cand]:checked')).map((cb) => cb.dataset.selCand)
+    : [];
+  if (!ids.length) return;
+  if (!confirm(`确定删除选中的 ${ids.length} 位候选人吗？将从简历库与筛选结果中删除，无法恢复。`)) return;
+  let ok = 0, fail = 0;
+  for (const rid of ids) {
+    try {
+      const res = await fetch(`${API}/resumes/${rid}`, { method: "DELETE" });
+      if (res.ok) ok++;
+      else fail++;
+    } catch (e) {
+      fail++;
+    }
+  }
+  alert(`删除完成：成功 ${ok} 份${fail ? `，失败 ${fail} 份` : ""}`);
+  loadScreenPanel();
+  loadResumeList();
 }
 
 // ---------------- 批量删除（手动 + 邮箱两个列表共用）----------------
@@ -332,7 +359,6 @@ async function batchDeleteResumes() {
     if (!res.ok) throw new Error(data.detail || "删除失败");
     const delLog = $("upload-log");
     delLog.innerHTML += `\n<span class="ok">✓ 已删除 ${data.deleted} 份简历${data.not_found && data.not_found.length ? `（${data.not_found.length} 份不存在）` : ""}</span>`;
-    saveLogs();
     loadResumeList();
   } catch (e) {
     alert("批量删除失败：" + e.message);
@@ -345,7 +371,7 @@ function candidateCardHtml(c) {
   const scorePercent = (c.overall_score != null) ? Math.round(c.overall_score * 100) : "-";
   const email = c.email ? "📧 " + escapeHtml(c.email) + "　" : "";
   const phone = c.phone ? "📱 " + escapeHtml(c.phone) : "";
-  const salary = c.expected_salary ? "<br>💰 期望薪资：" + escapeHtml(c.expected_salary) : "";
+  const salary = c.expected_salary ? "　💰 期望薪资：" + escapeHtml(c.expected_salary) : "";
   const analysis = c.analysis ? `<div class="analysis">${markdownToHtml(c.analysis)}</div>` : "";
 
   // 三分类徽章 + 判定理由 + 人工纠正标记
@@ -374,6 +400,27 @@ function candidateCardHtml(c) {
     assessmentHtml = `<div class="cls-reason">评估：${assessItems.join(" · ")}</div>`;
   }
 
+  // ---- 结构化速览：工作经历 / 项目经历 / 教育背景（方便 HR 快速判断岗位匹配）----
+  const workHtml = (c.work_experience || []).map((w) => `
+    <li><b>${escapeHtml(w.company || "未知公司")}</b>（${escapeHtml(w.title || "")}）${escapeHtml(w.start_date || "")} - ${escapeHtml(w.end_date || "")}
+    ${w.description ? `<br><span class="exp-desc">${escapeHtml(w.description)}</span>` : ""}</li>`).join("");
+  const projHtml = (c.projects || []).map((p) => `
+    <li><b>${escapeHtml(p.name || "未知项目")}</b>${p.period ? `（${escapeHtml(p.period)}）` : ""}
+    ${p.description ? `<br><span class="exp-desc">${escapeHtml(p.description)}</span>` : ""}</li>`).join("");
+  const eduHtml = (c.education || []).map((e) =>
+    `${escapeHtml(e.institution || "")} ${escapeHtml(e.degree || "")} ${escapeHtml(e.major || "")}`).join("；");
+
+  const resumeSummaryHtml = `
+    <div class="resume-summary">
+      ${skills ? `<div class="rs-line"><b>技能：</b>${skills}</div>` : ""}
+      <div class="rs-line"><b>期望薪资：</b>${escapeHtml(c.expected_salary || "未填写")}　<b>期望地点：</b>${locations || "未填写"}</div>
+      <div class="rs-line"><b>工作经历：</b></div>
+      <ul class="rs-list">${workHtml || "<li>无</li>"}</ul>
+      <div class="rs-line"><b>项目经历：</b></div>
+      <ul class="rs-list">${projHtml || "<li>无</li>"}</ul>
+      <div class="rs-line"><b>教育背景：</b>${eduHtml || "无"}</div>
+    </div>`;
+
   // 人工纠正表单（折叠）
   const feedbackForm = `
     <details class="feedback-box">
@@ -390,22 +437,20 @@ function candidateCardHtml(c) {
   return `
     <details class="candidate" data-resume-id="${escapeHtml(c.id)}" data-cls="${escapeHtml(cls)}">
       <summary class="candidate-head">
-        <span class="cand-name"><span class="rank">${escapeHtml(c.rank)}</span><span class="name">${escapeHtml(c.name || "(未命名)")}</span></span>
+        <label class="cand-sel" title="选择批量删除"><input type="checkbox" class="cand-sel-cb" data-sel-cand="${escapeHtml(c.id)}" /></label>
+        <span class="cand-name"><span class="name">${escapeHtml(c.name || "(未命名)")}</span></span>
         <span class="score">
           ${clsBadge} ${correctedMark}
           <span class="score-num">${escapeHtml(scorePercent)}%</span>
         </span>
+        <button class="btn-mini cand-del-btn" title="删除该候选人（从简历库与向量库中删除）" data-del-name="${escapeHtml(c.name || "")}">🗑</button>
       </summary>
       <div class="candidate-body">
         ${reasonLine}
         ${assessmentHtml}
-        <div class="meta">
-          ${email}${phone}
-          ${locations ? "<br>📍 期望地点：" + locations : ""}
-          ${salary}
-        </div>
-        ${skills ? `<div class="skills">${skills}</div>` : ""}
-        ${analysis}
+        <div class="meta">${email}${phone}</div>
+        ${resumeSummaryHtml}
+        ${analysis ? `<details class="analysis-collapse"><summary>🤖 AI 分析报告</summary>${analysis}</details>` : ""}
         ${feedbackForm}
       </div>
     </details>`;
@@ -516,6 +561,54 @@ async function summarizeRules() {
   }
 }
 
+// ---------------- 人工编辑规则（与 AI 自动总结并存） ----------------
+async function editRules() {
+  const editBox = $("rules-edit");
+  editBox.hidden = false;
+  const log = $("rules-log");
+  log.innerHTML = "";
+  try {
+    const res = await fetch(`${API}/rules`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "加载失败");
+    $("rules-edit-text").value = (data.rules || []).join("\n");
+    $("rules-edit-summary").value = data.summary || "";
+  } catch (e) {
+    log.innerHTML = `<span class="err">加载规则失败：${escapeHtml(e.message)}</span>`;
+  }
+}
+
+async function saveRulesEdit() {
+  const log = $("rules-log");
+  const text = $("rules-edit-text").value;
+  const summary = $("rules-edit-summary").value.trim();
+  // 按行拆分，去空行
+  const rules = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!rules.length) {
+    log.innerHTML = '<span class="err">规则不能为空（至少一行）</span>';
+    return;
+  }
+  try {
+    const res = await fetch(`${API}/rules`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rules, summary }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "保存失败");
+    log.innerHTML = `<span class="ok">✓ 规则已保存为 v${data.version}，共 ${data.rules.length} 条（已生效）</span>`;
+    $("rules-edit").hidden = true;
+    loadRules();
+  } catch (e) {
+    log.innerHTML = `<span class="err">保存失败：${escapeHtml(e.message)}</span>`;
+  }
+}
+
+function cancelRulesEdit() {
+  $("rules-edit").hidden = true;
+  $("rules-log").innerHTML = "";
+}
+
 // ---------------- 规则版本对比验证 ----------------
 async function compareRules() {
   const box = $("compare-box");
@@ -607,36 +700,78 @@ async function loadScreenPanel() {
     } catch (e) { /* 忽略 */ }
   }
 
-  // 状态行
+  // 邮箱自动筛选开关状态 + 运行状态
   try {
-    const res = await fetch(`${API}/auto-screen/status`);
-    const st = await res.json();
-    const statusEl = $("screen-status");
-    if (!res.ok) throw new Error(st.detail || "加载失败");
-    let statusText = st.running ? "⏳ 筛选中…" : "";
-    if (!st.default_query_set) {
-      statusText = "未设置默认岗位要求";
-    } else if (st.last_run && st.last_run.status === "completed") {
-      const d = st.last_run.distributions || {};
-      statusText = `上次筛选：${escapeHtml(st.last_run.screened_count)} 份 · ` +
-        `🟢${d.interview || 0} 🟠${d.review || 0} 🔴${d.reject || 0}`;
+    const res = await fetch(`${API}/email-config`);
+    const cfg = await res.json();
+    const autoBtn = $("email-auto-btn");
+    const autoStatus = $("email-auto-status");
+    const on = !!cfg.auto_screen;
+    if (on) {
+      autoBtn.textContent = "■ 停止邮箱自动筛选";
+      autoBtn.classList.remove("primary");
+      autoBtn.classList.add("btn-running");
+      autoStatus.textContent = "🟢 自动筛选中（新邮件即拉取）";
+    } else {
+      autoBtn.textContent = "▶ 开启邮箱自动筛选";
+      autoBtn.classList.remove("btn-running");
+      autoBtn.classList.add("primary");
+      autoStatus.textContent = cfg.host ? "○ 未开启" : "⚠ 未配置邮箱";
     }
-    statusEl.textContent = statusText;
   } catch (e) { /* 忽略 */ }
 
-  // 结果：聚合最近几次 run 的候选人（按 resume_id 去重，保留最新），按来源分组展示
+  // 结果：聚合最近几次 run 的候选人，按来源分组展示
+  // 优先级：最新一次全量筛选（manual_screen，force 重筛全部简历）的结果为权威；
+  // 其他 run（邮箱增量筛选）只补充全量筛选中没有的候选人，
+  // 避免同一候选人混用不同规则版本的旧判定。
   try {
     const res = await fetch(`${API}/auto-screen/results?limit=20`);
     const data = await res.json();
+    const runs = data.runs || [];
+
+    // 找最新一次有候选人的 manual_screen（全量重筛）
+    const fullRun = runs.find((r) => r.trigger === "manual_screen" && (r.candidates || []).length > 0);
+
     const byId = {};
-    for (const run of (data.runs || [])) {
+    // 1) 先放全量筛选结果（权威）
+    if (fullRun) {
+      for (const c of (fullRun.candidates || [])) {
+        if (c && c.id && !byId[c.id]) {
+          byId[c.id] = { ...c, screened_at: fullRun.finished_at || "" };
+        }
+      }
+    }
+    // 2) 其他 run（最新在前）只补全量筛选中没有的候选人
+    for (const run of runs) {
+      if (run === fullRun) continue;
       for (const c of (run.candidates || [])) {
-        if (c && c.id) {
+        if (c && c.id && !byId[c.id]) {
           byId[c.id] = { ...c, screened_at: run.finished_at || "" };
         }
       }
     }
     const all = Object.values(byId);
+
+    // 人工纠正覆盖：按简历跨查询生效（与后端 _build_screening_payload 一致）
+    let feedbackMap = {};
+    try {
+      const fbRes = await fetch(`${API}/feedback?limit=500`);
+      const fbData = await fbRes.json();
+      for (const e of (fbData.entries || [])) {
+        if (e && e.resume_id) {
+          feedbackMap[e.resume_id] = e; // 后写入的覆盖前面的 → 保留最新
+        }
+      }
+    } catch (e) { /* 忽略，无反馈时正常展示 */ }
+    for (const c of all) {
+      const fb = feedbackMap[c.id];
+      if (fb) {
+        c.classification = fb.human_classification || c.classification;
+        c.classification_reason = fb.human_reason || c.classification_reason;
+        c.corrected_by_human = true;
+      }
+    }
+
     const manual = all.filter((c) => (c.source || "manual") !== "email");
     const email = all.filter((c) => (c.source || "manual") === "email");
 
@@ -652,33 +787,146 @@ async function loadScreenPanel() {
       }
       const clsCount = (cls) => items.filter((c) => c.classification === cls).length;
       summary.innerHTML = `共 ${items.length} 人 · 🟢${clsCount("interview")} 🟠${clsCount("review")} 🔴${clsCount("reject")}`;
-      // 候选人列表默认折叠，点击标题展开，避免全部卡片占满屏幕
+      // 分组折叠：默认收起，点击标题展开；展开后列表固定高度内部滚动（与简历库一致）
       box.innerHTML = `<details class="results-collapse">
         <summary class="auto-run-title">👥 候选人列表（${items.length}）</summary>
-        ${items.map(candidateCardHtml).join("")}
+        <div class="collapse-body">
+          ${items.map(candidateCardHtml).join("")}
+        </div>
       </details>`;
     };
     renderGroup(manual, "manual-screen-results", "manual-screen-summary", "暂无手动上传的筛选结果");
     renderGroup(email, "auto-screen-results", "auto-screen-summary", "暂无邮箱抓取的筛选结果");
+    resetCandSelection("manual");
+    resetCandSelection("email");
   } catch (e) { /* 忽略 */ }
 }
 
-async function runScreen() {
-  const log = $("screen-log");
-  log.innerHTML = '<span class="wait">▶ 智能体正在筛选所有简历（手动 + 邮箱，可能需要几分钟）…</span>';
+// 手动筛选运行状态：true = 筛选中（按钮灰色，可点停止）
+let manualScreenRunning = false;
+
+async function runManualScreen() {
+  const log = $("manual-screen-log");
+  const btn = $("run-manual-screen-btn");
+
+  // 正在筛选中：点一下 = 停止筛选
+  if (manualScreenRunning) {
+    log.innerHTML = '<span class="wait">正在停止筛选…</span>';
+    try {
+      const res = await fetch(`${API}/screen/cancel`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "取消失败");
+      log.innerHTML = '<span class="ok">✓ 已请求停止筛选，正在收尾…</span>';
+    } catch (e) {
+      log.innerHTML = `<span class="err">停止失败：${escapeHtml(e.message)}</span>`;
+    }
+    // 按钮立即恢复待机态（run 完成后 is_running 会变 false）
+    manualScreenRunning = false;
+    setManualScreenBtn(false);
+    return;
+  }
+
+  // 待机态：点一下 = 开始筛选
+  log.innerHTML = '<span class="wait">▶ 智能体正在筛选手动上传的简历（可能需要几分钟）…</span>';
+  manualScreenRunning = true;
+  setManualScreenBtn(true);
   try {
-    const res = await fetch(`${API}/screen/run`, { method: "POST" });
+    const res = await fetch(`${API}/manual-screen/run`, { method: "POST" });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || "触发失败");
     if (data.status === "already_running") {
       log.innerHTML = '<span class="err">筛选正在运行中，请稍后查看结果</span>';
+      manualScreenRunning = false;
+      setManualScreenBtn(false);
       return;
     }
+    // 异步模式：轮询等待筛选完成，完成后自动刷新结果（无需手动刷新页面）
+    if (data.status === "started") {
+      const deadline = Date.now() + 10 * 60 * 1000; // 最长等 10 分钟
+      while (Date.now() < deadline) {
+        await new Promise((r) => setTimeout(r, 5000));
+        try {
+          const stRes = await fetch(`${API}/auto-screen/status`);
+          const st = await stRes.json();
+          if (!st.running) {
+            // 筛选结束（completed / skipped / cancelled），刷新结果面板
+            manualScreenRunning = false;
+            setManualScreenBtn(false);
+            log.innerHTML = '<span class="ok">✓ 筛选已结束，结果已更新</span>';
+            loadScreenPanel();
+            loadResumeList();
+            return;
+          }
+        } catch (e) { /* 网络抖动，下轮重试 */ }
+      }
+      manualScreenRunning = false;
+      setManualScreenBtn(false);
+      log.innerHTML = '<span class="wait">筛选仍在后台进行，可稍后刷新页面查看</span>';
+      return;
+    }
+    manualScreenRunning = false;
+    setManualScreenBtn(false);
     log.innerHTML = `<span class="ok">✓ ${escapeHtml(data.message || "筛选完成")}</span>`;
     loadScreenPanel();
-    loadResumeList(); // 刷新简历列表（抓取的新简历会出现在列表）
+    loadResumeList();
+  } catch (e) {
+    manualScreenRunning = false;
+    setManualScreenBtn(false);
+    log.innerHTML = `<span class="err">${escapeHtml(e.message)}</span>`;
+  }
+}
+
+// 手动筛选按钮状态：true=筛选中（灰色可停止）/ false=待机（蓝色可开始）
+function setManualScreenBtn(running) {
+  const btn = $("run-manual-screen-btn");
+  if (running) {
+    btn.textContent = "■ 停止筛选";
+    btn.classList.add("btn-running");
+    btn.classList.remove("primary");
+  } else {
+    btn.textContent = "▶ 筛选手动上传的简历";
+    btn.classList.remove("btn-running");
+    btn.classList.add("primary");
+  }
+}
+
+async function toggleEmailAuto() {
+  const log = $("screen-log");
+  const btn = $("email-auto-btn");
+  btn.disabled = true;
+  log.innerHTML = '<span class="wait">正在切换邮箱自动筛选…</span>';
+  try {
+    const res = await fetch(`${API}/email-auto-toggle`, { method: "POST" });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "操作失败");
+    // 关闭时若筛选正在运行，一并请求取消
+    if (!data.auto_screen) {
+      try {
+        await fetch(`${API}/screen/cancel`, { method: "POST" });
+      } catch (e) { /* 忽略 */ }
+    }
+    log.innerHTML = `<span class="ok">✓ ${escapeHtml(data.message)}</span>`;
+    // 开启后立即触发一轮抓取+筛选（定时任务之外的手动触发）
+    if (data.auto_screen) {
+      log.innerHTML += '\n<span class="wait">▶ 正在抓取邮箱新简历并筛选（首次触发）…</span>';
+      try {
+        const fetchRes = await fetch(`${API}/workflow/run`, { method: "POST" });
+        const fd = await fetchRes.json();
+        if (fetchRes.ok) {
+          log.innerHTML += `\n<span class="ok">✓ ${escapeHtml(fd.message || "首轮抓取+筛选完成")}</span>`;
+        } else {
+          log.innerHTML += `\n<span class="err">${escapeHtml(fd.detail || "首轮触发失败，定时任务将自动重试")}</span>`;
+        }
+      } catch (e) {
+        log.innerHTML += `\n<span class="err">首轮触发失败：${escapeHtml(e.message)}</span>`;
+      }
+    }
+    loadScreenPanel();
+    loadResumeList();
   } catch (e) {
     log.innerHTML = `<span class="err">${escapeHtml(e.message)}</span>`;
+  } finally {
+    btn.disabled = false;
   }
 }
 
@@ -799,15 +1047,22 @@ async function testEmailConfig() {
 $("upload-btn").addEventListener("click", uploadResumes);
 $("refresh-btn").addEventListener("click", loadResumeList);
 $("summarize-rules-btn").addEventListener("click", summarizeRules);
+$("edit-rules-btn").addEventListener("click", editRules);
+$("rules-edit-save").addEventListener("click", saveRulesEdit);
+$("rules-edit-cancel").addEventListener("click", cancelRulesEdit);
 $("compare-rules-btn").addEventListener("click", compareRules);
 $("save-default-query-btn").addEventListener("click", saveDefaultQuery);
-$("run-screen-btn").addEventListener("click", runScreen);
+$("run-manual-screen-btn").addEventListener("click", runManualScreen);
+$("email-auto-btn").addEventListener("click", toggleEmailAuto);
 $("email-save-btn").addEventListener("click", saveEmailConfig);
 $("email-test-btn").addEventListener("click", testEmailConfig);
 $("email-type").addEventListener("change", applyEmailProvider);
 
-// 简历列表：点击展开详情 / 删除按钮 / 选择框（事件委托）
-$("resume-list").addEventListener("click", (e) => {
+// 简历列表：点击展开详情 / 删除按钮 / 选择框（事件委托，手动 + 邮箱两个列表）
+$("manual-resume-list").addEventListener("click", (e) => {
+  bindResumeListClick(e);
+});
+$("email-resume-list").addEventListener("click", (e) => {
   bindResumeListClick(e);
 });
 
@@ -838,11 +1093,44 @@ $("sel-all-cb").addEventListener("change", (e) => {
 });
 $("batch-del-btn").addEventListener("click", batchDeleteResumes);
 
-// 结果卡片内的"提交纠正"按钮（事件委托）
-// 注意：候选卡片会出现在多个容器（手动筛选结果/自动筛选结果/工作台），
+// 筛选结果候选人：全选 / 批量删除（手动、邮箱两个分组独立）
+$("manual-sel-all-cb").addEventListener("change", (e) => {
+  const list = $("manual-screen-results");
+  if (list) list.querySelectorAll('input[data-sel-cand]').forEach((cb) => { cb.checked = e.target.checked; });
+  resetCandSelection("manual");
+});
+$("manual-batch-del-btn").addEventListener("click", () => batchDeleteCandidates("manual"));
+$("email-sel-all-cb").addEventListener("change", (e) => {
+  const list = $("auto-screen-results");
+  if (list) list.querySelectorAll('input[data-sel-cand]').forEach((cb) => { cb.checked = e.target.checked; });
+  resetCandSelection("email");
+});
+$("email-batch-del-btn").addEventListener("click", () => batchDeleteCandidates("email"));
+
+// 结果卡片内的"提交纠正" / "删除候选人" / "勾选" 按钮（事件委托）
+// 注意：候选卡片会出现在多个容器（手动筛选结果/自动筛选结果），
 // 且早期版本曾用 $("results")（该元素已不存在）导致脚本中断，
-// 故改为 document 级委托，任何容器内的纠正按钮都能生效。
+// 故改为 document 级委托，任何容器内的按钮都能生效。
 document.addEventListener("click", (e) => {
+  // 候选人复选框（勾选不触发展开/收起卡片）
+  const selCb = e.target.closest(".cand-sel-cb");
+  if (selCb) {
+    e.stopPropagation();
+    const group = selCb.closest("#manual-screen-results") ? "manual" : "email";
+    resetCandSelection(group);
+    return;
+  }
+  // 删除候选人（不触发展开/收起卡片）
+  const delBtn = e.target.closest(".cand-del-btn");
+  if (delBtn) {
+    e.preventDefault();
+    e.stopPropagation();
+    const candidateEl = delBtn.closest(".candidate");
+    if (candidateEl) {
+      deleteResume(candidateEl.dataset.resumeId, delBtn.dataset.delName || "");
+    }
+    return;
+  }
   const submitBtn = e.target.closest('[data-fb="submit"]');
   if (!submitBtn) return;
   const candidateEl = submitBtn.closest(".candidate");
@@ -855,8 +1143,16 @@ document.addEventListener("click", (e) => {
 checkHealth();
 loadResumeList();
 loadRules();
-restoreState();
 loadScreenPanel();
 loadEmailConfig();
 setInterval(checkHealth, 30000);
-setInterval(() => { loadScreenPanel(); loadResumeList(); }, 60000); // 每分钟刷新筛选面板 + 简历列表
+// 每分钟刷新筛选面板 + 简历列表；但用户正在交互时跳过（避免打断输入/收起展开的卡片）
+setInterval(() => {
+  const activeEl = document.activeElement;
+  const editing = activeEl && activeEl.matches && activeEl.matches("input, select, textarea");
+  const hasOpenCard = document.querySelector(".candidate[open]");
+  const hasOpenDetail = document.querySelector(".resume-detail:not([hidden])");
+  if (editing || hasOpenCard || hasOpenDetail) return;
+  loadScreenPanel();
+  loadResumeList();
+}, 60000);

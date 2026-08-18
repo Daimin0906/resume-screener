@@ -53,10 +53,21 @@ class AutoScreener:
         self.rules_version_cb = rules_version_cb
         self.max_runs = max_runs
         self.max_batch = max_batch
-        # RLock：run() 持锁期间会调用 mark_processed/prune/_append_run（内部同样加锁）
+        # RLock：mark_processed/prune/_append_run 内部加锁，保护 JSON 文件并发读写
         self._lock = threading.RLock()
-        self._running = False
+        # 并发运行计数：手动筛选与邮箱自动筛选可同时运行（两条独立流程）
+        self._active_runs = 0
+        # 取消标志：用户点"停止筛选"时置位，运行中的 run 在简历分析间隙检查并中止
+        self._cancel_requested = False
         logger.info(f"Initialized AutoScreener with data dir: {self.data_dir}")
+
+    def cancel(self) -> None:
+        """请求取消当前正在运行的筛选（手动筛选用；邮箱自动筛选关闭时也调用）。"""
+        self._cancel_requested = True
+        logger.info("[auto-screen] cancel requested")
+
+    def is_cancel_requested(self) -> bool:
+        return self._cancel_requested
 
     # ------------------------------------------------------------------
     # 默认岗位要求
@@ -150,25 +161,29 @@ class AutoScreener:
     # ------------------------------------------------------------------
 
     def is_running(self) -> bool:
-        return self._running
+        return self._active_runs > 0
 
     def run(self, trigger: str,
-            ready_resume_ids: Callable[[], List[str]]) -> Dict[str, Any]:
+            ready_resume_ids: Callable[[], List[str]],
+            force: bool = False) -> Dict[str, Any]:
         """执行一轮自动筛选。
 
         Args:
             trigger: "after_fetch"（抓取后自动）| "manual"（手动触发）| "manual_screen"（手动筛选）
             ready_resume_ids: 返回待筛选简历 id 列表的回调（按来源过滤由调用方负责）
+            force: True 时忽略 processed 状态，全部重新筛（手动筛选用：
+                用户点「筛选手动上传的简历」应始终重筛，不受已处理标记限制）
 
         Returns:
             本次 run 记录 dict（含 status）
-        """
-        # 防重入：正在运行时跳过（未处理简历状态已持久化，下轮自动补）
-        if not self._lock.acquire(blocking=False):
-            logger.info("[auto-screen] skipped: already running")
-            return {"status": STATUS_SKIPPED_RUNNING}
 
-        self._running = True
+        并发说明：手动筛选（manual_screen）与邮箱自动筛选（after_fetch/manual）
+        是两条独立流程，允许同时运行（各自维护 run 记录，processed_ids 按
+        resume_id 天然互不冲突）；同一触发来源的重复提交由上层 executor 或
+        is_running 检查兜底。
+        """
+        self._active_runs += 1
+        self._cancel_requested = False  # 新一轮开始，重置取消标志
         run_id = str(uuid.uuid4())
         run_record: Dict[str, Any] = {
             "run_id": run_id,
@@ -198,9 +213,13 @@ class AutoScreener:
             # 2. 解析查询（复用截断/占位词兜底）
             query_metadata = self.query_parser.parse_query(query_text)
 
-            # 3. 待筛选的新简历（已就绪 且 未处理过；来源过滤由调用方在回调中完成）
+            # 3. 待筛选的简历（已就绪；来源过滤由调用方在回调中完成）
             all_ready = ready_resume_ids()
-            pending = [rid for rid in all_ready if not self.is_processed(rid)]
+            if force:
+                # 手动重筛：忽略 processed 标记，全部重筛
+                pending = list(all_ready)
+            else:
+                pending = [rid for rid in all_ready if not self.is_processed(rid)]
 
             # 清理已删除简历的 processed 记录
             self.prune_processed_ids(set(all_ready))
@@ -221,6 +240,15 @@ class AutoScreener:
             # 5. 执行完整筛选（routes 注入的回调：score/rank/analyze/format/feedback 覆盖）
             logger.info(f"[auto-screen] screening {len(batch)} new resumes")
             payload = self.run_screening_cb(query_metadata, batch)
+
+            # 5b. 用户点了停止：本轮中止（不标记已处理，不产出结果）
+            if self._cancel_requested or not payload.get("candidates"):
+                run_record["status"] = "cancelled"
+                run_record["finished_at"] = datetime.now().isoformat(timespec="seconds")
+                run_record["error"] = "用户已停止筛选"
+                self._append_run(run_record)
+                logger.info("[auto-screen] cancelled by user")
+                return run_record
 
             # 6. 统计三分类分布
             distributions: Dict[str, int] = {}
@@ -254,8 +282,8 @@ class AutoScreener:
             return run_record
 
         finally:
-            self._running = False
-            self._lock.release()
+            self._active_runs -= 1
+            self._cancel_requested = False
 
     # ------------------------------------------------------------------
     # 结果/状态
@@ -293,6 +321,28 @@ class AutoScreener:
             runs = runs[:limit]
         return runs
 
+    def remove_candidate(self, resume_id: str) -> bool:
+        """从所有历史筛选结果中移除指定候选人（结果列表删除）。
+
+        用于：简历已被删除但筛选结果文件仍残留该候选人（死引用）时，
+        从结果展示中一并清除。返回是否移除成功。
+        """
+        with self._lock:
+            data = self._load_results()
+            runs = data.get("runs", [])
+            removed = False
+            for run in runs:
+                candidates = run.get("candidates") or []
+                before = len(candidates)
+                run["candidates"] = [c for c in candidates if c.get("id") != resume_id]
+                if len(run["candidates"]) != before:
+                    removed = True
+            if removed:
+                data["runs"] = runs
+                self._save_results(data)
+                logger.info(f"Removed candidate {resume_id} from screening results")
+        return removed
+
     def latest_run(self) -> Optional[Dict[str, Any]]:
         runs = self.list_runs(limit=1)
         return runs[0] if runs else None
@@ -312,7 +362,7 @@ class AutoScreener:
         state = self._load_state()
         return {
             "enabled": True,  # 由 routes 层按 settings 覆盖
-            "running": self._running,
+            "running": self.is_running(),
             "default_query_set": bool(self.get_default_query().get("query_text")),
             "last_fetch_at": state.get("last_fetch_at"),
             "last_run": summary,

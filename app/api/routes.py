@@ -3,6 +3,7 @@ API 路由
 """
 import asyncio
 import os
+import threading
 import uuid
 import json
 from datetime import datetime
@@ -17,7 +18,7 @@ from starlette.concurrency import run_in_threadpool
 from app.api.models import (
     UploadResumeResponse, QueryRequest, QueryResponse, ScreeningResult,
     FeedbackRequest, FeedbackResponse, RulesResponse,
-    RulesSummarizeRequest, RulesSummaryResponse, ResumeStatusResponse,
+    RulesSummarizeRequest, RulesSummaryResponse, RulesUpdateRequest, ResumeStatusResponse,
     EmailFetchRequest, EmailFetchResponse, EmailFetchItem, EmailIngestedResume,
     RulesCompareRequest, RulesCompareResponse, BatchDeleteRequest,
     AutoScreenQueryUpdate, AutoScreenQueryResponse, AutoScreenRunResponse,
@@ -86,12 +87,17 @@ upload_executor = ThreadPoolExecutor(max_workers=settings.UPLOAD_MAX_WORKERS)
 def _run_screening_for_auto(query_metadata: QueryMetadata,
                             resume_ids: List[str]) -> Dict[str, Any]:
     """自动筛选用的筛选回调（注入 AutoScreener）：
-    对指定简历直接 score→rank→analyze→format→feedback 覆盖（跳过检索/硬过滤）。"""
+    对指定简历直接 score→rank→analyze→format→feedback 覆盖（跳过检索/硬过滤）。
+
+    支持取消：用户点"停止筛选"时，auto_screener.cancel() 置位，
+    批量分析在每份简历间隙检查并中止（返回空候选人列表）。
+    """
     ranked = _run_screening_stages(query_metadata, resume_ids)
     payload = _build_screening_payload(
         query_metadata, "auto", "auto", ranked,
         rules_manager.active_rules_text(),
         rules_manager.get_active_rules().get("version") or 0,
+        cancel_check=auto_screener.is_cancel_requested,
     )
     return payload.model_dump()
 
@@ -105,8 +111,11 @@ auto_screener = AutoScreener(
     max_batch=settings.AUTO_SCREEN_MAX_BATCH,
 )
 
-# 单线程 executor：自动筛选只允许一个并发实例（防重入第二道防线）
+# 单线程 executor：邮箱自动筛选只允许一个并发实例（防重入第二道防线）
 auto_screen_executor = ThreadPoolExecutor(max_workers=1)
+
+# 手动筛选独立 executor：与邮箱自动筛选互不阻塞（两条独立流程可同时跑）
+manual_screen_executor = ThreadPoolExecutor(max_workers=1)
 
 # 候选人处理工作台（处理状态存储于 data/candidate_status.json）
 workbench = Workbench(settings.AUTO_SCREEN_DATA_DIR)
@@ -115,6 +124,7 @@ workbench = Workbench(settings.AUTO_SCREEN_DATA_DIR)
 def shutdown_auto_screen_executor() -> None:
     """服务关闭时调用。"""
     auto_screen_executor.shutdown(wait=False)
+    manual_screen_executor.shutdown(wait=False)
 
 
 def reset_task_statuses_after_restart() -> None:
@@ -336,6 +346,36 @@ def _run_screening_stages(query_metadata: QueryMetadata,
     return ranker.rank_resumes(scored, query_metadata)
 
 
+# LLM 手松兜底：与岗位核心领域明显不符时，interview 降级为 review
+# 覆盖常见 AI/LLM/Agent 岗位的核心技术领域关键词
+_DOMAIN_CORE_KEYWORDS = [
+    "python", "javascript", "typescript", "llm", "rag", "agent", "prompt",
+    "embedding", "langchain", "openai", "大模型", "ai agent", "智能体",
+    "function calling", "tool calling", "workflow", "autogpt", "dify", "coze",
+]
+
+
+def _domain_match_override(classification: str, reason: str,
+                           resume_skills: list, resume_id: str) -> str:
+    """领域匹配兜底：LLM 判了 interview，但简历技能与岗位核心领域几乎无交集时，降级为 review。
+
+    注意：仅覆盖 interview -> review（不跨级到 reject，避免误杀），
+    且不覆盖人工纠正结果（调用方已保证 feedback 分支不进入此函数）。
+    """
+    if classification != "interview":
+        return classification
+    text = " ".join(str(s).lower() for s in (resume_skills or []))
+    if not text.strip():
+        # 技能字段为空：参考简历全文（更宽松，只在完全无交集时降级）
+        data = resume_storage.get(resume_id, {})
+        text = str(data.get("text", "") or "").lower()
+    hits = [kw for kw in _DOMAIN_CORE_KEYWORDS if kw in text]
+    if not hits:
+        logger.info(f"[domain-override] {resume_id}: interview -> review (no core skill hits)")
+        return "review"
+    return classification
+
+
 def _calc_skill_scores(resume_skills: list, query_metadata: QueryMetadata, overall_skill_score: float) -> list:
     """根据查询要求计算每个技能的单项得分。"""
     if not resume_skills:
@@ -475,10 +515,12 @@ async def submit_query(query_request: QueryRequest):
 
 def _build_screening_payload(query_metadata: QueryMetadata, query_text: str,
                              query_id: str, ranked_resumes: List[Dict[str, Any]],
-                             rules_text: str, rules_version: int) -> ScreeningResult:
+                             rules_text: str, rules_version: int,
+                             cancel_check=None) -> ScreeningResult:
     """筛选管线后半段共用（手动 /results 与自动筛选）：分析→格式化→人工纠正覆盖。
 
     注意：此函数为同步函数，调用方用 run_in_threadpool 包装（与现有调用模式一致）。
+    cancel_check: 可选取消回调（自动筛选用），分析被取消时返回空结果。
     """
     # 合并入库时的通用评估到候选人数据（注入分析 prompt 作参考，不覆盖岗位筛选判定）
     for resume in ranked_resumes:
@@ -487,7 +529,17 @@ def _build_screening_payload(query_metadata: QueryMetadata, query_text: str,
             resume["preclassification"] = resume_storage[rid]["preclassification"]
 
     analyzed_candidates = candidate_analyzer.analyze_candidates(
-        ranked_resumes, query_metadata, rules_text)
+        ranked_resumes, query_metadata, rules_text, cancel_check=cancel_check)
+    # 用户点了停止筛选：批量分析被取消，返回空结果（调用方标记 cancelled）
+    if cancel_check and cancel_check() and not analyzed_candidates:
+        return ScreeningResult(
+            query_id=query_id,
+            query_text=query_text,
+            total_candidates=0,
+            candidates=[],
+            created_at=datetime.now(),
+            rules_version_used=rules_version,
+        )
     formatted_results = result_formatter.format_results(analyzed_candidates, query_metadata)
 
     # 人工纠正反馈：被纠正过的候选人以人工分类覆盖 AI 分类显示
@@ -519,6 +571,10 @@ def _build_screening_payload(query_metadata: QueryMetadata, query_text: str,
             classification_reason = feedback_entry.get("human_reason", "") or classification_reason
             classification_source = "human"
             corrected_by_human = True
+        else:
+            # 领域匹配兜底：LLM 手松时，技能与岗位核心领域明显不符的 interview 降级为 review
+            classification = _domain_match_override(
+                classification, classification_reason, resume_skills, candidate_id)
 
         candidates.append({
             "id": candidate_id,
@@ -531,6 +587,7 @@ def _build_screening_payload(query_metadata: QueryMetadata, query_text: str,
             "overall_score": scores.get("overall_score", 0),
             "work_experience": work_experience,
             "education": education,
+            "projects": _safe_json_loads(basic_info.get("projects", []), []),
             "skill_scores": skill_scores,
             "skills": resume_skills,
             "expected_salary": basic_info.get("expected_salary"),
@@ -632,17 +689,25 @@ async def get_resume(resume_id: str):
 @router.delete("/resumes/{resume_id}")
 async def delete_resume(resume_id: str):
     """
-    删除简历接口：从内存索引与向量库同时删除
-    """
-    if resume_id not in resume_storage:
-        raise HTTPException(status_code=404, detail="简历不存在")
+    删除简历接口：从内存索引、向量库与筛选结果中同时删除。
 
+    简历可能已不存在（如之前删除过）但筛选结果文件仍残留该候选人，
+    此时同样从结果中清除，保证界面删除按钮始终可用。
+    """
     try:
-        del resume_storage[resume_id]
-        resume_tasks.pop(resume_id, None)
-        await run_in_threadpool(vector_store_manager.delete_documents, "resumes", [resume_id])
-        logger.info(f"Deleted resume {resume_id}")
+        exists = resume_id in resume_storage
+        if exists:
+            del resume_storage[resume_id]
+            resume_tasks.pop(resume_id, None)
+            await run_in_threadpool(vector_store_manager.delete_documents, "resumes", [resume_id])
+        # 无论简历是否存在，都从历史筛选结果中移除该候选人
+        removed_from_results = await run_in_threadpool(auto_screener.remove_candidate, resume_id)
+        if not exists and not removed_from_results:
+            raise HTTPException(status_code=404, detail="简历不存在")
+        logger.info(f"Deleted resume {resume_id} (in_storage={exists}, in_results={removed_from_results})")
         return {"message": "简历已删除"}
+    except HTTPException:
+        raise
     except Exception:
         logger.exception("删除简历失败")
         raise HTTPException(status_code=500, detail="删除简历失败，请稍后重试")
@@ -700,6 +765,7 @@ def _load_email_config() -> Dict[str, Any]:
         "password": settings.IMAP_PASSWORD,
         "ssl": settings.IMAP_SSL,
         "mailbox": settings.IMAP_MAILBOX,
+        "auto_screen": False,
     }
 
 
@@ -737,6 +803,93 @@ def _auto_screen_after_fetch_worker(ingested_ids: List[str]) -> None:
         auto_screener.run(trigger="after_fetch", ready_resume_ids=_get_ready_resume_ids)
     except Exception:
         logger.exception("[auto-screen] after_fetch run crashed")
+
+
+def scheduled_email_fetch() -> Dict[str, Any]:
+    """定时任务入口：邮箱自动筛选开关开启时才抓取+筛选（关闭则跳过）。
+
+    由 APScheduler 定时调用；手动 API 仍走 fetch_emails_and_ingest。
+    """
+    cfg = _load_email_config()
+    if not cfg.get("auto_screen"):
+        return {"fetched": 0, "results": [], "skipped": "auto_screen 关闭"}
+    return fetch_emails_and_ingest()
+
+
+# ------------------------------------------------------------------
+# 邮箱即时监听（IMAP IDLE）：开关开启后，邮箱一收到新邮件立即拉取+筛选
+# ------------------------------------------------------------------
+
+# IDLE 单次等待超时（秒）：到期自动续约重新进入 IDLE，避免被服务端断开
+IDLE_WAIT_SECONDS = 300
+# 监听线程停止信号
+_email_idle_stop = threading.Event()
+
+
+def _email_idle_listener() -> None:
+    """后台线程：循环 IDLE 等待新邮件通知，收到即抓取+筛选。
+
+    双重保障：
+    - IDLE 推送：连接建立后的新邮件会立即收到 EXISTS 通知；
+    - 主动轮询兜底：每次进入 IDLE 前主动查一次未读（覆盖"通知到达前
+      邮件已到/通知丢失"的窗口期），IDLE 超时续约时也会再次兜底。
+    开关关闭（_email_idle_stop 置位）或配置缺失时退出。
+    """
+    logger.info("[email-idle] listener started")
+    while not _email_idle_stop.is_set():
+        cfg = _load_email_config()
+        if not cfg.get("auto_screen"):
+            break
+        if not cfg.get("host") or not cfg.get("user") or not cfg.get("password"):
+            # 配置不完整：等待 60 秒后重试（期间可重新配置）
+            if _email_idle_stop.wait(60):
+                break
+            continue
+        try:
+            # 兜底 1：进入 IDLE 前主动抓一次未读（补"通知窗口期之前"到达的邮件）
+            if cfg.get("auto_screen"):
+                try:
+                    fetch_emails_and_ingest(limit=20)
+                except Exception as e:
+                    logger.warning(f"[email-idle] pre-fetch failed: {e}")
+
+            fetcher = EmailFetcher(
+                host=cfg["host"],
+                port=int(cfg.get("port") or 993),
+                ssl=cfg.get("ssl", True),
+                user=cfg.get("user", ""),
+                password=cfg.get("password", ""),
+                mailbox=cfg.get("mailbox", "INBOX"),
+                mark_read=settings.IMAP_MARK_READ,
+                max_attachment_bytes=settings.IMAP_ATTACHMENT_MAX_MB * 1024 * 1024,
+            )
+            # IDLE 阻塞等待新邮件；超时返回 False（继续下一轮等待）
+            has_new = fetcher.wait_for_new_mail(timeout=IDLE_WAIT_SECONDS)
+            if has_new and cfg.get("auto_screen"):
+                logger.info("[email-idle] new mail detected, fetching")
+                try:
+                    fetch_emails_and_ingest(limit=20)
+                except Exception as e:
+                    logger.warning(f"[email-idle] fetch failed: {e}")
+        except Exception as e:
+            logger.warning(f"[email-idle] connection error, retrying in 60s: {e}")
+            if _email_idle_stop.wait(60):
+                break
+    logger.info("[email-idle] listener stopped")
+
+
+def start_email_idle_listener() -> None:
+    """开启邮箱即时监听（开关开启时调用）。已在运行则忽略。"""
+    _email_idle_stop.clear()
+    t = threading.Thread(target=_email_idle_listener, daemon=True, name="email-idle")
+    t.start()
+    logger.info("[email-idle] listener thread started")
+
+
+def stop_email_idle_listener() -> None:
+    """停止邮箱即时监听（开关关闭时调用）。"""
+    _email_idle_stop.set()
+    logger.info("[email-idle] stop requested")
 
 
 def fetch_emails_and_ingest(limit: int = 10) -> Dict[str, Any]:
@@ -1001,6 +1154,25 @@ async def summarize_rules(request: RulesSummarizeRequest):
         raise HTTPException(status_code=502, detail=f"规则总结失败，请稍后重试: {e}")
 
 
+@router.put("/rules", response_model=RulesSummaryResponse)
+async def update_rules(request: RulesUpdateRequest):
+    """人工编辑规则：直接保存新的规则列表（版本 +1，旧版本压入 history）。
+
+    与「总结筛选规则」（LLM 自动生成）并行：人工修改优先，立即生效。
+    """
+    try:
+        new_rules = await run_in_threadpool(rules_manager.set_rules, request.rules, request.summary)
+        return RulesSummaryResponse(
+            version=new_rules.get("version") or 0,
+            rules=new_rules.get("rules") or [],
+            summary=new_rules.get("summary") or "",
+            based_on_feedback_count=len(new_rules.get("based_on_feedback_ids") or []),
+        )
+    except Exception as e:
+        logger.exception("规则人工编辑失败")
+        raise HTTPException(status_code=500, detail=f"规则保存失败，请稍后重试: {e}")
+
+
 # ------------------------------------------------------------------
 # 全流程自动筛选 API
 # ------------------------------------------------------------------
@@ -1146,11 +1318,31 @@ async def set_email_config(request: EmailConfigUpdate):
         "user": request.user,
         "ssl": request.ssl,
         "mailbox": request.mailbox,
+        "auto_screen": request.auto_screen,
     })
     if not cfg.get("host") or not cfg.get("user"):
         raise HTTPException(status_code=400, detail="请填写邮箱服务器地址和账号")
     await run_in_threadpool(_save_email_config, cfg)
     return {"message": "邮箱配置已保存"}
+
+
+@router.post("/email-auto-toggle")
+async def toggle_email_auto():
+    """切换邮箱自动筛选开关。
+
+    开启后：立即启动 IMAP IDLE 即时监听（邮箱一收到新邮件就拉取+筛选），
+    同时保留定时任务兜底；关闭后停止监听与定时抓取。
+    """
+    cfg = await run_in_threadpool(_load_email_config)
+    if not cfg.get("host") or not cfg.get("user"):
+        raise HTTPException(status_code=400, detail="请先配置邮箱（host/user）")
+    cfg["auto_screen"] = not cfg.get("auto_screen", False)
+    await run_in_threadpool(_save_email_config, cfg)
+    if cfg["auto_screen"]:
+        start_email_idle_listener()
+    else:
+        stop_email_idle_listener()
+    return {"auto_screen": cfg["auto_screen"], "message": "邮箱自动筛选已开启" if cfg["auto_screen"] else "邮箱自动筛选已关闭"}
 
 
 @router.post("/email-config/test")
@@ -1239,6 +1431,17 @@ async def run_screen():
     }
 
 
+@router.post("/screen/cancel")
+async def cancel_screen():
+    """停止当前正在运行的筛选（手动筛选或邮箱自动筛选共用）。
+
+    取消是协作式的：正在分析的简历会在间隙检测到取消并中止，
+    已完成的简历保留结果，未开始的跳过；run 状态记为 cancelled。
+    """
+    auto_screener.cancel()
+    return {"status": "cancelled", "message": "已请求停止筛选"}
+
+
 # ------------------------------------------------------------------
 # 手动筛选工作流（手动上传的简历，独立于邮箱自动筛选）
 # 注：保留以兼容旧客户端/测试；前端已统一使用 /screen/run
@@ -1257,19 +1460,22 @@ def _get_ready_manual_resume_ids() -> List[str]:
 async def run_manual_screen():
     """手动筛选：对【手动上传】的简历跑一轮完整筛选（用默认岗位要求 + 当前规则）。
 
-    结果与自动筛选共用存储（工作台聚合），trigger 标记为 manual_screen。
+    与邮箱自动筛选是两条独立流程：即使邮箱自动筛选正在运行，
+    手动筛选也照常启动（互不阻塞），trigger 标记为 manual_screen。
     """
     if not settings.AUTO_SCREEN_ENABLED:
         raise HTTPException(status_code=400, detail="自动筛选未启用")
 
-    if auto_screener.is_running():
-        return {"status": "already_running", "message": "筛选正在运行中"}
-
+    # 同一来源防重入：手动筛选正在跑时，再点一次直接提示
     if settings.AUTO_SCREEN_ASYNC:
-        auto_screen_executor.submit(auto_screener.run, "manual_screen", _get_ready_manual_resume_ids)
+        # 独立 executor，不占用邮箱自动筛选的线程；
+        # force=True：手动筛选始终重筛全部手动简历（不受 processed 标记限制）
+        manual_screen_executor.submit(
+            auto_screener.run, "manual_screen", _get_ready_manual_resume_ids, True)
         return {"status": "started", "message": "手动筛选已开始，完成后刷新查看结果"}
 
-    record = await run_in_threadpool(auto_screener.run, "manual_screen", _get_ready_manual_resume_ids)
+    record = await run_in_threadpool(
+        auto_screener.run, "manual_screen", _get_ready_manual_resume_ids, True)
     return {
         "status": record.get("status", "completed"),
         "screened_count": record.get("screened_count", 0),

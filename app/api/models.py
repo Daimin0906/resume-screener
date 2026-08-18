@@ -76,6 +76,8 @@ class EmailConfigUpdate(BaseModel):
     password: str = ""  # 为空或 ****** 时保留原密码
     ssl: bool = True
     mailbox: str = "INBOX"
+    # 邮箱自动筛选开关：开启后定时自动拉取新简历并筛选，关闭后停止
+    auto_screen: bool = False
 
 
 class UploadResumeResponse(BaseModel):
@@ -134,9 +136,13 @@ class Candidate(BaseModel):
     skill_scores: List[Skill] = []
     work_experience: List[WorkExperience] = []
     education: List[Education] = []
+    # 项目经历（结构化速览展示用）
+    projects: List[Dict[str, Any]] = []
     skills: List[str] = []
     expected_salary: Optional[str] = None
     preferred_locations: List[str] = []
+    # 简历来源（manual 手动上传 / email 邮箱抓取），前端按来源分组
+    source: str = "manual"
     analysis: str = ""
     # ---- 三分类（interview / review / reject）----
     classification: str = "review"
@@ -192,6 +198,12 @@ class RulesResponse(BaseModel):
 class RulesSummarizeRequest(BaseModel):
     """规则总结请求模型"""
     min_feedback: Optional[int] = None
+
+
+class RulesUpdateRequest(BaseModel):
+    """人工编辑规则请求模型"""
+    rules: List[str] = []
+    summary: str = ""
 
 
 class RulesSummaryResponse(BaseModel):

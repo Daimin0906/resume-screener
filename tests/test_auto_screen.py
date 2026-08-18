@@ -132,26 +132,25 @@ class TestRun:
         assert not s.is_processed("r1")  # 失败不标记 → 下轮重试
 
     def test_run_reentrancy_skips(self, tmp_path):
-        """另一线程正在运行时，本次 run 跳过（防重入）"""
+        """手动筛选与邮箱自动筛选允许并发：另一线程运行时，本次 run 正常执行（不再跳过）"""
         import threading
         import time
 
         s = make_screener(tmp_path)
         s.set_default_query("JD")
 
-        # 独立线程持有锁（模拟正在运行）
-        def hold_lock():
-            s._lock.acquire()
-            time.sleep(0.5)
-            s._lock.release()
+        # 独立线程发起一轮 run（模拟邮箱自动筛选中）
+        def other_run():
+            return s.run("after_fetch", self._ready_ids("r_other"))
 
-        t = threading.Thread(target=hold_lock)
+        t = threading.Thread(target=other_run)
         t.start()
-        time.sleep(0.1)  # 确保锁已被持有
+        time.sleep(0.1)  # 确保另一轮已开始
 
-        record = s.run("manual", self._ready_ids("r1"))
-        assert record["status"] == "skipped_running"
+        # 手动筛选不因邮箱筛选中而被跳过，正常完成
+        record = s.run("manual_screen", self._ready_ids("r1"))
         t.join()
+        assert record["status"] == STATUS_COMPLETED
 
     def test_distributions_counted(self, tmp_path):
         def fake_payload(qm, ids):
@@ -185,27 +184,29 @@ class TestPersistence:
         runs = s.list_runs()
         assert len(runs) == 3  # 只保留最近 3 次
 
-    def test_skipped_running_not_appended(self, tmp_path):
-        """跳过（运行中）的记录不追加到结果文件"""
+    def test_concurrent_runs_both_recorded(self, tmp_path):
+        """手动筛选与邮箱自动筛选允许并发：两轮 run 都各自记录（不互相跳过）"""
         import threading
         import time
 
         s = make_screener(tmp_path)
         s.set_default_query("JD")
 
-        def hold_lock():
-            s._lock.acquire()
-            time.sleep(0.5)
-            s._lock.release()
+        # 两轮 run 同时进行（模拟手动筛选 + 邮箱自动筛选并行）
+        def run_b():
+            return s.run("after_fetch", lambda: ["r_b"])
 
-        t = threading.Thread(target=hold_lock)
+        t = threading.Thread(target=run_b)
         t.start()
         time.sleep(0.1)
-
-        record = s.run("manual", lambda: ["r1"])
-        assert record["status"] == "skipped_running"
+        record_a = s.run("manual_screen", lambda: ["r_a"])
         t.join()
-        assert s.list_runs() == []  # skipped_running 不追加
+
+        # 两轮都正常完成并追加（并发计数而非互斥跳过）
+        assert record_a["status"] == STATUS_COMPLETED
+        runs = s.list_runs()
+        assert len(runs) == 2
+        assert {r["trigger"] for r in runs} == {"manual_screen", "after_fetch"}
 
 
 class TestManualScreenAPI:

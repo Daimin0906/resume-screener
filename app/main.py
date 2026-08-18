@@ -39,12 +39,19 @@ async def lifespan(app: FastAPI):
     routes.restore_resume_storage()
     routes.reset_task_statuses_after_restart()
 
+    # 邮箱自动筛选开关已开启时，启动 IMAP IDLE 即时监听（新邮件即拉取）
+    try:
+        if routes._load_email_config().get("auto_screen"):
+            routes.start_email_idle_listener()
+    except Exception as e:
+        logger.warning(f"Failed to start email idle listener: {e}")
+
     scheduler = create_scheduler()
     if scheduler:
         try:
             ids = register_jobs(
                 scheduler,
-                lambda: routes.fetch_emails_and_ingest(),
+                lambda: routes.scheduled_email_fetch(),
                 lambda: routes.preclassify_pending(),
             )
             scheduler.start()

@@ -176,6 +176,55 @@ class RulesManager:
             "summary": prev.get("summary", ""),
         }
 
+    def set_rules(self, rules: List[str], summary: str = "") -> Dict[str, Any]:
+        """人工编辑规则：直接保存新的规则列表（版本 +1，旧版本压入 history）。
+
+        与 summarize_rules（LLM 总结）并存：人工修改后版本号递增，
+        且不改变 based_on_feedback_ids（已消费的反馈不因人工编辑而重新待总结）。
+
+        Args:
+            rules: 规则列表（自动去空、去重）
+            summary: 规则摘要说明（可空）
+
+        Returns:
+            更新后的规则字典
+        """
+        cleaned = []
+        seen = set()
+        for r in rules:
+            s = str(r).strip()
+            if s and s not in seen:
+                cleaned.append(s)
+                seen.add(s)
+
+        with self._lock:
+            rules_data = self.get_active_rules()
+            history = list(rules_data.get("history") or [])
+            history.append({
+                "version": rules_data.get("version") or 0,
+                "updated_at": rules_data.get("updated_at"),
+                "rules": rules_data.get("rules") or [],
+            })
+            history = history[-10:]
+
+            new_rules_data = {
+                "schema_version": self.RULES_SCHEMA_VERSION,
+                "version": (rules_data.get("version") or 0) + 1,
+                "updated_at": datetime.now().isoformat(timespec="seconds"),
+                "active": True,
+                "rules": cleaned[: self.max_rules],
+                "summary": (summary or "").strip(),
+                # 人工编辑不消费/不改变反馈状态：沿用原有已消费反馈 id
+                "based_on_feedback_ids": rules_data.get("based_on_feedback_ids") or [],
+                "based_on_last_ts": rules_data.get("based_on_last_ts"),
+                "history": history,
+            }
+            self._save_json(self.rules_path, new_rules_data)
+
+        logger.info(f"Rules manually set to version {new_rules_data['version']} "
+                    f"({len(cleaned)} rules)")
+        return new_rules_data
+
     def pending_feedback_count(self) -> int:
         """自上次规则总结以来新增的反馈条数。
 

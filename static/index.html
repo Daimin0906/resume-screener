@@ -16,100 +16,156 @@
 
   <main class="layout">
 
-    <!-- ① 简历库 -->
-    <section class="panel">
-      <div class="panel-head">
-        <h2>📥 简历库 <span id="resume-count" class="muted"></span></h2>
-      </div>
-
-      <div class="upload-row">
-        <input type="file" id="resume-files" multiple accept=".txt,.pdf,.md" />
-        <button id="upload-btn" class="btn primary">上传</button>
-      </div>
-      <div id="upload-log" class="log"></div>
-
-      <div class="list-toolbar">
-        <label class="sel-all"><input type="checkbox" id="sel-all-cb" /> 全选</label>
-        <span id="sel-count" class="muted"></span>
-        <button id="batch-del-btn" class="btn btn-danger btn-sm" disabled>删除选中</button>
-        <button id="refresh-btn" class="btn btn-sm">刷新</button>
-      </div>
-      <ul id="resume-list" class="resume-list"></ul>
-    </section>
-
-    <!-- ② 筛选：统一流水线，结果按来源分组 -->
+    <!-- ① 筛选控制：默认岗位要求 + 两个独立筛选流程 -->
     <section class="panel">
       <div class="panel-head">
         <h2>▶ 筛选</h2>
       </div>
 
-      <div class="grid-2">
+      <div class="screen-setup">
         <div class="sub-block">
           <h3>🎯 默认岗位要求</h3>
-          <textarea id="default-query-text" rows="3" placeholder="填写默认岗位要求（JD 文本）…"></textarea>
+          <textarea id="default-query-text" rows="3" placeholder="填写默认岗位要求（JD 文本），两个流程筛选时共用…"></textarea>
           <button id="save-default-query-btn" class="btn primary">保存</button>
           <div id="default-query-log" class="log"></div>
         </div>
 
         <div class="sub-block">
-          <h3>🚀 开始筛选</h3>
-          <button id="run-screen-btn" class="btn primary">▶ 开始筛选</button>
-          <div id="screen-status" class="flow-status"></div>
-          <div id="screen-log" class="log"></div>
-          <details class="email-config-box">
-            <summary>📮 邮箱配置（定时自动抓取新简历）</summary>
-            <div class="email-config-row">
-              <label>类型：</label>
-              <select id="email-type">
-                <option value="qq">QQ邮箱</option>
-                <option value="163">163邮箱</option>
-                <option value="126">126邮箱</option>
-                <option value="gmail">Gmail</option>
-                <option value="outlook">Outlook</option>
-                <option value="custom">其他（自定义服务器）</option>
-              </select>
+          <h3>🛠 筛选入口</h3>
+          <div class="flow-entry">
+            <div class="flow-entry-head">
+              <span class="flow-name">📤 手动上传的简历</span>
             </div>
-            <input id="email-user" type="text" placeholder="邮箱账号，如 xxx@qq.com" />
-            <input id="email-password" type="password" placeholder="授权码（QQ邮箱为授权码，非登录密码）" />
-            <div id="email-custom-fields" hidden>
-              <input id="email-host" type="text" placeholder="IMAP 服务器，如 imap.qq.com" />
-              <input id="email-port" type="number" placeholder="端口(993)" style="width: 120px" />
+            <button id="run-manual-screen-btn" class="btn primary btn-lg">▶ 筛选手动上传的简历</button>
+            <div id="manual-screen-log" class="log"></div>
+          </div>
+
+          <div class="flow-entry">
+            <div class="flow-entry-head">
+              <span class="flow-name">📧 邮箱自动筛选</span>
+              <span id="email-auto-status" class="flow-status"></span>
             </div>
-            <div class="email-config-row">
-              <button id="email-test-btn" class="btn">测试连接</button>
-              <button id="email-save-btn" class="btn primary">保存</button>
-            </div>
-            <div id="email-config-log" class="log"></div>
-          </details>
+            <button id="email-auto-btn" class="btn primary btn-lg">▶ 开启邮箱自动筛选</button>
+            <div id="screen-log" class="log"></div>
+            <details class="email-config-box">
+              <summary>📮 邮箱配置（账号信息）</summary>
+              <div class="email-config-row">
+                <label>类型：</label>
+                <select id="email-type">
+                  <option value="qq">QQ邮箱</option>
+                  <option value="163">163邮箱</option>
+                  <option value="126">126邮箱</option>
+                  <option value="gmail">Gmail</option>
+                  <option value="outlook">Outlook</option>
+                  <option value="custom">其他（自定义服务器）</option>
+                </select>
+              </div>
+              <input id="email-user" type="text" placeholder="邮箱账号，如 xxx@qq.com" />
+              <input id="email-password" type="password" placeholder="授权码（QQ邮箱为授权码，非登录密码）" />
+              <div id="email-custom-fields" hidden>
+                <input id="email-host" type="text" placeholder="IMAP 服务器，如 imap.qq.com" />
+                <input id="email-port" type="number" placeholder="端口(993)" style="width: 120px" />
+              </div>
+              <div class="email-config-row">
+                <button id="email-test-btn" class="btn">测试连接</button>
+                <button id="email-save-btn" class="btn primary">保存</button>
+              </div>
+              <div id="email-config-log" class="log"></div>
+            </details>
+          </div>
         </div>
       </div>
+    </section>
 
+    <!-- ② 简历列表（手动 / 邮箱，紧凑两栏） -->
+    <section class="panel">
+      <div class="panel-head">
+        <h2>📥 简历库 <span id="resume-count" class="muted"></span></h2>
+      </div>
+
+      <div class="resume-groups">
+        <div class="resume-group">
+          <div class="group-head">
+            <h3>📤 手动上传 <span id="manual-count" class="muted"></span></h3>
+            <div class="upload-row">
+              <input type="file" id="resume-files" multiple accept=".txt,.pdf,.md" />
+              <button id="upload-btn" class="btn primary">上传</button>
+            </div>
+          </div>
+          <div id="upload-log" class="log"></div>
+          <div class="list-toolbar">
+            <label class="sel-all"><input type="checkbox" id="sel-all-cb" /> 全选</label>
+            <span id="sel-count" class="muted"></span>
+            <button id="batch-del-btn" class="btn btn-danger btn-sm" disabled>删除选中</button>
+            <button id="refresh-btn" class="btn btn-sm">刷新</button>
+          </div>
+          <ul id="manual-resume-list" class="resume-list"></ul>
+        </div>
+
+        <div class="resume-group">
+          <div class="group-head">
+            <h3>📧 邮箱抓取 <span id="email-count" class="muted"></span></h3>
+          </div>
+          <ul id="email-resume-list" class="resume-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ 筛选结果（手动 / 邮箱，两栏折叠卡片） -->
+    <section class="panel">
+      <div class="panel-head">
+        <h2>📋 筛选结果</h2>
+      </div>
       <div class="grid-2 screen-results">
         <div class="sub-block">
-          <h3>📤 手动上传 · 筛选结果</h3>
+          <div class="group-head">
+            <h3>📤 手动上传 · 筛选结果</h3>
+            <div class="cand-toolbar">
+              <label class="sel-all"><input type="checkbox" id="manual-sel-all-cb" /> 全选</label>
+              <span id="manual-sel-count" class="muted"></span>
+              <button id="manual-batch-del-btn" class="btn btn-danger btn-sm" disabled>删除选中</button>
+            </div>
+          </div>
           <div id="manual-screen-summary" class="auto-summary"></div>
           <div id="manual-screen-results" class="results"></div>
         </div>
         <div class="sub-block">
-          <h3>📧 邮箱 · 筛选结果</h3>
+          <div class="group-head">
+            <h3>📧 邮箱 · 筛选结果</h3>
+            <div class="cand-toolbar">
+              <label class="sel-all"><input type="checkbox" id="email-sel-all-cb" /> 全选</label>
+              <span id="email-sel-count" class="muted"></span>
+              <button id="email-batch-del-btn" class="btn btn-danger btn-sm" disabled>删除选中</button>
+            </div>
+          </div>
           <div id="auto-screen-summary" class="auto-summary"></div>
           <div id="auto-screen-results" class="results"></div>
         </div>
       </div>
-
-      <details class="rules-panel">
-        <summary>⚖️ 筛选规则 <span id="rules-meta" class="muted"></span></summary>
-        <div id="rules-box" class="rules-box">尚未总结筛选规则</div>
-        <div class="btn-row">
-          <button id="summarize-rules-btn" class="btn primary">总结筛选规则</button>
-          <button id="compare-rules-btn" class="btn">对比验证</button>
-        </div>
-        <div id="rules-log" class="log"></div>
-        <div id="compare-box" class="compare-box" hidden></div>
-      </details>
     </section>
 
-    <!-- ③ 已移除：候选人工作台（筛选结果直接展示候选人，按需展开详情） -->
+    <!-- ④ 筛选规则 -->
+    <section class="panel">
+      <div class="panel-head">
+        <h2>⚖️ 筛选规则 <span id="rules-meta" class="muted"></span></h2>
+      </div>
+      <div id="rules-box" class="rules-box">尚未总结筛选规则</div>
+      <div class="btn-row">
+        <button id="summarize-rules-btn" class="btn primary">🤖 自动总结（根据纠正反馈）</button>
+        <button id="edit-rules-btn" class="btn">✏️ 手动编辑</button>
+        <button id="compare-rules-btn" class="btn">对比验证</button>
+      </div>
+      <div id="rules-edit" class="rules-edit" hidden>
+        <textarea id="rules-edit-text" rows="5" placeholder="每行一条规则…"></textarea>
+        <input id="rules-edit-summary" type="text" placeholder="规则摘要（一句话说明，可留空）" />
+        <div class="btn-row">
+          <button id="rules-edit-save" class="btn primary">保存规则</button>
+          <button id="rules-edit-cancel" class="btn">取消</button>
+        </div>
+      </div>
+      <div id="rules-log" class="log"></div>
+      <div id="compare-box" class="compare-box" hidden></div>
+    </section>
 
   </main>
 

@@ -13,6 +13,10 @@ import json
 import re
 
 
+class _AnalysisCancelled(Exception):
+    """内部信号：用户请求停止筛选，中断批量分析（由 analyze_candidates 捕获）。"""
+
+
 class CandidateAnalyzer:
     """
     候选人分析器，用于生成候选人综合评价与三分类判定
@@ -116,7 +120,8 @@ class CandidateAnalyzer:
 
     def analyze_candidates(self, resumes: List[Dict[str, Any]],
                            query_metadata: Optional[QueryMetadata] = None,
-                           rules_text: str = "") -> List[Dict[str, Any]]:
+                           rules_text: str = "",
+                           cancel_check=None) -> List[Dict[str, Any]]:
         """
         批量生成候选人的综合评价与三分类判定
 
@@ -124,12 +129,18 @@ class CandidateAnalyzer:
             resumes (List[Dict[str, Any]]): 简历列表
             query_metadata (Optional[QueryMetadata]): 查询元数据；None 为通用评估模式
             rules_text (str): 生效的筛选规则文本，为空则不注入
+            cancel_check (Callable[[], bool], optional): 取消回调；每份简历分析前
+                调用，返回 True 时提前中止（用户点了"停止筛选"）
 
         Returns:
-            List[Dict[str, Any]]: 包含综合评价与分类的候选人列表
+            List[Dict[str, Any]]: 包含综合评价与分类的候选人列表；
+                被取消时返回空列表（调用方据此判断中止）
         """
         def _analyze_safe(resume: Dict[str, Any]) -> Dict[str, Any]:
             """逐人分析 + 兜底（原串行逻辑原样搬入，pool.map 保序）"""
+            if cancel_check and cancel_check():
+                # 用户点了停止：抛出特殊异常中断 pool.map
+                raise _AnalysisCancelled()
             try:
                 return self.analyze_candidate(resume, query_metadata, rules_text)
             except Exception as e:
@@ -145,13 +156,42 @@ class CandidateAnalyzer:
                 fallback["risks"] = []
                 return fallback
 
-        workers = max(1, settings.ANALYZER_MAX_WORKERS)
-        if len(resumes) <= 1 or workers <= 1:
-            return [_analyze_safe(r) for r in resumes]
+        try:
+            workers = max(1, settings.ANALYZER_MAX_WORKERS)
+            if len(resumes) <= 1 or workers <= 1:
+                return [_analyze_safe(r) for r in resumes]
 
-        # 并发分析：每次调用新建线程池（避免测试线程泄漏），pool.map 保序
-        with ThreadPoolExecutor(max_workers=workers) as pool:
-            return list(pool.map(_analyze_safe, resumes))
+            # 并发分析：submit + as_completed，支持取消——
+            # 每 0.5 秒检查一次取消标志，取消后立即返回已完成的（可能为空）
+            from concurrent.futures import as_completed
+            pool = ThreadPoolExecutor(max_workers=workers)
+            try:
+                futures = [pool.submit(_analyze_safe, r) for r in resumes]
+                results = []
+                while futures:
+                    if cancel_check and cancel_check():
+                        logger.info("Analysis cancelled by user request")
+                        break
+                    try:
+                        for fut in as_completed(futures, timeout=0.5):
+                            futures.remove(fut)
+                            try:
+                                results.append(fut.result())
+                            except _AnalysisCancelled:
+                                logger.info("Analysis cancelled by user request")
+                                futures = []
+                                break
+                            except Exception:
+                                continue
+                    except TimeoutError:
+                        continue  # 超时：回到循环顶部再查取消标志
+                return results
+            finally:
+                # 不等待未完成的任务（取消时立即释放，未跑的任务直接丢弃）
+                pool.shutdown(wait=False, cancel_futures=True)
+        except _AnalysisCancelled:
+            logger.info("Analysis cancelled by user request")
+            return []
 
     # ------------------------------------------------------------------
     # 解析与兜底
@@ -304,10 +344,20 @@ class CandidateAnalyzer:
 必须以工作经历/项目描述中的实际责任与结果为准。
 {rules_section}
 {preclassify_section}
-分类标准:
-- interview（值得面试）: 证据表明其能力与岗位高度匹配，且具备独立负责 + 真实用户 + 可量化结果
-- review（HR审核）: 部分满足但证据不足或存在疑问，需要人工核实
-- reject（直接淘汰）: 明显不满足岗位要求，或仅有关键词堆砌、无实际项目证据
+分类标准（必须严格对照"职位要求"逐条核查，宁严勿松）:
+- interview（值得面试）: 必须【同时满足】以下三点——①技能与岗位要求高度匹配（核心技能直接对应岗位职责）；
+  ②有与岗位同领域的实际项目/工作经验（非泛泛的"参与过项目"）；③证据扎实（独立负责+真实用户+可量化结果）。
+  若简历经验领域与岗位明显不同（如岗位要求 AI/LLM/Agent，简历只有传统后端/运维/测试经验），即使项目再漂亮也不能给 interview。
+- review（HR审核）: 部分满足但证据不足、领域部分相关、或个别硬性条件（学历/年限/技能）存疑，需要人工核实。
+- reject（直接淘汰）: 明显不满足岗位要求（领域不符、核心技能缺失、经验年限严重不足、无相关项目证据），
+  或仅有关键词堆砌、无实际项目证据。
+
+判定前请先做一次"领域匹配自检"：
+1. 列出岗位的核心技术栈（如 Python/JavaScript、LLM、RAG、Agent、Prompt Engineering、Function Calling）；
+2. 对照简历技能/项目经历，逐一标记：直接相关 / 部分相关 / 完全不相关；
+3. 若核心技能【多数不相关】或【完全没有 AI/LLM/Agent 相关经历】，直接判 reject；
+   若【部分相关但证据不足】，判 review；只有【核心技能与项目经历都直接对应岗位】才可判 interview。
+注意：三分类不应集中在同一档，请按简历实际质量拉开差距。宁可多判 reject/review，也不要让不合格的简历进入面试名单。
 
 请严格按照以下JSON格式返回结果，不要包含其他文本：
 {{
